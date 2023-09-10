@@ -29,6 +29,6 @@ devsync-react/.env
 
 
 #sinatra
-devsync-sinatra/Gemfile.lock
+# devsync-sinatra/Gemfile.lock
 devsync-sinatra/.env
 devsync-sinatra/.gitattributes
