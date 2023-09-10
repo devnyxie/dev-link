@@ -1,0 +1,15 @@
+source 'https://rubygems.org'
+
+gem 'sinatra', '3.1.0'
+gem 'rerun',   '0.13.0'
+gem 'pg',      '1.5.3'
+gem 'composite_primary_keys', '11.3.1'
+gem 'sequel', '5.72.0'
+gem 'bcrypt', '3.1.19'
+gem 'dotenv', '2.8.1'
+gem 'puma', '6.3.1'
+gem 'rack-cors', '2.0.1'
+
+# group :development, :test do
+#   gem 'rerun'
+# end

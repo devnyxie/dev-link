@@ -1,0 +1,140 @@
+:root {
+  --gray-border-color: #414141;
+  --dark-gray-color: #272c31;
+  --light-gray-color: #999999;
+  --main-color: #141113;
+}
+
+.fs-container {
+  height: 100vh;
+  width: 100vw;
+  background-color: #0f0f0f;
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+/*ico buttons (hover effects etc)*/
+.ico-button {
+  transition: 0.15s;
+}
+.ico-button:hover {
+  transition: 0.15s;
+  filter: brightness(3);
+}
+/*team members pfps*/
+.team-member-pfp {
+  filter: grayscale(100%);
+}
+.team-member-pfp:hover {
+  filter: grayscale(0%);
+}
+/*borders*/
+.light-gray {
+  color: var(--light-gray-color) !important;
+}
+.border-gray {
+  border: 1px solid var(--gray-border-color) !important;
+}
+.border-gray-top {
+  border-top: 1px solid var(--gray-border-color) !important;
+}
+.border-gray-bottom {
+  border-bottom: 1px solid var(--gray-border-color) !important;
+}
+
+/*bootstrap*/
+.form-control {
+  font-family: 'Lato', sans-serif !important;
+  background-color: transparent !important;
+  border: 1px solid var(--gray-border-color) !important;
+  color: white !important;
+}
+.form-control::placeholder {
+  color: rgba(255, 255, 255, 0.3) !important;
+}
+.bg-main {
+  background-color: var(--main-color) !important;
+}
+/*main container*/
+.main {
+  background-color: var(--main-color) !important;
+  overflow: hidden;
+}
+@media (max-width: 992px) {
+  .main {
+    height: 100% !important;
+    padding: 0 !important;
+  }
+}
+@media (min-width: 992px) {
+  .main {
+    height: 75% !important;
+    padding: 0 !important;
+    border: 1px solid var(--gray-border-color) !important;
+    border-radius: 5px;
+  }
+}
+
+/*text*/
+.truncate-text {
+  display: -webkit-box;
+  -webkit-line-clamp: 3; /* Limit text to two lines */
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+/**/
+.custom-button {
+  cursor: pointer;
+  background-color: var(--main-color) !important;
+}
+.custom-button:hover {
+  cursor: pointer;
+  background-color: var(--main-color) !important;
+  filter: brightness(1.4);
+  transition: 0.2s;
+}
+
+/*Timeline fade*/
+.fade-bottom {
+  background: linear-gradient(to bottom, rgb(39, 44, 49), var(--main-color));
+  background-position: 0 100%;
+  background-size: 100% 200px; /* 50px is the height of the fading effect */
+  background-repeat: no-repeat; /* Prevent repetition */
+  text-align: center;
+}
+
+table {
+  border-collapse: collapse;
+  width: 100%;
+  border: 1px solid var(--gray-border-color) !important; /* Add a border around the entire table */
+}
+
+/* Add borders to table headers (th) */
+th {
+  border: 1px solid var(--gray-border-color) !important; /* Add a border around table headers */
+  padding: 8px;
+}
+
+/* Add borders to table cells (td) */
+td {
+  border: 1px solid var(--gray-border-color) !important; /* Add a border around table cells */
+  padding: 8px;
+}
+
+.ellipsis {
+  white-space: nowrap; /* Prevent text from wrapping to the next line */
+  overflow: hidden; /* Hide content that overflows the container */
+  text-overflow: ellipsis; /* Display ellipsis when text overflows */
+  max-width: 500px; /* Set the maximum width for the container */
+}
+
+/*mini profiles*/
+.pfp-for-mini-profile:hover + .mini-profile {
+  display: block;
+}
+.mini-profile {
+  display: none;
+}
