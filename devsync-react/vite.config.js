@@ -10,6 +10,7 @@ const isProduction =
 export default defineConfig({
   plugins: [react()],
   server: {
+    host: 'localhost',
     port: Number(customPort),
     open: !isProduction, // Set this to true to automatically open the browser
   },
