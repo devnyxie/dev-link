@@ -1,34 +1,34 @@
 # Logs
-devsync-react/logs
-devsync-react/*.log
-devsync-react/npm-debug.log*
-devsync-react/yarn-debug.log*
-devsync-react/yarn-error.log*
-devsync-react/pnpm-debug.log*
-devsync-react/lerna-debug.log*
+devlink-react/logs
+devlink-react/*.log
+devlink-react/npm-debug.log*
+devlink-react/yarn-debug.log*
+devlink-react/yarn-error.log*
+devlink-react/pnpm-debug.log*
+devlink-react/lerna-debug.log*
 
 #react
-devsync-react/node_modules
-devsync-react/dist
-devsync-react/dist-ssr
-devsync-react/*.local
+devlink-react/node_modules
+devlink-react/dist
+devlink-react/dist-ssr
+devlink-react/*.local
 
 
 
 # Editor directories and files
-devsync-react/.vscode/*
-!devsync-react/.vscode/extensions.json
-devsync-react/.idea
-devsync-react/.DS_Store
-devsync-react/*.suo
-devsync-react/*.ntvs*
-devsync-react/*.njsproj
-devsync-react/*.sln
-devsync-react/*.sw?
-devsync-react/.env
+devlink-react/.vscode/*
+!devlink-react/.vscode/extensions.json
+devlink-react/.idea
+devlink-react/.DS_Store
+devlink-react/*.suo
+devlink-react/*.ntvs*
+devlink-react/*.njsproj
+devlink-react/*.sln
+devlink-react/*.sw?
+devlink-react/.env
 
 
 #sinatra
-# devsync-sinatra/Gemfile.lock
-devsync-sinatra/.env
-devsync-sinatra/.gitattributes
+# devlink-sinatra/Gemfile.lock
+devlink-sinatra/.env
+devlink-sinatra/.gitattributes
