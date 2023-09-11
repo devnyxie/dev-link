@@ -67,7 +67,7 @@ function Sidebar({ user }) {
         </div>
         <div className='w-100 border-gray rounded d-flex flex-column align-items-center justify-content-center light-gray p-2'>
           <GiEarthAmerica size={40} />
-          <span>DevLink</span>
+          <span>Dev-Link</span>
           <small>v0.1.0</small>
           <small className='border-gray custom-button p-1 rounded d-flex align-items-center'>
             Star on Git <AiOutlineStar className='ms-1' />

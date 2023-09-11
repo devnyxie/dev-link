@@ -1,24 +1,24 @@
-# DevLink
+# Dev-Link
 
-DevLink is a dynamic web application that brings together programmers of all levels, from seasoned experts to enthusiastic newcomers, with the aim of fostering collaborative learning and project development. My task is to make the world of programming more accessible, efficient, and interconnected than ever before.
+Dev-Link is a dynamic web application that brings together programmers of all levels, from seasoned experts to enthusiastic newcomers, with the aim of fostering collaborative learning and project development. My task is to make the world of programming more accessible, efficient, and interconnected than ever before.
 
-## About DevLink
+## About Dev-Link
 
-DevLink leverages the power of modern web technologies, combining React.js and Sinatra.rb, to provide a seamless platform for programmers to connect, collaborate, and embark on exciting coding adventures. Whether you're a seasoned developer looking to share your expertise or a newcomer eager to learn and contribute, DevLink has something for everyone.
+Dev-Link leverages the power of modern web technologies, combining React.js and Sinatra.rb, to provide a seamless platform for programmers to connect, collaborate, and embark on exciting coding adventures. Whether you're a seasoned developer looking to share your expertise or a newcomer eager to learn and contribute, Dev-Link has something for everyone.
 
 ## Key Features
 
-- **Effortless Collaboration**: With just a few clicks, you can find like-minded programmers who share your passion and vision. Whether you're interested in web development, mobile apps, data science, or any other domain, DevLink is here to unite you with the right team.
+- **Effortless Collaboration**: With just a few clicks, you can find like-minded programmers who share your passion and vision. Whether you're interested in web development, mobile apps, data science, or any other domain, Dev-Link is here to unite you with the right team.
 
-- **Diverse Roles and Technologies**: DevLink accommodates all programming languages, stacks, and frameworks. You're not limited by your preferences or skills; instead, you can explore and experiment with a wide range of technologies.
+- **Diverse Roles and Technologies**: Dev-Link accommodates all programming languages, stacks, and frameworks. You're not limited by your preferences or skills; instead, you can explore and experiment with a wide range of technologies.
 
-- **Learning Opportunities**: DevLink isn't just about building projects; it's also a platform for learning. Connect with mentors, learn from experienced developers, and grow your skills while working on exciting projects.
+- **Learning Opportunities**: Dev-Link isn't just about building projects; it's also a platform for learning. Connect with mentors, learn from experienced developers, and grow your skills while working on exciting projects.
 
-- **Open to All**: DevLink is an inclusive community. It doesn't matter if you're a seasoned pro or a complete beginner; there's a place for you here. We believe that diversity in perspectives and experiences leads to the most innovative solutions.
+- **Open to All**: Dev-Link is an inclusive community. It doesn't matter if you're a seasoned pro or a complete beginner; there's a place for you here. We believe that diversity in perspectives and experiences leads to the most innovative solutions.
 
 ## Get Started
 
-Join the DevLink community today and supercharge your programming journey. Whether you're seeking collaborators for your dream project or eager to contribute your skills to a team, DevLink is your go-to destination. Let's code, learn, and innovate together!
+Join the Dev-Link community today and supercharge your programming journey. Whether you're seeking collaborators for your dream project or eager to contribute your skills to a team, Dev-Link is your go-to destination. Let's code, learn, and innovate together!
 
 <p align="center">
     <strong>Coming soon</strong>

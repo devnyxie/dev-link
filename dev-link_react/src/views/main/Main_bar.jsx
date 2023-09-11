@@ -42,7 +42,7 @@ export default function Main_bar({ isLoggedIn, sidebar }) {
           style={{ width: '33.33%' }}
         >
           <Link to='/' style={{ textDecoration: 'none', color: 'white' }}>
-            DevLink
+            Dev-Link
           </Link>
         </div>
         <div className='d-flex justify-content-end' style={{ width: '33.33%' }}>

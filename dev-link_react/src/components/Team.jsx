@@ -28,12 +28,6 @@ function Team({ team, index }) {
           })}
         </div>
         {/* right part */}
-        <div
-          className='me-4 d-flex flex-column justify-content-center'
-          style={{ height: '60px' }}
-        >
-          <Button className='custom-button border-gray'>Join</Button>
-        </div>
       </div>
     </div>
   );
