@@ -22,9 +22,13 @@ function Team({ team, index }) {
       >
         {/* left part */}
         <div className='d-flex'>
-          <UserPfpWithMiniProfile member={team.creator} />
+          {/* <UserPfpWithMiniProfile member={team.creator} /> */}
           {team.members.map((member, index) => {
-            return <UserPfpWithMiniProfile key={index} member={member} />;
+            if (member.user) {
+              return (
+                <UserPfpWithMiniProfile key={index} member={member.user} />
+              );
+            }
           })}
         </div>
         {/* right part */}

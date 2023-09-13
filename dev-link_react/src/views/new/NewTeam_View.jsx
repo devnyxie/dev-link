@@ -17,7 +17,7 @@ function NewTeam_View({ user }) {
   //check markdown syntax after succ /POST
 
   return (
-    <div className='w-100 h-100 p-4'>
+    <div className='w-100 h-100 p-4 mt-4'>
       <Form>
         <Form.Group className='mb-3' controlId='exampleForm.ControlInput1'>
           <Form.Label>Name</Form.Label>
