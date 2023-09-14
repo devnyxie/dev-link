@@ -69,10 +69,7 @@ function Main({ teams, sidebar }) {
   }, [teams]);
 
   return (
-    <div
-      className='w-100 h-100 d-flex'
-      // style={{ overflowY: sidebar ? 'hidden' : 'auto' }}
-    >
+    <div className='w-100 d-flex' style={{ height: 'max-content' }}>
       <div
         className='div1'
         id='parentDiv'

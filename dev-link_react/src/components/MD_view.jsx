@@ -13,7 +13,7 @@ function MD_view({ md, editor, setMd }) {
   });
 
   return (
-    <div className='mb-2'>
+    <div>
       {isEditorRequired ? (
         <MDEditor
           value={value}

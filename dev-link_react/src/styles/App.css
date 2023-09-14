@@ -26,6 +26,9 @@
 .light-gray {
   color: var(--light-gray-color) !important;
 }
+.gray {
+  color: var(--gray-border-color) !important;
+}
 .border-gray {
   border: 1px solid var(--gray-border-color) !important;
 }
@@ -136,4 +139,12 @@ td {
 }
 .mini-profile {
   display: none;
+}
+.border-bottom-input {
+  border-radius: 0 !important;
+  border: none !important;
+}
+
+.border-bottom-input:focus {
+  box-shadow: none !important;
 }

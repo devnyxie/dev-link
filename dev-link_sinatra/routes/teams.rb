@@ -84,22 +84,67 @@ end
 
 
 #POST A NEW TEAM
+# post '/teams' do
+#   new_team_data = JSON.parse(request.body.read)
+#   team_size = params['team_size'] || 5
+#   # * ADD CUSTOM ROLES VIA UI
+#   if new_team_data
+#     new_team = Team.create(new_team_data)
+#     if new_team
+#       #create not just one member, but create as many members as team size is. 
+#       members_data = [
+#         {team_id: new_team[:id], user_id: new_team_data["creator_id"]},
+#       ]
+#       (team_size - 1).times do
+#         members_data << {team_id: new_team[:id], user_id: nil}
+#       end
+#       result = Member.multi_insert(members_data)
+#       # new_member = Member.create({team_id: new_team[:id], user_id: new_team_data["creator_id"]})
+#       if result
+#         status 201 # Created
+#         new_team.fill_data
+#         content_type :json
+#         new_team.to_json
+#       end
+#     else
+#       status 400 # Bad Request
+#       { error: "Error, can't create new team." }.to_json
+#     end
+#   else
+#     status 400 # Bad Request
+#     { error: "Error, can't create new team." }.to_json
+#   end
+# end
+
+
+
+#rework
+#from now on:
+#we receive members array, which we must assign, exclude from Team obj and reuse after creating a team to create members with certain roles.
 post '/teams' do
-  new_team_data = JSON.parse(request.body.read)
-  team_size = params['team_size'] || 5
-  # * ADD CUSTOM ROLES VIA UI
+  data = JSON.parse(request.body.read)
+  puts data.inspect
+  #assign members to a variable
+  members = data['members']
+  #del members from data hash
+  data.delete('members')
+  puts "Members: #{members}"
+  new_team_data = data
+  puts "Team data: #{new_team_data}"
+  members.each do |member|
+    member.delete("id")
+  end
   if new_team_data
     new_team = Team.create(new_team_data)
     if new_team
-      #create not just one member, but create as many members as team size is. 
-      members_data = [
-        {team_id: new_team[:id], user_id: new_team_data["creator_id"]},
-      ]
-      (team_size - 1).times do
-        members_data << {team_id: new_team[:id], user_id: nil}
+      #create not just one member, but create as many members as team size is.
+      # members_with_team_id = []
+      members_with_team_id = members.map do |member|
+        member.delete("id")
+        member["team_id"] = new_team[:id]
+        member
       end
-      result = Member.multi_insert(members_data)
-      # new_member = Member.create({team_id: new_team[:id], user_id: new_team_data["creator_id"]})
+      result = Member.multi_insert(members_with_team_id)
       if result
         status 201 # Created
         new_team.fill_data
@@ -115,7 +160,5 @@ post '/teams' do
     { error: "Error, can't create new team." }.to_json
   end
 end
-
-
 
 
