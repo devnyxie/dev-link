@@ -2,10 +2,14 @@ import React from 'react';
 import { Form } from 'react-bootstrap';
 import { BiLockAlt, BiLockOpenAlt } from 'react-icons/bi';
 
+
+
+//1. join_btn ={true} join button option 2. role={member.role} Role3. member={member}. If already a member,DESIGN2.4. 
 function Member_tile({
   user,
   member,
   role_input = false,
+  role,
   set,
   value,
   findMemberInMembersAndEditRole,
@@ -14,9 +18,9 @@ function Member_tile({
   return (
     <div
       className='w-100 d-flex justify-content-between align-items-center border-gray rounded p-1 mb-1'
-      style={{ height: '60px' }}
+      style={{ height: 'auto' }}
     >
-      <div className='d-flex align-items-end'>
+      <div className='h-100 d-flex align-items-start'>
         {identity.pfp ? (
           <img
             src={identity.pfp}
@@ -24,12 +28,14 @@ function Member_tile({
             style={{ aspectRatio: 1 / 1, height: '50px' }}
           />
         ) : (
-          <div
-            style={{ aspectRatio: 1 / 1, height: '50px' }}
-            className='rounded-circle border-gray d-flex align-items-center justify-content-center light-gray'
-          >
-            ?{' '}
-          </div>
+          <>
+            {/* <div
+              style={{ aspectRatio: 1 / 1, height: '100%' }}
+              className='rounded-circle border-gray d-flex align-items-center justify-content-center light-gray'
+            >
+              ?
+            </div>*/}
+          </>
         )}
         <div
           className='h-100 d-flex justify-content-end flex-column ms-2'
@@ -38,9 +44,8 @@ function Member_tile({
           {identity.username ? (
             <>
               <small>@{identity.username}</small>
-              <span>
-                {identity.name} {identity.surname}
-              </span>
+
+              <span>{identity.role ? `Role: ${identity.role}` : ''}</span>
             </>
           ) : (
             <></>
@@ -66,11 +71,11 @@ function Member_tile({
                 className='border-bottom-input'
                 type='text'
                 placeholder="Type here member's role"
-                value={member.role}
+                value={identity.role}
                 onChange={(e) =>
                   findMemberInMembersAndEditRole({
                     role: e.target.value,
-                    id: member.id,
+                    id: identity.id,
                   })
                 }
                 style={{ width: 'min-content' }}
@@ -81,10 +86,10 @@ function Member_tile({
       ) : (
         <></>
       )}
-      {user ? (
+      {identity.id ? (
         <BiLockAlt size={25} className='light-gray me-2' />
       ) : (
-        <BiLockOpenAlt size={25} className='light-gray me-2' />
+        <div className='custom-button border-gray rounded p-1 px-2'>Join</div>
       )}
     </div>
   );

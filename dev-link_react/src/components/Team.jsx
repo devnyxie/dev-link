@@ -24,14 +24,18 @@ function Team({ team, index }) {
         <div className='d-flex'>
           {/* <UserPfpWithMiniProfile member={team.creator} /> */}
           {team.members.map((member, index) => {
-            if (member.user) {
-              return (
-                <UserPfpWithMiniProfile key={index} member={member.user} />
-              );
+            if (member) {
+              return <UserPfpWithMiniProfile key={index} member={member} />;
             }
           })}
         </div>
         {/* right part */}
+      </div>
+      <div
+        className='text-end position-absolute p-2 light-gray'
+        style={{ right: 0, bottom: 0 }}
+      >
+        Capacity: {team.members.length}/{team.open_roles.length}
       </div>
     </div>
   );

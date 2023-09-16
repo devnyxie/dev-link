@@ -35,7 +35,8 @@ export default function Main_bar({ isLoggedIn, sidebar }) {
           className=' d-flex align-items-center justify-content-start'
           style={{ width: '33.33%' }}
         >
-          {dayAndTime}
+          <GoBackButton />
+          <div className='ms-2'>{dayAndTime}</div>
         </div>
         <div
           className='lead d-flex align-items-center justify-content-center'
@@ -87,7 +88,6 @@ export default function Main_bar({ isLoggedIn, sidebar }) {
           )}
         </div>
       </div>
-      <GoBackButton />
     </div>
   );
 }
