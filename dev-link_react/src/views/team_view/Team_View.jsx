@@ -1,17 +1,17 @@
-import React, { useEffect, useState } from 'react';
-import { Col, Form, Row } from 'react-bootstrap';
-import { useSearchParams } from 'react-router-dom';
-import MD_view from '../../components/MD_view';
-import { useDispatch } from 'react-redux';
-import { getOneTeam } from '../../Redux/Actions/teams';
-import Member_tile from '../../components/member/Member_tile';
+import React, { useEffect, useState } from "react";
+import { Col, Form, Row } from "react-bootstrap";
+import { useSearchParams } from "react-router-dom";
+import MD_view from "../../components/MD_view";
+import { useDispatch } from "react-redux";
+import { getOneTeam, joinOrLeave } from "../../Redux/Actions/teams";
+import Member_tile from "../../components/member/Member_tile";
 function Team_View({ teams }) {
   const dispatch = useDispatch();
   const [team, setTeam] = useState({});
   const [searchParams] = useSearchParams();
 
   useEffect(() => {
-    const targetId = searchParams.get('team_id');
+    const targetId = searchParams.get("team_id");
     let found_team = teams.find((team) => team.id === targetId);
     if (!found_team) {
       dispatch(getOneTeam({ id: targetId, setTeam: setTeam }));
@@ -19,36 +19,59 @@ function Team_View({ teams }) {
       setTeam(found_team);
     }
   }, []);
+  function joinOrLeaveFunc(member_id) {
+    dispatch(joinOrLeave({ member_id: member_id }));
+  }
 
-  if (team.description_md) {
+  if (team.members) {
     return (
-      <Row className='w-100 position-relative g-0'>
+      <Row className="w-100 position-relative g-0">
         <Col xs={12} md={8}>
-          <div className='p-2'>
-            <h4 className='mb-4 border-gray-bottom p-2'>{team?.name}</h4>
+          <div className="p-2">
+            <h4 className="mb-4 border-gray-bottom p-2">{team?.name}</h4>
             {team.description_short ? (
-              <div className='border-gray-bottom p-2'>
+              <div className="border-gray-bottom p-2">
                 {team.description_short}
               </div>
             ) : (
               <></>
             )}
-            <div className='border-gray-bottom p-2'>
+            <div className="border-gray-bottom p-2">
               <MD_view md={team.description_md} />
             </div>
           </div>
         </Col>
         <Col xs={12} md={4}>
-          <div className='h-100'>
-            <div className='sticky-md-top p-3'>
-              <div className='rounded p-1'>
-                <small className='light-gray'>Members:</small>
+          <div className="h-100">
+            <div className="sticky-md-top p-3">
+              <div className="rounded p-1">
+                <small className="light-gray">Members:</small>
                 {team.members.map((member) => {
-                  return <Member_tile member={member} role_input={false} />;
+                  return (
+                    <Member_tile
+                      member={member}
+                      config={{
+                        pfp: true,
+                        username: true,
+                        role: true,
+                      }}
+                    />
+                  );
                 })}
-                <small className='light-gray'>Open roles:</small>
+                <small className="light-gray">Open roles:</small>
                 {team.open_roles.map((member) => {
-                  return <Member_tile member={member} role_input={false} />;
+                  return (
+                    <Member_tile
+                      member={member}
+                      config={{
+                        role_input: true,
+                        role: member.role,
+                        pfp: false,
+                        join_btn: true,
+                      }}
+                      joinOrLeaveFunc={joinOrLeaveFunc}
+                    />
+                  );
                 })}
               </div>
             </div>

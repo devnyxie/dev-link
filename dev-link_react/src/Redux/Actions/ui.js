@@ -1,1 +1,2 @@
-export const TOGGLE_SIDEBAR = 'TOGGLE_SIDEBAR';
+export const TOGGLE_SIDEBAR = "TOGGLE_SIDEBAR";
+export const CHANGE_STATUS = "CHANGE_STATUS";

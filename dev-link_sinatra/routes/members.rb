@@ -7,6 +7,7 @@ class Member < Sequel::Model(:members)
   def fill_data
     {
       team_id: self.team_id,
+      user_id: self.user_id,
       id: self.id
     }
   end

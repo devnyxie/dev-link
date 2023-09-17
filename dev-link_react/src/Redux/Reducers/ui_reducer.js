@@ -1,7 +1,8 @@
-import { TOGGLE_SIDEBAR } from '../Actions/ui';
+import { CHANGE_STATUS, TOGGLE_SIDEBAR } from "../Actions/ui";
 
 const initialState = {
   sidebarIsActive: false,
+  status: null,
 };
 
 const ui_reducer = (state = initialState, action) => {
@@ -11,7 +12,11 @@ const ui_reducer = (state = initialState, action) => {
         ...state,
         sidebarIsActive: !state.sidebarIsActive,
       };
-
+    case CHANGE_STATUS:
+      return {
+        ...state,
+        status: action.payload,
+      };
     default:
       return state;
   }

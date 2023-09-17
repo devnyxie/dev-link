@@ -1,84 +1,112 @@
-import React from 'react';
-import { Form } from 'react-bootstrap';
-import { BiLockAlt, BiLockOpenAlt } from 'react-icons/bi';
+import React from "react";
+import { Form } from "react-bootstrap";
+import { BiLockAlt, BiLockOpenAlt } from "react-icons/bi";
 
-
-
-//1. join_btn ={true} join button option 2. role={member.role} Role3. member={member}. If already a member,DESIGN2.4. 
+//1. join_btn ={true} join button option 2. role={member.role} Role3. member={member}. If already a member,DESIGN2.4.
 function Member_tile({
-  user,
   member,
-  role_input = false,
-  role,
+  config: {
+    owner = false,
+    role_input = false,
+    pfp = false,
+    username = false,
+    role = false,
+    join_btn = false,
+  },
+  //
   set,
   value,
   findMemberInMembersAndEditRole,
+  joinOrLeaveFunc,
 }) {
-  let identity = user ? user : member;
+  const showLeftBlock = pfp || username || role ? true : false;
   return (
     <div
-      className='w-100 d-flex justify-content-between align-items-center border-gray rounded p-1 mb-1'
-      style={{ height: 'auto' }}
+      className="w-100 d-flex justify-content-between align-items-center border-gray rounded p-1 mb-1"
+      style={{ height: "auto" }}
     >
-      <div className='h-100 d-flex align-items-start'>
-        {identity.pfp ? (
-          <img
-            src={identity.pfp}
-            className='rounded-circle'
-            style={{ aspectRatio: 1 / 1, height: '50px' }}
-          />
-        ) : (
-          <>
-            {/* <div
-              style={{ aspectRatio: 1 / 1, height: '100%' }}
-              className='rounded-circle border-gray d-flex align-items-center justify-content-center light-gray'
-            >
-              ?
-            </div>*/}
-          </>
-        )}
-        <div
-          className='h-100 d-flex justify-content-end flex-column ms-2'
-          style={{ width: 'max-content' }}
-        >
-          {identity.username ? (
-            <>
-              <small>@{identity.username}</small>
-
-              <span>{identity.role ? `Role: ${identity.role}` : ''}</span>
-            </>
+      {/* --- 1st block: pfp, username, mini-role --- */}
+      {/* if pfp || username || role -> show this block */}
+      {showLeftBlock ? (
+        <div className="h-100 d-flex align-items-center">
+          {pfp ? (
+            <img
+              src={member.pfp}
+              className="rounded-circle"
+              style={{ aspectRatio: 1 / 1, height: "50px" }}
+            />
           ) : (
             <></>
           )}
+          <div
+            className="h-100 d-flex justify-content-end flex-column ms-2"
+            style={{ width: "max-content" }}
+          >
+            {username || role ? (
+              <>
+                <small>{member.username ? `@${member.username}` : ""}</small>
+                <span>
+                  {member.role || role ? (
+                    <>
+                      {member.username ? (
+                        <>
+                          As:{" "}
+                          <span className="opacity-75 text-decoration-underline">
+                            {member.role}
+                          </span>
+                        </>
+                      ) : (
+                        <>
+                          {" "}
+                          Role:{" "}
+                          <span className="opacity-75 text-decoration-underline">
+                            {member.role}
+                          </span>
+                        </>
+                      )}
+                    </>
+                  ) : (
+                    ""
+                  )}
+                </span>
+              </>
+            ) : (
+              <></>
+            )}
+          </div>
         </div>
-      </div>
-      {role_input ? (
+      ) : (
+        <></>
+      )}
+      {role_input && role === false ? (
         <>
-          {user ? (
+          {owner ? (
             <>
               <Form.Control
-                className='border-bottom-input'
-                type='text'
-                placeholder='Type here your role'
+                maxLength={40}
+                className="border-bottom-input flex-fill"
+                type="text"
+                placeholder="Type here your role"
                 value={value}
                 onChange={(e) => set(e.target.value)}
-                style={{ width: 'min-content' }}
+                style={{ width: "min-content" }}
               />
             </>
           ) : (
             <>
               <Form.Control
-                className='border-bottom-input'
-                type='text'
+                maxLength={40}
+                className="border-bottom-input flex-fill"
+                type="text"
                 placeholder="Type here member's role"
-                value={identity.role}
+                value={member.role}
                 onChange={(e) =>
                   findMemberInMembersAndEditRole({
                     role: e.target.value,
-                    id: identity.id,
+                    id: member.id,
                   })
                 }
-                style={{ width: 'min-content' }}
+                style={{ width: "min-content" }}
               />
             </>
           )}
@@ -86,10 +114,22 @@ function Member_tile({
       ) : (
         <></>
       )}
-      {identity.id ? (
-        <BiLockAlt size={25} className='light-gray me-2' />
+
+      {join_btn ? (
+        <div
+          className="custom-button border-gray rounded p-1 px-2"
+          onClick={() => joinOrLeaveFunc(member.member_id)}
+        >
+          Join
+        </div>
       ) : (
-        <div className='custom-button border-gray rounded p-1 px-2'>Join</div>
+        <>
+          {member.username ? (
+            <BiLockAlt size={25} className="light-gray me-2" />
+          ) : (
+            <BiLockOpenAlt size={25} className="light-gray me-2" />
+          )}
+        </>
       )}
     </div>
   );

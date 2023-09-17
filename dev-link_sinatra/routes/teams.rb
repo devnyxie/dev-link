@@ -3,6 +3,7 @@ require 'sequel'
 require_relative 'db'
 require_relative 'users'
 require_relative 'members'
+require_relative 'queries'
 
 
 #Team
@@ -11,7 +12,6 @@ class Team < Sequel::Model(:teams)
   many_to_many :users, join_table: :members
 
   def fill_data
-    puts "#{self.id} --- USERS: #{self.users.count}, MEMBERS: #{self.members.count}"
     {
       id: self.id,
       name: self.name,
@@ -20,194 +20,97 @@ class Team < Sequel::Model(:teams)
       description_md: self.description_md,
       open: self.open,
       created_at: self.created_at.strftime("%Y-%m-%dT%H:%M:%S.%LZ"),
-      current_members_count: self.users.count,
-      max_members_count: self.members.count,
-      members: detectTakenRoles
+      members: detectTakenRoles,
     }
   end
 
-  # private
+  private
 
-  # def detectTakenRoles
-  #   combined_members = []
-
-  #   self.members.each do |member|
-
-  #     if member[:user_id]
-  #       user = self.users.find { |u| u[:id] == member[:user_id] }
-  #       if user
-  #         combined_member = {
-  #           id: member[:id],
-  #           team_id: member[:team_id],
-  #           user_id: member[:user_id],
-  #           role: member[:role],
-  #           pfp: user[:pfp],
-  #           name: user[:name],
-  #           surname: user[:surname],
-  #           username: user[:username]
-  #         }
-  #         combined_members << combined_member
-  #       else
-  #         combined_members << { role: member[:role], user_id: member[:user_id] }
-  #       end
-  #     else
-  #       combined_members << { role: member[:role], user_id: member[:user_id] }
-  #     end
-  #   end
-
-  #   combined_members
-  # end
-end
-
-# get '/feed' do
-#   from = params[:from] ? params[:from] : 0
-#   to = params[:to] ? params[:to] : 10
-#   # teams = Team.eager_graph(:users, :members).order(Sequel.desc(:created_at)).limit(to, from).all   --- temporary disabled
-#   teams = Team.eager(:users, :members).order(Sequel.desc(:created_at)).limit(to, from).all
-#   if teams.any?
-#     teams_data = teams.map(&:fill_data)
-#     content_type :json
-#     teams_data.to_json
-#   else
-#     status 404
-#     'No teams found'
-#   end
-# end
-
-# get '/feed_v2' do
-#   def build_team_structure
-#     teams = {}
-  
-#     query = <<-SQL
-#       SELECT *
-#       FROM teams t
-#       INNER JOIN members m ON t.id = m.team_id
-#       LEFT OUTER JOIN users u ON u.id = m.user_id
-#     SQL
-  
-#     DB[query].each do |row|
-#       team_id = row[:team_id]
-#       member = {
-#         id: row[:id],
-#         user_id: row[:user_id],
-#         username: row[:username],
-#         password: row[:password],
-#         pfp: row[:pfp],
-#         name: row[:name],
-#         surname: row[:surname]
-#       }
-#       if teams.key?(team_id)
-#         if member[:user_id].nil?
-#           teams[team_id][:available_roles] << member
-#         else
-#           teams[team_id][:members] << member
-#         end
-#       else
-#         teams[team_id] = {
-#           id: row[:id],
-#           name: row[:name],
-#           creator_id: row[:creator_id],
-#           description_short: row[:description_short],
-#           description_md: row[:description_md],
-#           open: row[:open],
-#           created_at: row[:created_at],
-#           members: [member],
-#           available_roles: [member]
-          
-#         }
-#       end
-#     end
-#     teams.values
-#   end
-  
-#   team_structure = build_team_structure
-  
-#   content_type :json
-#   team_structure.to_json
-# end
-
-get '/feed' do
-
-
-  def build_team_structure
-    limit = params['limit'] || 15  # Default to 10 if limit is not provided
-    offset = params['offset'] || 0  # Default to 0 if offset is not provided
-  
-    teams = {}
-
-    query = <<-SQL
-      SELECT 
-        teams_with_members.id AS team_id,
-        teams_with_members.name AS team_name,
-        teams_with_members.creator_id,
-        teams_with_members.description_short,
-        teams_with_members.description_md,
-        teams_with_members.open,
-        teams_with_members.created_at AS team_created_at,
-        u.id AS user_id,
-        u.name,
-        u.surname,
-        u.username,
-        u.pfp,
-        m.role
-      FROM (
-        SELECT t.id, t.name, t.creator_id, t.description_short, t.description_md, t.open, t.created_at
-        FROM teams t
-        INNER JOIN members m ON t.id = m.team_id
-        LEFT OUTER JOIN users u ON u.id = m.user_id
-        GROUP BY t.id
-      ) AS teams_with_members
-      LEFT OUTER JOIN members m ON teams_with_members.id = m.team_id
-      LEFT OUTER JOIN users u ON u.id = m.user_id
-      ORDER BY created_at DESC
-    SQL
-
-
-    DB[query].each do |row|
-      team_id = row[:team_id]
-      member = {
-        id: row[:user_id],
-        username: row[:username],
-        pfp: row[:pfp],
-        name: row[:name],
-        surname: row[:surname],
-        role: row[:role]
-      }
-      unless teams.key?(team_id)
-        teams[team_id] = {
-          id: row[:team_id],
-          name: row[:team_name],
-          creator_id: row[:creator_id],
-          description_short: row[:description_short],
-          description_md: row[:description_md],
-          open: row[:open],
-          created_at: row[:team_created_at].strftime("%Y-%m-%dT%H:%M:%S.%LZ"),
-          members: [],
-          open_roles: []
-        }
-      end
-      
-      if member[:id].nil?
-        teams[team_id][:open_roles] << member
+  def detectTakenRoles
+    combined_members = []
+    self.members.each do |member|
+      if member[:user_id]
+        user = self.users.find { |u| u[:id] == member[:user_id] }
+        if user
+          combined_member = {
+            team_id: member[:team_id],
+            role: member[:role],
+            id: member[:id],
+            user_id: member[:user_id],
+            user: user.fill_data
+          }
+          combined_members << combined_member
+        else
+          combined_members << { role: member[:role], user_id: member[:user_id] }
+        end
       else
-        teams[team_id][:members] << member
+        combined_members << { role: member[:role], user_id: member[:user_id] }
       end
     end
-    teams.values
+    combined_members
+  end
+end
+
+def fill_data_raw(ex)
+  data = []
+
+  ex.each do |row|
+    team_id = row[:team_id]
+    member = {
+      member_id: row[:member_id],
+      user_id: row[:user_id],
+      username: row[:username],
+      pfp: row[:pfp],
+      name: row[:name],
+      surname: row[:surname],
+      role: row[:role]
+    }
+
+    team = data.find { |t| t[:id] == team_id }
+
+    unless team
+      team = {
+        id: row[:team_id],
+        name: row[:team_name],
+        creator_id: row[:creator_id],
+        description_short: row[:description_short],
+        description_md: row[:description_md],
+        open: row[:open],
+        created_at: row[:team_created_at].strftime("%Y-%m-%dT%H:%M:%S.%LZ"),
+        members: [],
+        open_roles: []
+      }
+      data << team
+    end
+
+    if member[:user_id].nil?
+      team[:open_roles] << member
+    else
+      team[:members] << member
+    end
   end
 
-  team_structure = build_team_structure
+  data
+end
 
+
+get '/feed' do
+  limit = params['limit'] || 15
+  offset = params['offset'] || 0
+  team_data = DB[SELECT_TEAMS_v2, limit.to_i, offset.to_i]
+  puts team_data
+  team_structure = fill_data_raw(team_data)
   content_type :json
   team_structure.to_json
 end
 
+
 get '/teams/:team_id' do
-  team = Team.eager(:users, :creator).where(id: params[:team_id]).first
+  team = DB[SELECT_TEAM_BY_ID_v2, params[:team_id]]
   if team
-    team_data = team.fill_data
+    team_data = fill_data_raw(team)
     content_type :json
-    team_data.to_json
+    team_data[0].to_json
   else
     status 404
     'Team not found'
@@ -253,3 +156,109 @@ post '/teams' do
 end
 
 
+# put '/teams/toggle' do
+#   request_data = JSON.parse(request.body.read)
+#   # request_data: {
+#   #  user_id, member_id
+#   # }
+#   member_id = request_data["member_id"]
+#   user_id = request_data["user_id"]
+#   if member_id && user_id
+#     puts "#{member_id}, #{user_id}"
+#     member = Member.where(id: member_id).first
+#     if member
+#       if member[:user_id] == user_id
+#         member.update(
+#           user_id: nil,
+#         )
+#         member.save
+#         member.fill_data
+#         content_type :json
+#         status 200
+#         member.to_json
+#       else
+#         member.update(
+#           user_id: user_id,
+#         )
+#         member.save
+#         member.fill_data
+#         content_type :json
+#         status 200
+#         member.to_json
+#       end
+#     else
+#       content_type :json
+#       status 404
+#       "No member with such id"
+#     end
+#   else
+#     content_type :json
+#     status 404
+#     "No member with such id"
+#   end
+# end
+
+# put '/teams/toggle' do
+#   request_data = JSON.parse(request.body.read)
+#   user_id = request_data["user_id"]
+#   member_id = request_data["member_id"]
+
+#   unless user_id && member_id
+#     content_type :json
+#     status 400
+#     return { message: "Both user_id and member_id are required" }.to_json
+#   end
+
+#   member = Member.where(id: member_id).first
+
+#   unless member
+#     content_type :json
+#     status 404
+#     return { message: "No member with such id" }.to_json
+#   end
+
+#   member.update(user_id: (member[:user_id] == user_id) ? nil : user_id)
+#   member.fill_data
+
+#   content_type :json
+#   status 200
+#   member.to_json
+# end
+
+put '/teams/join_or_leave' do
+  begin
+    request_data = JSON.parse(request.body.read)
+    user_id = request_data["user_id"]
+    member_id = request_data["member_id"]
+
+    unless user_id && member_id
+      content_type :json
+      status 400
+      return { message: "Both user_id and member_id are required" }.to_json
+    end
+
+    updated_member = Member.where(id: member_id).returning().first
+    unless updated_member
+      content_type :json
+      status 404
+      return { message: "No member with such id" }.to_json
+    end
+    updated_member.update(user_id: updated_member[:user_id] == user_id ? nil : user_id)
+    updated_member = {
+      user_id: updated_member[:user_id],
+      team_id: updated_member[:team_id],
+    }
+    content_type :json
+    status 200
+    updated_member.to_json
+  rescue Sequel::UniqueConstraintViolation => e
+    # Handle the unique constraint violation error
+    content_type :json
+    status 409 # Conflict status code for duplicate resource
+    return { message: "Duplicate user_id and team_id pair" }.to_json
+  rescue JSON::ParserError => e
+    content_type :json
+    status 400
+    return { message: "Invalid JSON data in the request body" }.to_json
+  end
+end
