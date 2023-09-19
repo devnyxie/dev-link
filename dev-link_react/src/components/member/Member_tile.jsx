@@ -40,7 +40,7 @@ function Member_tile({
           )}
           <div
             className="h-100 d-flex justify-content-end flex-column ms-2"
-            style={{ width: "max-content" }}
+            // style={{ width: "max-content" }}
           >
             {username || role ? (
               <>

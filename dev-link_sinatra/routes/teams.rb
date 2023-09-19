@@ -51,10 +51,10 @@ class Team < Sequel::Model(:teams)
   end
 end
 
-def fill_data_raw(ex)
+def fill_data_raw(teams)
   data = []
 
-  ex.each do |row|
+  teams.each do |row|
     team_id = row[:team_id]
     member = {
       member_id: row[:member_id],
@@ -84,6 +84,7 @@ def fill_data_raw(ex)
     end
 
     if member[:user_id].nil?
+      puts member[:username]
       team[:open_roles] << member
     else
       team[:members] << member
@@ -94,10 +95,12 @@ def fill_data_raw(ex)
 end
 
 
+
 get '/feed' do
-  limit = params['limit'] || 15
+  limit = params['limit'] || 3
   offset = params['offset'] || 0
-  team_data = DB[SELECT_TEAMS_v2, limit.to_i, offset.to_i]
+  # team_data = DB[SELECT_TEAMS_v2]
+  team_data = DB[SELECT_TEAMS_v3, offset: offset.to_i, limit: limit.to_i]
   puts team_data
   team_structure = fill_data_raw(team_data)
   content_type :json
@@ -154,76 +157,6 @@ post '/teams' do
     { error: "Error, can't create new team." }.to_json
   end
 end
-
-
-# put '/teams/toggle' do
-#   request_data = JSON.parse(request.body.read)
-#   # request_data: {
-#   #  user_id, member_id
-#   # }
-#   member_id = request_data["member_id"]
-#   user_id = request_data["user_id"]
-#   if member_id && user_id
-#     puts "#{member_id}, #{user_id}"
-#     member = Member.where(id: member_id).first
-#     if member
-#       if member[:user_id] == user_id
-#         member.update(
-#           user_id: nil,
-#         )
-#         member.save
-#         member.fill_data
-#         content_type :json
-#         status 200
-#         member.to_json
-#       else
-#         member.update(
-#           user_id: user_id,
-#         )
-#         member.save
-#         member.fill_data
-#         content_type :json
-#         status 200
-#         member.to_json
-#       end
-#     else
-#       content_type :json
-#       status 404
-#       "No member with such id"
-#     end
-#   else
-#     content_type :json
-#     status 404
-#     "No member with such id"
-#   end
-# end
-
-# put '/teams/toggle' do
-#   request_data = JSON.parse(request.body.read)
-#   user_id = request_data["user_id"]
-#   member_id = request_data["member_id"]
-
-#   unless user_id && member_id
-#     content_type :json
-#     status 400
-#     return { message: "Both user_id and member_id are required" }.to_json
-#   end
-
-#   member = Member.where(id: member_id).first
-
-#   unless member
-#     content_type :json
-#     status 404
-#     return { message: "No member with such id" }.to_json
-#   end
-
-#   member.update(user_id: (member[:user_id] == user_id) ? nil : user_id)
-#   member.fill_data
-
-#   content_type :json
-#   status 200
-#   member.to_json
-# end
 
 put '/teams/join_or_leave' do
   begin

@@ -22,7 +22,7 @@ import Alert_widget from "./components/Alert/Alert_widget";
 
 function App() {
   const sidebar = useSelector((state) => state.ui_data.sidebarIsActive);
-  const status = useSelector((state) => state.ui_data.status);
+  const alert_widget = useSelector((state) => state.ui_data.alert_widget);
 
   const user = useSelector((state) => state.user_data.logged_user);
   const isLoggedIn = useSelector((state) => state.user_data.isLoggedIn);
@@ -36,8 +36,8 @@ function App() {
           <Main_bar isLoggedIn={isLoggedIn} sidebar={sidebar} />
           {/*note: content (parent div with two layers. one for content and another one for sidebar ) */}
           <div className="d-flex flex-fill position-relative">
-            <di
-              v
+            <Alert_widget alert_widget={alert_widget} />
+            <div
               className="w-100 h-100 position-absolute"
               style={{ overflowY: "auto" }}
             >
@@ -52,14 +52,17 @@ function App() {
                   user={user}
                   isLoggedIn={isLoggedIn}
                 />
-                <Route path="/team" element={<Team_View teams={teams} />} />
+                <Route
+                  path="/team"
+                  element={<Team_View teams={teams} user={user} />}
+                />
                 <Route
                   path="/new"
                   element={<NewTeam_View teams={teams} user={user} />}
                 />
               </Routes>
-            </di>
-            <Alert_widget status={status} />
+            </div>
+
             {sidebar ? <Sidebar user={user} /> : <></>}
           </div>
         </div>

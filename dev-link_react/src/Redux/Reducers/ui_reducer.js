@@ -2,7 +2,8 @@ import { CHANGE_STATUS, TOGGLE_SIDEBAR } from "../Actions/ui";
 
 const initialState = {
   sidebarIsActive: false,
-  status: null,
+  alert_widget: { status: null, text: null },
+  isLoading: false,
 };
 
 const ui_reducer = (state = initialState, action) => {
@@ -15,8 +16,14 @@ const ui_reducer = (state = initialState, action) => {
     case CHANGE_STATUS:
       return {
         ...state,
-        status: action.payload,
+        alert_widget: action.payload,
       };
+    //loading
+    case "SET_LOADING":
+      return { ...state, isLoading: true };
+
+    case "UNSET_LOADING":
+      return { ...state, isLoading: false };
     default:
       return state;
   }

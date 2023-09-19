@@ -1,54 +1,65 @@
-import React from "react";
+import React, { useEffect } from "react";
 import Alert from "react-bootstrap/Alert";
 import { useDispatch } from "react-redux";
 import { CHANGE_STATUS } from "../../Redux/Actions/ui";
 import "./index.css";
-function Alert_widget({ status, other }) {
-  console.log("STATUS:", status);
+function Alert_widget({ alert_widget }) {
   const dispatch = useDispatch();
+  //
+  const status = alert_widget.status;
+  const status_text = alert_widget.text;
+  let removeStatusTimeout;
   //
   function removeStatus() {
     dispatch({
       type: CHANGE_STATUS,
-      payload: null,
+      payload: { status: null, text: null },
     });
+    clearTimeout(removeStatusTimeout);
   }
-
-  // Call the function after a 2-second delay
-  setTimeout(removeStatus, 1300);
+  useEffect(() => {
+    removeStatusTimeout = setTimeout(removeStatus, 2000);
+    return () => {
+      clearTimeout(removeStatusTimeout);
+    };
+  }, [alert_widget.status]);
   //
-
-  if (status === 409) {
+  let variant;
+  if (status >= 200 && status < 300) {
+    variant = "success";
+  } else if (status === 403 || status === 400) {
+    variant = "warning";
+  } else {
+    variant = "danger";
+  }
+  //
+  let text_to_show;
+  if (status_text) {
+    text_to_show = status_text;
+  } else {
+    if (status >= 200 && status < 300) {
+      text_to_show = "Request was successful";
+    } else if (status === 403 || status === 400) {
+      text_to_show =
+        "Access to this resource is forbidden or the request was malformed.";
+    } else {
+      text_to_show = "An error occurred while processing the request.";
+    }
+  }
+  if (status) {
     return (
       <Alert
         className="alert-widget"
         onClose={() =>
           dispatch({
             type: CHANGE_STATUS,
-            payload: null,
+            payload: { status: null, text: null },
           })
         }
         variant="warning"
         dismissible
       >
-        You are already member of this team
-      </Alert>
-    );
-  }
-  if (status === 403) {
-    return (
-      <Alert
-        className="alert-widget"
-        onClose={() =>
-          dispatch({
-            type: CHANGE_STATUS,
-            payload: null,
-          })
-        }
-        variant="danger"
-        dismissible
-      >
-        You have to log in to do this
+        {text_to_show}
       </Alert>
     );
   }

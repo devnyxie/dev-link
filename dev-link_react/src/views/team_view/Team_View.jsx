@@ -5,7 +5,8 @@ import MD_view from "../../components/MD_view";
 import { useDispatch } from "react-redux";
 import { getOneTeam, joinOrLeave } from "../../Redux/Actions/teams";
 import Member_tile from "../../components/member/Member_tile";
-function Team_View({ teams }) {
+import { CHANGE_STATUS } from "../../Redux/Actions/ui";
+function Team_View({ teams, user }) {
   const dispatch = useDispatch();
   const [team, setTeam] = useState({});
   const [searchParams] = useSearchParams();
@@ -20,7 +21,20 @@ function Team_View({ teams }) {
     }
   }, []);
   function joinOrLeaveFunc(member_id) {
-    dispatch(joinOrLeave({ member_id: member_id }));
+    const alreadyMember = team.members.find(
+      (member) => member.user_id === user.id
+    );
+    if (alreadyMember) {
+      dispatch({
+        type: CHANGE_STATUS,
+        payload: {
+          status: 409,
+          text: "You are already part of this team.",
+        },
+      });
+    } else {
+      dispatch(joinOrLeave({ member_id: member_id }));
+    }
   }
 
   if (team.members) {
@@ -41,14 +55,15 @@ function Team_View({ teams }) {
             </div>
           </div>
         </Col>
-        <Col xs={12} md={4}>
+        <Col xs={12} md={4} style={{ zIndex: 1 }}>
           <div className="h-100">
             <div className="sticky-md-top p-3">
               <div className="rounded p-1">
                 <small className="light-gray">Members:</small>
-                {team.members.map((member) => {
+                {team.members.map((member, index) => {
                   return (
                     <Member_tile
+                      key={index}
                       member={member}
                       config={{
                         pfp: true,
@@ -58,21 +73,28 @@ function Team_View({ teams }) {
                     />
                   );
                 })}
-                <small className="light-gray">Open roles:</small>
-                {team.open_roles.map((member) => {
-                  return (
-                    <Member_tile
-                      member={member}
-                      config={{
-                        role_input: true,
-                        role: member.role,
-                        pfp: false,
-                        join_btn: true,
-                      }}
-                      joinOrLeaveFunc={joinOrLeaveFunc}
-                    />
-                  );
-                })}
+                {team.open_roles.length > 0 ? (
+                  <>
+                    <small className="light-gray">Open roles:</small>{" "}
+                    {team.open_roles.map((member, index) => {
+                      return (
+                        <Member_tile
+                          key={index}
+                          member={member}
+                          config={{
+                            role_input: true,
+                            role: member.role,
+                            pfp: false,
+                            join_btn: true,
+                          }}
+                          joinOrLeaveFunc={joinOrLeaveFunc}
+                        />
+                      );
+                    })}
+                  </>
+                ) : (
+                  <></>
+                )}
               </div>
             </div>
           </div>

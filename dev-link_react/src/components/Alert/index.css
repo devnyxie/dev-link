@@ -1,12 +1,14 @@
 .alert-widget {
   animation: animation-from-top 0.2s;
   opacity: 0.75;
-  position: relative;
+  position: absolute;
   transform: translateX(-50%);
   left: 50%;
   right: 50%;
+  top: 10px;
   width: max-content;
   height: min-content;
+  z-index: 2;
 }
 .alert-widget:hover {
   opacity: 1;

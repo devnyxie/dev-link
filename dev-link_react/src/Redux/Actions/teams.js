@@ -1,5 +1,5 @@
 import { useDispatch } from "react-redux";
-import { CHANGE_STATUS } from "./ui";
+import { CHANGE_STATUS, setLoading, unsetLoading } from "./ui";
 
 //exports
 export const GET_FEED = "GET_FEED";
@@ -75,17 +75,21 @@ export const createTeam = (team) => {
 };
 //join team
 export const joinOrLeave = ({ member_id }) => {
-  // const user_id = getState().user_data.logged_user.id;
-
   console.log("Join/Leave req. Member id: ", member_id);
   return async (dispatch, getState) => {
+    dispatch(setLoading());
     const user_id = getState().user_data.logged_user.id;
     if (!user_id) {
       console.log("no user_id");
       dispatch({
         type: CHANGE_STATUS,
-        payload: 403,
+        payload: {
+          status: 403,
+          text: "You must log in to have the ability to join a team.",
+        },
       });
+      dispatch(unsetLoading());
+      return;
     } else {
       try {
         const requestBody = JSON.stringify({
@@ -103,18 +107,28 @@ export const joinOrLeave = ({ member_id }) => {
           }
         );
         if (response.ok) {
-          console.log("Team was created.");
-          let res = await response.json();
+          dispatch({
+            type: CHANGE_STATUS,
+            payload: {
+              status: 200,
+              text: "You successfully joined the team.",
+            },
+          });
         } else if (response.status === 409) {
           console.log("DUPLICATE.");
           dispatch({
             type: CHANGE_STATUS,
-            payload: response.status,
+            payload: {
+              status: response.status,
+              text: "You are already part of this team.",
+            },
           });
         } else {
           console.log("Error creationg a team");
         }
+        dispatch(unsetLoading());
       } catch (error) {
+        dispatch(unsetLoading());
         console.log(error);
       }
     }

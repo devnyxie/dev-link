@@ -1,38 +1,24 @@
-import React, { useEffect, useState } from 'react';
-import { useDispatch } from 'react-redux';
-import { getOneUser } from '../Redux/Actions/users';
-import { AiFillGithub } from 'react-icons/ai';
+import React, { useEffect, useState } from "react";
+import { useDispatch } from "react-redux";
+import { getOneUser } from "../Redux/Actions/users";
+import { AiFillGithub } from "react-icons/ai";
 
 function UserPfpWithMiniProfile({ member }) {
   const dispatch = useDispatch();
-  const [showMiniProfile, setMiniProfile] = useState(false);
-  const [user, setUser] = useState(member);
-  const handleHover = () => {
-    setMiniProfile(true);
-  };
-
-  const handleMouseLeave = () => {
-    setMiniProfile(false);
-  };
-  // useEffect(() => {
-  //   if (showMiniProfile) {
-  //     dispatch(getOneUser({ id: member.id, setUser: setUser }));
-  //   }
-  // }, [showMiniProfile]);
   return (
-    <div className='position-relative'>
+    <div className="position-relative">
       <div
-        onMouseEnter={handleHover}
-        onMouseLeave={handleMouseLeave}
+        // onMouseEnter={handleHover}
+        // onMouseLeave={handleMouseLeave}
         style={{
           aspectRatio: 1 / 1,
-          width: '60px',
+          width: "60px",
         }}
-        className='team-member-pfp me-1 '
+        className="team-member-pfp me-1 "
       >
         <img
-          src={`${user.pfp}`}
-          className='w-100 h-100 rounded-circle border-gray bg-main'
+          src={`${member.pfp}`}
+          className="w-100 h-100 rounded-circle border-gray bg-main"
         />
       </div>
       {/* <div
