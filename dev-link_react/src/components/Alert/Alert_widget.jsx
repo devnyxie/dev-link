@@ -56,7 +56,7 @@ function Alert_widget({ alert_widget }) {
             payload: { status: null, text: null },
           })
         }
-        variant="warning"
+        variant={variant}
         dismissible
       >
         {text_to_show}

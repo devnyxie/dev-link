@@ -149,4 +149,9 @@ td {
   box-shadow: none !important;
 }
 
-/* ANIMATIONS */
+.centered-axis-xy {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+}

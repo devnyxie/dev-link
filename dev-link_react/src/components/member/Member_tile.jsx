@@ -18,6 +18,7 @@ function Member_tile({
   value,
   findMemberInMembersAndEditRole,
   joinOrLeaveFunc,
+  loggedUser,
 }) {
   const showLeftBlock = pfp || username || role ? true : false;
   return (
@@ -125,7 +126,16 @@ function Member_tile({
       ) : (
         <>
           {member.username ? (
-            <BiLockAlt size={25} className="light-gray me-2" />
+            member.user_id === loggedUser.id ? (
+              <div
+                className="custom-button border-gray rounded p-1 px-2"
+                onClick={() => joinOrLeaveFunc(member.member_id)}
+              >
+                Leave
+              </div>
+            ) : (
+              <BiLockAlt size={25} className="light-gray me-2" />
+            )
           ) : (
             <BiLockOpenAlt size={25} className="light-gray me-2" />
           )}

@@ -10,6 +10,7 @@ export const GET_FEED = "GET_FEED";
 export const getTeams = ({ from, to }) => {
   return async (dispatch, getState) => {
     try {
+      dispatch(setLoading());
       const response = await fetch(
         `${import.meta.env.VITE_BACKEND_LINK}/feed?from=${from}&to=${to}`
       );
@@ -25,6 +26,7 @@ export const getTeams = ({ from, to }) => {
     } catch (error) {
       console.log(error);
     }
+    dispatch(unsetLoading());
   };
 };
 //get one team
@@ -74,13 +76,12 @@ export const createTeam = (team) => {
   };
 };
 //join team
-export const joinOrLeave = ({ member_id }) => {
+export const joinOrLeave = ({ member_id, method }) => {
   console.log("Join/Leave req. Member id: ", member_id);
   return async (dispatch, getState) => {
     dispatch(setLoading());
     const user_id = getState().user_data.logged_user.id;
     if (!user_id) {
-      console.log("no user_id");
       dispatch({
         type: CHANGE_STATUS,
         payload: {
@@ -88,8 +89,6 @@ export const joinOrLeave = ({ member_id }) => {
           text: "You must log in to have the ability to join a team.",
         },
       });
-      dispatch(unsetLoading());
-      return;
     } else {
       try {
         const requestBody = JSON.stringify({
@@ -111,9 +110,13 @@ export const joinOrLeave = ({ member_id }) => {
             type: CHANGE_STATUS,
             payload: {
               status: 200,
-              text: "You successfully joined the team.",
+              text: `You successfully ${
+                method == "join" ? "joined" : "left"
+              } the team.`,
             },
           });
+          //create a dispatch action which will update one team directly in reducer
+          //what we need: team_id + member_id (we have it) + logged_user.id (we have it)
         } else if (response.status === 409) {
           console.log("DUPLICATE.");
           dispatch({
@@ -126,11 +129,10 @@ export const joinOrLeave = ({ member_id }) => {
         } else {
           console.log("Error creationg a team");
         }
-        dispatch(unsetLoading());
       } catch (error) {
-        dispatch(unsetLoading());
         console.log(error);
       }
     }
+    dispatch(unsetLoading());
   };
 };

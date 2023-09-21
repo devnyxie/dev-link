@@ -15,19 +15,19 @@ import {
 import Main from "./views/main/Main";
 import Login_View from "./views/login/Login_View";
 import Main_bar from "./views/main/Main_bar";
-import Sidebar from "./views/main/Sidebar/Sidebar";
 import Team_View from "./views/team_view/Team_View";
 import NewTeam_View from "./views/new/NewTeam_View";
 import Alert_widget from "./components/Alert/Alert_widget";
+import Loader_component from "./components/loader/Loader_component";
+import Sidebar from "./components/Sidebar/Sidebar";
 
 function App() {
   const sidebar = useSelector((state) => state.ui_data.sidebarIsActive);
   const alert_widget = useSelector((state) => state.ui_data.alert_widget);
-
+  const isLoading = useSelector((state) => state.ui_data.isLoading);
   const user = useSelector((state) => state.user_data.logged_user);
   const isLoggedIn = useSelector((state) => state.user_data.isLoggedIn);
   const teams = useSelector((state) => state.feed.feed);
-
   return (
     <Router>
       <div className="fs-container text-light position-relative">
@@ -36,16 +36,18 @@ function App() {
           <Main_bar isLoggedIn={isLoggedIn} sidebar={sidebar} />
           {/*note: content (parent div with two layers. one for content and another one for sidebar ) */}
           <div className="d-flex flex-fill position-relative">
-            <Alert_widget alert_widget={alert_widget} />
+            {alert_widget ? (
+              <Alert_widget alert_widget={alert_widget} />
+            ) : (
+              <></>
+            )}
+            {isLoading ? <Loader_component /> : <></>}
             <div
               className="w-100 h-100 position-absolute"
               style={{ overflowY: "auto" }}
             >
               <Routes>
-                <Route
-                  path="/"
-                  element={<Main teams={teams} sidebar={sidebar} />}
-                />
+                <Route path="/" element={<Main teams={teams} />} />
                 <Route
                   path="/login"
                   element={<Login_View />}

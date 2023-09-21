@@ -24,17 +24,8 @@ function Team_View({ teams, user }) {
     const alreadyMember = team.members.find(
       (member) => member.user_id === user.id
     );
-    if (alreadyMember) {
-      dispatch({
-        type: CHANGE_STATUS,
-        payload: {
-          status: 409,
-          text: "You are already part of this team.",
-        },
-      });
-    } else {
-      dispatch(joinOrLeave({ member_id: member_id }));
-    }
+    const method = alreadyMember ? "leave" : "join";
+    dispatch(joinOrLeave({ member_id: member_id, method: method }));
   }
 
   if (team.members) {
@@ -69,7 +60,10 @@ function Team_View({ teams, user }) {
                         pfp: true,
                         username: true,
                         role: true,
+                        leave_btn: true,
                       }}
+                      loggedUser={user}
+                      joinOrLeaveFunc={joinOrLeaveFunc}
                     />
                   );
                 })}
