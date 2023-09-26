@@ -1,6 +1,6 @@
-import React from "react";
-import { Form } from "react-bootstrap";
-import { BiLockAlt, BiLockOpenAlt } from "react-icons/bi";
+import React from 'react';
+import { Form } from 'react-bootstrap';
+import { BiLockAlt, BiLockOpenAlt } from 'react-icons/bi';
 
 //1. join_btn ={true} join button option 2. role={member.role} Role3. member={member}. If already a member,DESIGN2.4.
 function Member_tile({
@@ -21,10 +21,11 @@ function Member_tile({
   loggedUser,
 }) {
   const showLeftBlock = pfp || username || role ? true : false;
+
   return (
     <div
       className="w-100 d-flex justify-content-between align-items-center border-gray rounded p-1 mb-1"
-      style={{ height: "auto" }}
+      style={{ height: 'auto' }}
     >
       {/* --- 1st block: pfp, username, mini-role --- */}
       {/* if pfp || username || role -> show this block */}
@@ -34,7 +35,7 @@ function Member_tile({
             <img
               src={member.pfp}
               className="rounded-circle"
-              style={{ aspectRatio: 1 / 1, height: "50px" }}
+              style={{ aspectRatio: 1 / 1, height: '50px' }}
             />
           ) : (
             <></>
@@ -45,21 +46,21 @@ function Member_tile({
           >
             {username || role ? (
               <>
-                <small>{member.username ? `@${member.username}` : ""}</small>
+                <small>{member.username ? `@${member.username}` : ''}</small>
                 <span>
                   {member.role || role ? (
                     <>
                       {member.username ? (
                         <>
-                          As:{" "}
+                          As:{' '}
                           <span className="opacity-75 text-decoration-underline">
                             {member.role}
                           </span>
                         </>
                       ) : (
                         <>
-                          {" "}
-                          Role:{" "}
+                          {' '}
+                          Role:{' '}
                           <span className="opacity-75 text-decoration-underline">
                             {member.role}
                           </span>
@@ -67,7 +68,7 @@ function Member_tile({
                       )}
                     </>
                   ) : (
-                    ""
+                    ''
                   )}
                 </span>
               </>
@@ -90,7 +91,7 @@ function Member_tile({
                 placeholder="Type here your role"
                 value={value}
                 onChange={(e) => set(e.target.value)}
-                style={{ width: "min-content" }}
+                style={{ width: 'min-content' }}
               />
             </>
           ) : (
@@ -107,7 +108,7 @@ function Member_tile({
                     id: member.id,
                   })
                 }
-                style={{ width: "min-content" }}
+                style={{ width: 'min-content' }}
               />
             </>
           )}
@@ -115,7 +116,6 @@ function Member_tile({
       ) : (
         <></>
       )}
-
       {join_btn ? (
         <div
           className="custom-button border-gray rounded p-1 px-2"

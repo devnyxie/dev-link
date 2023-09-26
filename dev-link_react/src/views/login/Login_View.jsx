@@ -15,17 +15,19 @@ function Login_View({ user, isLoggedIn }) {
 
   useEffect(() => {
     if (result === true) {
-      navigate("/");
+      navigate(-1);
     }
     if (isLoggedIn) {
-      navigate("/");
+      navigate(-1);
     }
   }, [result, user, isLoggedIn]);
   //"Enter" key listener
   function handleKeyDown(e) {
     if (e.key === "Enter") {
       // Perform your desired action here, e.g., submit a form
-      console.log("Enter key pressed");
+      if (username && password) {
+        dispatch(login({ username, password, setResult }));
+      }
     }
   }
   return (

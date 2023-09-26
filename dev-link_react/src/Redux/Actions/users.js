@@ -1,12 +1,12 @@
-import { CHANGE_STATUS, setLoading, unsetLoading } from "./ui";
+import { CHANGE_STATUS, TOGGLE_SIDEBAR, setLoading, unsetLoading } from './ui';
 
-export const LOGIN = "LOGIN";
-export const LOGOUT = "LOGOUT";
-export const GET_ONE_USER = "GET_ONE_USER";
+export const LOGIN = 'LOGIN';
+export const LOGOUT = 'LOGOUT';
+export const GET_ONE_USER = 'GET_ONE_USER';
 
 //actions
 export const login = ({ username, password, setResult }) => {
-  console.log("Login action. Got: ", username, password);
+  console.log('Login action. Got: ', username, password);
   return async (dispatch, getState) => {
     dispatch(setLoading());
     try {
@@ -14,9 +14,9 @@ export const login = ({ username, password, setResult }) => {
       const response = await fetch(
         `${import.meta.env.VITE_BACKEND_LINK}/login`,
         {
-          method: "POST",
+          method: 'POST',
           headers: {
-            "Content-Type": "application/json",
+            'Content-Type': 'application/json',
           },
           body: requestBody,
         }
@@ -27,7 +27,7 @@ export const login = ({ username, password, setResult }) => {
           type: CHANGE_STATUS,
           payload: {
             status: response.status,
-            text: "You have logged in successfully.",
+            text: 'You have logged in successfully.',
           },
         });
         let user = await response.json();
@@ -41,11 +41,29 @@ export const login = ({ username, password, setResult }) => {
           type: CHANGE_STATUS,
           payload: {
             status: response.status,
-            text: "Invalid login credentials.",
+            text: 'Invalid login credentials.',
           },
         });
         setResult(false);
       }
+    } catch (error) {
+      console.log(error);
+      setResult(false);
+    }
+    dispatch(unsetLoading());
+  };
+};
+export const logout = () => {
+  return async (dispatch, getState) => {
+    dispatch(setLoading());
+    try {
+      dispatch({
+        type: LOGOUT,
+        payload: {},
+      });
+      dispatch({
+        type: TOGGLE_SIDEBAR,
+      });
     } catch (error) {
       console.log(error);
       setResult(false);
@@ -72,7 +90,7 @@ export const getOneUser = ({ id, setUser }) => {
             payload: user,
           });
         } else {
-          console.log("Error fetching data");
+          console.log('Error fetching data');
         }
       }
     } catch (error) {

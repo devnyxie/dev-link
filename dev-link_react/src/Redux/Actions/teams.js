@@ -1,8 +1,9 @@
-import { useDispatch } from "react-redux";
-import { CHANGE_STATUS, setLoading, unsetLoading } from "./ui";
+import { useDispatch } from 'react-redux';
+import { CHANGE_STATUS, setLoading, unsetLoading } from './ui';
+import { useNavigate } from 'react-router-dom';
 
 //exports
-export const GET_FEED = "GET_FEED";
+export const GET_FEED = 'GET_FEED';
 
 //actions
 
@@ -21,7 +22,7 @@ export const getTeams = ({ from, to }) => {
           payload: feed,
         });
       } else {
-        console.log("Error fetching data");
+        console.log('Error fetching data');
       }
     } catch (error) {
       console.log(error);
@@ -39,8 +40,13 @@ export const getOneTeam = ({ id, setTeam }) => {
       if (response.ok) {
         let team = await response.json();
         setTeam(team);
+        let teams = getState().feed.feed;
+        dispatch({
+          type: GET_FEED,
+          payload: [...teams, team],
+        });
       } else {
-        console.log("Error fetching data");
+        console.log('Error fetching data');
       }
     } catch (error) {
       console.log(error);
@@ -49,26 +55,28 @@ export const getOneTeam = ({ id, setTeam }) => {
 };
 //create team
 export const createTeam = (team) => {
-  console.log("New post req. Got: ", team);
+  console.log('New post req. Got: ', team);
   return async (dispatch, getState) => {
+    const navigate = useNavigate();
     try {
       const requestBody = JSON.stringify(team);
       const response = await fetch(
         `${import.meta.env.VITE_BACKEND_LINK}/teams`,
         {
-          method: "POST",
+          method: 'POST',
           headers: {
-            "Content-Type": "application/json",
+            'Content-Type': 'application/json',
           },
           body: requestBody,
         }
       );
 
       if (response.ok) {
-        console.log("Team was created.");
+        console.log('Team was created.');
         let team = await response.json();
+        navigate('/');
       } else {
-        console.log("Error creationg a team");
+        console.log('Error creationg a team');
       }
     } catch (error) {
       console.log(error);
@@ -76,58 +84,90 @@ export const createTeam = (team) => {
   };
 };
 //join team
-export const joinOrLeave = ({ member_id, method }) => {
-  console.log("Join/Leave req. Member id: ", member_id);
+export const joinOrLeave = ({ member_id, team_id, method }) => {
+  console.log('Join/Leave req. Member id: ', member_id);
   return async (dispatch, getState) => {
     dispatch(setLoading());
-    const user_id = getState().user_data.logged_user.id;
-    if (!user_id) {
+    const user = getState().user_data.logged_user;
+    if (!user.id) {
       dispatch({
         type: CHANGE_STATUS,
         payload: {
           status: 403,
-          text: "You must log in to have the ability to join a team.",
+          text: 'You must log in to have the ability to join a team.',
         },
       });
     } else {
       try {
         const requestBody = JSON.stringify({
-          user_id: user_id,
+          user_id: user.id,
           member_id: member_id,
         });
         const response = await fetch(
           `${import.meta.env.VITE_BACKEND_LINK}/teams/join_or_leave`,
           {
-            method: "PUT",
+            method: 'PUT',
             headers: {
-              "Content-Type": "application/json",
+              'Content-Type': 'application/json',
             },
             body: requestBody,
           }
         );
         if (response.ok) {
+          //change status - successful widget
           dispatch({
             type: CHANGE_STATUS,
             payload: {
               status: 200,
               text: `You successfully ${
-                method == "join" ? "joined" : "left"
+                method == 'join' ? 'joined' : 'left'
               } the team.`,
             },
           });
           //create a dispatch action which will update one team directly in reducer
           //what we need: team_id + member_id (we have it) + logged_user.id (we have it)
+          let teams = getState().feed.feed;
+          let team = teams.find((team) => team.id === team_id);
+          if (method === 'join') {
+            let OpenRole = team.open_roles.find(
+              (slot) => slot.member_id === member_id
+            );
+            let open_role_with_user = {
+              ...OpenRole,
+              ...user,
+            };
+            team.open_roles = team.open_roles.filter(
+              (slot) => slot.member_id !== member_id
+            );
+            team.members.push(open_role_with_user);
+          } else if (method === 'leave') {
+            //brolen leaving
+            let member = team.members.find(
+              (member) => member.member_id === member_id
+            );
+            const clean_members = team.members.filter(
+              (slot) => slot.member_id !== member_id
+            );
+            console.log(clean_members);
+            team.members = clean_members;
+            team.open_roles.push({
+              role: member.role,
+              user_id: user.id,
+              member_id: member_id,
+            });
+          }
+          //1. get team, find the right team, add member, dispatch.
         } else if (response.status === 409) {
-          console.log("DUPLICATE.");
+          console.log('DUPLICATE.');
           dispatch({
             type: CHANGE_STATUS,
             payload: {
               status: response.status,
-              text: "You are already part of this team.",
+              text: 'You are already part of this team.',
             },
           });
         } else {
-          console.log("Error creationg a team");
+          console.log('Error creationg a team');
         }
       } catch (error) {
         console.log(error);

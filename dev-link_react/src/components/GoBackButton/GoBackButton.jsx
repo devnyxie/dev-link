@@ -18,10 +18,10 @@ function GoBackButton() {
   return (
     <>
       {isCurrentRouteInList ? (
-        <div className='go-back-btn bg-main' style={{ zIndex: 1 }}>
+        <div className="go-back-btn bg-main" style={{ zIndex: 1 }}>
           <div
             style={{ width: 'max-content', height: '30px' }}
-            className='custom-button p-1 border-gray d-flex justify-content-center align-items-center'
+            className="custom-button p-1 border-gray d-flex justify-content-center align-items-center"
             onClick={handleGoBack}
           >
             <IoReturnDownBackSharp style={{ transform: 'rotate(90deg)' }} /> Go

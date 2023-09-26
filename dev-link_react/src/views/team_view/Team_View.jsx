@@ -25,7 +25,7 @@ function Team_View({ teams, user }) {
       (member) => member.user_id === user.id
     );
     const method = alreadyMember ? "leave" : "join";
-    dispatch(joinOrLeave({ member_id: member_id, method: method }));
+    dispatch(joinOrLeave({ member_id: member_id, team_id: team.id, method: method }));
   }
 
   if (team.members) {
