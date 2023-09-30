@@ -1,18 +1,18 @@
-import React, { useEffect, useState } from "react";
-import { Col, Form, Row } from "react-bootstrap";
-import { useSearchParams } from "react-router-dom";
-import MD_view from "../../components/MD_view";
-import { useDispatch } from "react-redux";
-import { getOneTeam, joinOrLeave } from "../../Redux/Actions/teams";
-import Member_tile from "../../components/member/Member_tile";
-import { CHANGE_STATUS } from "../../Redux/Actions/ui";
+import React, { useEffect, useState } from 'react';
+import { Col, Form, Row } from 'react-bootstrap';
+import { useSearchParams } from 'react-router-dom';
+import MD_view from '../../components/MD_view';
+import { useDispatch } from 'react-redux';
+import { getOneTeam, joinOrLeave } from '../../Redux/Actions/teams';
+import Member_tile from '../../components/member/Member_tile';
+import { CHANGE_STATUS } from '../../Redux/Actions/ui';
 function Team_View({ teams, user }) {
   const dispatch = useDispatch();
   const [team, setTeam] = useState({});
   const [searchParams] = useSearchParams();
-
+  // const [alreadyMember, setAlreadyMember] = useState(false)
   useEffect(() => {
-    const targetId = searchParams.get("team_id");
+    const targetId = searchParams.get('team_id');
     let found_team = teams.find((team) => team.id === targetId);
     if (!found_team) {
       dispatch(getOneTeam({ id: targetId, setTeam: setTeam }));
@@ -20,12 +20,15 @@ function Team_View({ teams, user }) {
       setTeam(found_team);
     }
   }, []);
+
   function joinOrLeaveFunc(member_id) {
     const alreadyMember = team.members.find(
       (member) => member.user_id === user.id
     );
-    const method = alreadyMember ? "leave" : "join";
-    dispatch(joinOrLeave({ member_id: member_id, team_id: team.id, method: method }));
+    const method = alreadyMember ? 'leave' : 'join';
+    dispatch(
+      joinOrLeave({ member_id: member_id, team_id: team.id, method: method })
+    );
   }
 
   if (team.members) {
@@ -61,6 +64,7 @@ function Team_View({ teams, user }) {
                         username: true,
                         role: true,
                         leave_btn: true,
+                        btn: true,
                       }}
                       loggedUser={user}
                       joinOrLeaveFunc={joinOrLeaveFunc}
@@ -69,7 +73,7 @@ function Team_View({ teams, user }) {
                 })}
                 {team.open_roles.length > 0 ? (
                   <>
-                    <small className="light-gray">Open roles:</small>{" "}
+                    <small className="light-gray">Open roles:</small>{' '}
                     {team.open_roles.map((member, index) => {
                       return (
                         <Member_tile
@@ -80,7 +84,9 @@ function Team_View({ teams, user }) {
                             role: member.role,
                             pfp: false,
                             join_btn: true,
+                            btn: true,
                           }}
+                          // loggedUser={user}
                           joinOrLeaveFunc={joinOrLeaveFunc}
                         />
                       );

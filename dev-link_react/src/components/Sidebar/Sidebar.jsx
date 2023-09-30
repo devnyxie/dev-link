@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react';
 import './Sidebar.css';
-import { AiOutlineStar, AiOutlineUser } from 'react-icons/ai';
+import { AiOutlineHome, AiOutlineStar, AiOutlineUser } from 'react-icons/ai';
 import { LiaUsersSolid } from 'react-icons/lia';
 import { PiUsersThreeLight } from 'react-icons/pi';
 import { GiEarthAmerica } from 'react-icons/gi';
@@ -9,6 +9,7 @@ import { FiSettings } from 'react-icons/fi';
 import { TOGGLE_SIDEBAR } from '../../Redux/Actions/ui';
 import { IoLogOutOutline } from 'react-icons/io5';
 import { logout } from '../../Redux/Actions/users';
+import { Link } from 'react-router-dom';
 function Sidebar({ user }) {
   const dispatch = useDispatch();
   return (
@@ -41,7 +42,18 @@ function Sidebar({ user }) {
                 )}
               </div>
             </div>
-            <div className="border-gray-top border-gray-bottom p-1 d-flex align-items-center custom-button">
+            <Link
+              to="/"
+              className="border-gray-top border-gray-bottom p-1 d-flex align-items-center custom-button"
+            >
+              <AiOutlineHome
+                size={18}
+                className="me-1 light-gray"
+                style={{ width: '20px' }}
+              />
+              Home
+            </Link>
+            <div className="border-gray-bottom p-1 d-flex align-items-center custom-button">
               <AiOutlineUser
                 size={18}
                 className="me-1 light-gray"
@@ -49,7 +61,7 @@ function Sidebar({ user }) {
               />
               Profile
             </div>
-            <div className=" border-gray-bottom p-1 d-flex align-items-center custom-button">
+            <div className="border-gray-bottom p-1 d-flex align-items-center custom-button">
               <PiUsersThreeLight
                 size={20}
                 className="me-1 light-gray"
@@ -57,14 +69,17 @@ function Sidebar({ user }) {
               />
               My teams
             </div>
-            <div className=" border-gray-bottom p-1 d-flex align-items-center custom-button">
+            <Link
+              className=" border-gray-bottom p-1 d-flex align-items-center custom-button"
+              to="/settings"
+            >
               <FiSettings
                 size={18}
                 className="me-1 light-gray"
                 style={{ width: '20px' }}
               />
               Settings
-            </div>
+            </Link>
           </div>
         </div>
         <div className="pb-2">

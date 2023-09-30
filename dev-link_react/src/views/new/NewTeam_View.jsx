@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from 'react';
 import {
   Button,
   Col,
@@ -6,34 +6,43 @@ import {
   Row,
   ToggleButton,
   ToggleButtonGroup,
-} from "react-bootstrap";
-import MD_view from "../../components/MD_view";
-import { useDispatch } from "react-redux";
-import { createTeam } from "../../Redux/Actions/teams";
-import { BiLockAlt } from "react-icons/bi";
-import Member_tile from "../../components/member/Member_tile";
-import { AiOutlinePlus } from "react-icons/ai";
-import uuid4 from "uuid4";
+} from 'react-bootstrap';
+import MD_view from '../../components/MD_view';
+import { useDispatch } from 'react-redux';
+import { BiLockAlt } from 'react-icons/bi';
+import Member_tile from '../../components/member/Member_tile';
+import { AiOutlinePlus } from 'react-icons/ai';
+import uuid4 from 'uuid4';
+import { createTeam } from '../../Redux/Actions/teams';
+import { useNavigate } from 'react-router-dom';
 function NewTeam_View({ user }) {
   const dispatch = useDispatch();
-  const [md, setMd] = useState("");
-  let [name, setName] = useState("");
+  const navigate = useNavigate();
+  const [md, setMd] = useState('');
+  const [name, setName] = useState('');
   const [open, setOpen] = useState(true);
-  const [description_short, setDescription_short] = useState("");
+  const [description_short, setDescription_short] = useState('');
 
   //new
-  const [roleValue, setRole] = useState("");
+  const [roleValue, setRole] = useState('');
   const [members, setMembers] = useState([]);
-
+  const [res, setRes] = useState(false);
   //new functions
   function addMember() {
     setMembers([
       ...members,
       {
         id: uuid4(),
-        role: "",
+        role: '',
       },
     ]);
+  }
+  //
+  function deleteMemberById(idToDelete) {
+    // Use the filter method to create a new array without the member with the specified id
+    const updatedMembers = members.filter((member) => member.id !== idToDelete);
+    // Update the state with the new array of members
+    setMembers(updatedMembers);
   }
   //
   function findMemberInMembersAndEditRole({ role, id }) {
@@ -47,6 +56,7 @@ function NewTeam_View({ user }) {
     };
     editMember(role, id);
   }
+
   //
   function createTeamFunc() {
     const user_id = user.id;
@@ -59,18 +69,27 @@ function NewTeam_View({ user }) {
     priv_members.unshift(creator);
     dispatch(
       createTeam({
-        name: name,
-        creator_id: user_id,
-        description_short: description_short,
-        description_md: md,
-        open: open,
-        members: priv_members,
+        team: {
+          name: name,
+          creator_id: user_id,
+          description_short: description_short,
+          description_md: md,
+          open: open,
+          members: priv_members,
+        },
+        setRes: setRes,
       })
     );
     // setMembers([]);
   }
+
+  useEffect(() => {
+    if (res) {
+      navigate('/');
+    }
+  }, [res]);
   return (
-    <div className="w-100" style={{ height: "max-content" }}>
+    <div className="w-100" style={{ height: 'max-content' }}>
       <Row className="g-0">
         <Col className="p-3" xs={12} md={6}>
           <Form.Group className="mb-2">
@@ -122,7 +141,7 @@ function NewTeam_View({ user }) {
             <Form.Label>Team Size & Roles</Form.Label>
             <div
               className="w-100 border-gray rounded flex-fill p-2"
-              style={{ minHeight: "400px" }}
+              style={{ minHeight: '400px' }}
             >
               <small className="text-secondary">Members</small>
               <Member_tile
@@ -145,6 +164,7 @@ function NewTeam_View({ user }) {
                       findMemberInMembersAndEditRole={
                         findMemberInMembersAndEditRole
                       }
+                      deleteMemberById={deleteMemberById}
                       config={{
                         role_input: true,
                       }}
@@ -154,7 +174,7 @@ function NewTeam_View({ user }) {
               </div>
               <div className="w-100 d-flex justify-content-end align-items-center">
                 <div
-                  style={{ height: "40px", aspectRatio: 1 / 1 }}
+                  style={{ height: '40px', aspectRatio: 1 / 1 }}
                   className="custom-button border-gray rounded d-flex justify-content-center align-items-center"
                   onClick={addMember}
                 >

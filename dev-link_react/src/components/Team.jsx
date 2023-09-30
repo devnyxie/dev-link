@@ -1,9 +1,9 @@
-import React, { useEffect } from "react";
-import { Button, Table } from "react-bootstrap";
-import { MdOutlineAdd } from "react-icons/md";
-import { Link } from "react-router-dom";
-import MD_view from "./MD_view";
-import UserPfpWithMiniProfile from "./UserPfpWithMiniProfile";
+import React, { useEffect } from 'react';
+import { Button, Table } from 'react-bootstrap';
+import { MdOutlineAdd } from 'react-icons/md';
+import { Link } from 'react-router-dom';
+import MD_view from './MD_view';
+import UserPfpWithMiniProfile from './UserPfpWithMiniProfile';
 
 function Team({ team, index }) {
   return (
@@ -18,15 +18,27 @@ function Team({ team, index }) {
       </p>
       <div
         className="position-absolute d-flex justify-content-between w-100 px-2"
-        style={{ bottom: "-25px", left: 0 }}
+        style={{ bottom: '-25px', left: 0 }}
       >
         {/* left part */}
         <div className="d-flex">
-          {/* <UserPfpWithMiniProfile member={team.creator} /> */}
           {team.members.map((member, index) => {
-            if (member) {
+            if (member && index < 4) {
               return <UserPfpWithMiniProfile key={index} member={member} />;
-            }
+            } else if (member && index > 3 && index < 5)
+              return (
+                <div className="position-relative rounded-circle border-gray bg-main">
+                  <div
+                    style={{
+                      aspectRatio: 1 / 1,
+                      width: '60px',
+                    }}
+                    className="team-member-pfp me-1 d-flex justify-content-center align-items-center light-gray"
+                  >
+                    <h5 className="m-0 mb-1 ">+{team.members.length - 3}</h5>
+                  </div>
+                </div>
+              );
           })}
         </div>
         {/* right part */}

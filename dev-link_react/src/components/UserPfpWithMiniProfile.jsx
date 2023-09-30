@@ -1,7 +1,8 @@
-import React, { useEffect, useState } from "react";
-import { useDispatch } from "react-redux";
-import { getOneUser } from "../Redux/Actions/users";
-import { AiFillGithub } from "react-icons/ai";
+import React, { useEffect, useState } from 'react';
+import { useDispatch } from 'react-redux';
+import { getOneUser } from '../Redux/Actions/users';
+import { AiFillGithub } from 'react-icons/ai';
+import UserPfp from './user_pfp/UserPfp';
 
 function UserPfpWithMiniProfile({ member }) {
   const dispatch = useDispatch();
@@ -12,14 +13,17 @@ function UserPfpWithMiniProfile({ member }) {
         // onMouseLeave={handleMouseLeave}
         style={{
           aspectRatio: 1 / 1,
-          width: "60px",
+          width: '60px',
         }}
         className="team-member-pfp me-1 "
       >
-        <img
+        {/* <img
           src={`${member.pfp}`}
           className="w-100 h-100 rounded-circle border-gray bg-main"
-        />
+        /> */}
+        <div className="w-100 h-100 rounded-circle border-gray bg-main overflow-hidden">
+          <UserPfp pfp={member.pfp} />
+        </div>
       </div>
       {/* <div
         onMouseEnter={handleHover}

@@ -11,13 +11,14 @@ function GoBackButton() {
   const isCurrentRouteInList = routesToGoBackFrom.includes(currentRoute);
 
   const handleGoBack = () => {
-    if (isCurrentRouteInList) {
-      navigate(-1);
-    }
+    // if (isCurrentRouteInList) {
+    //   navigate(-1);
+    // }
+    navigate(-1);
   };
   return (
     <>
-      {isCurrentRouteInList ? (
+      {currentRoute !== '/' ? (
         <div className="go-back-btn bg-main" style={{ zIndex: 1 }}>
           <div
             style={{ width: 'max-content', height: '30px' }}

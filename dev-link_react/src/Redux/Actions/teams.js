@@ -54,10 +54,10 @@ export const getOneTeam = ({ id, setTeam }) => {
   };
 };
 //create team
-export const createTeam = (team) => {
+export const createTeam = ({ team, setRes }) => {
   console.log('New post req. Got: ', team);
   return async (dispatch, getState) => {
-    const navigate = useNavigate();
+    dispatch(setLoading());
     try {
       const requestBody = JSON.stringify(team);
       const response = await fetch(
@@ -70,17 +70,30 @@ export const createTeam = (team) => {
           body: requestBody,
         }
       );
-
       if (response.ok) {
         console.log('Team was created.');
-        let team = await response.json();
-        navigate('/');
+        setRes(true);
       } else {
+        dispatch({
+          type: CHANGE_STATUS,
+          payload: {
+            status: 400,
+            text: 'An error occured while creating a team.',
+          },
+        });
         console.log('Error creationg a team');
       }
     } catch (error) {
       console.log(error);
+      dispatch({
+        type: CHANGE_STATUS,
+        payload: {
+          status: 500,
+          text: 'An unexpected error occured while creating a team.',
+        },
+      });
     }
+    dispatch(unsetLoading());
   };
 };
 //join team
@@ -120,7 +133,7 @@ export const joinOrLeave = ({ member_id, team_id, method }) => {
             payload: {
               status: 200,
               text: `You successfully ${
-                method == 'join' ? 'joined' : 'left'
+                method === 'join' ? 'joined' : 'left'
               } the team.`,
             },
           });
@@ -128,12 +141,18 @@ export const joinOrLeave = ({ member_id, team_id, method }) => {
           //what we need: team_id + member_id (we have it) + logged_user.id (we have it)
           let teams = getState().feed.feed;
           let team = teams.find((team) => team.id === team_id);
+          console.log('team found:', team.id);
+          console.log('method:', method);
           if (method === 'join') {
+            console.log('join');
             let OpenRole = team.open_roles.find(
               (slot) => slot.member_id === member_id
             );
+            console.log('OpenRole:', OpenRole);
             let open_role_with_user = {
-              ...OpenRole,
+              member_id: OpenRole.member_id,
+              role: OpenRole.role,
+              user_id: user.id,
               ...user,
             };
             team.open_roles = team.open_roles.filter(
@@ -141,6 +160,7 @@ export const joinOrLeave = ({ member_id, team_id, method }) => {
             );
             team.members.push(open_role_with_user);
           } else if (method === 'leave') {
+            console.log('leave');
             //brolen leaving
             let member = team.members.find(
               (member) => member.member_id === member_id

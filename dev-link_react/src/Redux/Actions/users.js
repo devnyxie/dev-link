@@ -98,3 +98,50 @@ export const getOneUser = ({ id, setUser }) => {
     }
   };
 };
+
+export const updateUser = ({ credentials }) => {
+  console.log('updateUser action. Got: ', credentials);
+  return async (dispatch, getState) => {
+    dispatch(setLoading());
+    const user_id = getState().user_data.logged_user.id;
+    try {
+      const requestBody = JSON.stringify(credentials);
+      console.log('Updating: ', requestBody);
+      const response = await fetch(
+        `${import.meta.env.VITE_BACKEND_LINK}/users/${user_id}`,
+        {
+          method: 'PUT',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: requestBody,
+        }
+      );
+      if (response.ok) {
+        dispatch({
+          type: CHANGE_STATUS,
+          payload: {
+            status: response.status,
+            text: 'Your credentials were updated successfully.',
+          },
+        });
+        let user = await response.json();
+        dispatch({
+          type: LOGIN,
+          payload: user,
+        });
+      } else {
+        dispatch({
+          type: CHANGE_STATUS,
+          payload: {
+            status: response.status,
+            text: 'Something went wrong.',
+          },
+        });
+      }
+    } catch (error) {
+      console.log(error);
+    }
+    dispatch(unsetLoading());
+  };
+};

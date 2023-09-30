@@ -16,6 +16,22 @@ class User < Sequel::Model(:users)
   end
 end
 
+#put endpoint --- find diff
+def extract_changed_data(user, new_user_data)
+  data_to_change = {}
+  # Compare each attribute in new_user_data with the user object
+  if user
+    user_columns = User.columns  # Assuming User.columns returns an array of column names
+
+    user_columns.each do |column|
+      if new_user_data.key?(column.to_s) && user[column] != new_user_data[column.to_s]
+        data_to_change[column] = new_user_data[column.to_s]
+      end
+    end
+  end
+  data_to_change
+end
+
 post '/login' do
   credentials = JSON.parse(request.body.read)
   puts "Credentials used: #{credentials}"
@@ -90,5 +106,25 @@ get '/users/:id' do
   else
     status 404
     'User not found'
+  end
+end
+
+put '/users/:id' do
+  user = User.where(id: params[:id]).first
+  new_user_data = JSON.parse(request.body.read)
+  data_to_change = extract_changed_data(user, new_user_data)
+  puts data_to_change
+  # Update the task in the database
+  if user && data_to_change
+    user.update(
+      data_to_change
+    )
+    user_data = user.fill_data
+    content_type :json
+    status 200
+    user_data.to_json
+  else
+    status 404
+    body "User with ID #{params[:id]} not found"
   end
 end
