@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useDispatch } from 'react-redux';
-import { getOneUser } from '../Redux/Actions/users';
+// import { getOneUser } from '../Redux/Actions/users';
 import { AiFillGithub } from 'react-icons/ai';
 import UserPfp from './user_pfp/UserPfp';
 

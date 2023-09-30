@@ -53,14 +53,17 @@ function Sidebar({ user }) {
               />
               Home
             </Link>
-            <div className="border-gray-bottom p-1 d-flex align-items-center custom-button">
+            <Link
+              to="/profile"
+              className="border-gray-bottom p-1 d-flex align-items-center custom-button"
+            >
               <AiOutlineUser
                 size={18}
                 className="me-1 light-gray"
                 style={{ width: '20px' }}
               />
               Profile
-            </div>
+            </Link>
             <div className="border-gray-bottom p-1 d-flex align-items-center custom-button">
               <PiUsersThreeLight
                 size={20}

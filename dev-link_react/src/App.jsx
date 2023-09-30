@@ -22,6 +22,7 @@ import Loader_component from './components/loader/Loader_component';
 import Sidebar from './components/Sidebar/Sidebar';
 import { TOGGLE_SIDEBAR, TOGGLE_SIDEBAR_OFF } from './Redux/Actions/ui';
 import Settings_view from './views/settings/Settings_view';
+import Profile_view from './views/profile/Profile_view';
 
 function App() {
   const location = useLocation();
@@ -68,6 +69,14 @@ function App() {
                 element={<NewTeam_View teams={teams} user={user} />}
               />
               <Route path="/settings" element={<Settings_view user={user} />} />
+              <Route
+                path="/profile/:username"
+                element={<Profile_view logged_user={user} />}
+              />
+              <Route
+                path="/profile"
+                element={<Profile_view logged_user={user} />}
+              />
             </Routes>
           </div>
           {sidebar ? <Sidebar user={user} /> : <></>}

@@ -11,7 +11,8 @@ class User < Sequel::Model(:users)
       username: self.username,
       name: self.name,
       surname: self.surname,
-      pfp: self.pfp
+      pfp: self.pfp,
+      banner: self.banner
     }
   end
 end
@@ -96,8 +97,12 @@ post '/users' do
   end
 end
 
-get '/users/:id' do
-  user = User.where(id: params[:id]).first
+get '/users' do
+  if params[:id]
+    user = User.where(id: params[:id]).first
+  elsif params[:username]
+    user = User.where(username: params[:username]).first
+  end
   if user
     status 200
     user_data = user.fill_data

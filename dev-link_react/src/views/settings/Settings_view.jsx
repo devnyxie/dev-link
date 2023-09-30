@@ -59,6 +59,25 @@ function Settings_view({ user }) {
             />
           </div>
         </Form.Group>
+
+        <Form.Group className="mb-3 ">
+          <Form.Label>Profile Banner (URL)</Form.Label>
+          <div className="d-flex">
+            <Form.Control
+              type="link"
+              placeholder="https://imgur.com/profile_banner.png"
+              value={changedUser.banner}
+              onChange={(e) =>
+                setChangedUser({ ...changedUser, banner: e.target.value })
+              }
+            />
+            <img
+              style={{ width: '38px', height: '38px' }}
+              className="rounded ms-2 border-gray"
+              src={changedUser.banner}
+            />
+          </div>
+        </Form.Group>
       </Form>
       {changedUser !== user || changedPassword !== '' ? (
         // Conditionally render the "Save" button when the conditions are met

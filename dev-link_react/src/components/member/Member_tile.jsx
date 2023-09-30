@@ -2,8 +2,8 @@ import React from 'react';
 import { Button, Form } from 'react-bootstrap';
 import { BiLockAlt, BiLockOpenAlt } from 'react-icons/bi';
 import UserPfp from '../user_pfp/UserPfp';
+import { Link } from 'react-router-dom';
 
-//1. join_btn ={true} join button option 2. role={member.role} Role3. member={member}. If already a member,DESIGN2.4.
 function Member_tile({
   member,
   config: {
@@ -30,19 +30,23 @@ function Member_tile({
           if (member.user_id === loggedUser.id) {
             return (
               <div
-                className="custom-button border-gray rounded p-1 px-2"
+                className="custom-button border-gray rounded me-1 p-1 px-2"
                 onClick={() => joinOrLeaveFunc(member.member_id)}
               >
                 Leave
               </div>
             );
           } else {
-            return <BiLockAlt size={25} className="light-gray me-2" />;
+            return (
+              <div className="custom-button border-gray rounded me-1 p-1">
+                <BiLockAlt size={25} className="light-gray" />{' '}
+              </div>
+            );
           }
         } else {
           return (
             <div
-              className="custom-button border-gray rounded p-1 px-2"
+              className="custom-button border-gray rounded me-1 p-1 px-2"
               onClick={() => joinOrLeaveFunc(member.member_id)}
             >
               Join
@@ -52,7 +56,7 @@ function Member_tile({
       } else {
         return (
           <div
-            className="custom-button border-gray rounded p-1 px-2"
+            className="custom-button border-gray rounded me-1 p-1 px-2"
             onClick={() => joinOrLeaveFunc(member.member_id)}
           >
             Join
@@ -61,7 +65,11 @@ function Member_tile({
       }
     } else {
       if (member.username) {
-        return <BiLockAlt size={25} className="light-gray me-2 " />;
+        return (
+          <div className="custom-button border-gray rounded me-1 p-1 px-2">
+            <BiLockAlt size={25} className="light-gray" />{' '}
+          </div>
+        );
       } else {
         return (
           <Button
@@ -74,60 +82,51 @@ function Member_tile({
       }
     }
   }
+  function renderRole() {
+    if (member.role || role) {
+      if (member.username) {
+        return (
+          <>
+            As: <span className="opacity-75 text-break">{member.role}</span>
+          </>
+        );
+      } else {
+        return (
+          <>
+            Role: <span className="opacity-75 text-break">{member.role}</span>
+          </>
+        );
+      }
+    }
+  }
   return (
     <div
       className="w-100 d-flex justify-content-between align-items-center border-gray rounded p-1 mb-1"
-      style={{ height: 'auto' }}
+      style={{ minHeight: '55px', maxHeight: 'auto' }}
     >
       {/* --- 1st block: pfp, username, mini-role --- */}
       {/* if pfp || username || role -> show this block */}
+      {showLeftBlock && pfp ? (
+        <UserPfp pfp={member.pfp} size={55} img_classes="rounded-circle" />
+      ) : (
+        <></>
+      )}
       {showLeftBlock ? (
-        <div className="h-100 d-flex align-items-center">
-          {pfp ? (
-            <div
-              className="rounded-circle overflow-hidden"
-              style={{ aspectRatio: 1 / 1, height: '50px' }}
-            >
-              <UserPfp pfp={member.pfp} />
-            </div>
-          ) : (
-            <></>
-          )}
-          <div
-            className="h-100 d-flex justify-content-end flex-column ms-2 "
-            style={{ maxWidth: '200px' }}
-            // style={{ width: "max-content" }}
-          >
+        <div className="h-100 d-flex flex-grow-1 align-items-center">
+          <div className="d-flex p-1">
             {username || role ? (
-              <div className="w-100 d-flex flex-column">
-                <small>{member.username ? `@${member.username}` : ''}</small>
-                <div>
-                  {member.role || role ? (
-                    <>
-                      {member.username ? (
-                        <>
-                          <p className="m-0 text-truncate">
-                            As:{' '}
-                            <span className="opacity-75 text-decoration-underline text-truncate">
-                              {member.role}
-                            </span>
-                          </p>
-                        </>
-                      ) : (
-                        <>
-                          <p className="m-0 text-truncate">
-                            Role:{' '}
-                            <span className="opacity-75 text-decoration-underline text-truncate">
-                              {member.role}
-                            </span>
-                          </p>
-                        </>
-                      )}
-                    </>
-                  ) : (
-                    ''
-                  )}
-                </div>
+              <div>
+                <Link
+                  className="text-decoration-underline "
+                  to={`/profile${
+                    member.username === loggedUser.username
+                      ? `/`
+                      : `/${member.username}`
+                  }`}
+                >
+                  {member.username ? `${member.username}` : ''}
+                </Link>
+                <p className="m-0 small">{renderRole()}</p>
               </div>
             ) : (
               <></>

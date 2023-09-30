@@ -86,7 +86,7 @@ function Team_View({ teams, user }) {
                             join_btn: true,
                             btn: true,
                           }}
-                          // loggedUser={user}
+                          loggedUser={user}
                           joinOrLeaveFunc={joinOrLeaveFunc}
                         />
                       );
