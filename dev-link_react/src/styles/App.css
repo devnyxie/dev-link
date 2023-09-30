@@ -26,6 +26,9 @@
 .light-gray {
   color: var(--light-gray-color) !important;
 }
+.gray {
+  color: var(--gray-border-color) !important;
+}
 .border-gray {
   border: 1px solid var(--gray-border-color) !important;
 }
@@ -43,7 +46,7 @@
 }
 /*bootstrap*/
 .form-control {
-  font-family: 'Lato', sans-serif !important;
+  font-family: "Lato", sans-serif !important;
   background-color: transparent !important;
   border: 1px solid var(--gray-border-color) !important;
   color: white !important;
@@ -136,4 +139,19 @@ td {
 }
 .mini-profile {
   display: none;
+}
+.border-bottom-input {
+  border-radius: 0 !important;
+  border: none !important;
+}
+
+.border-bottom-input:focus {
+  box-shadow: none !important;
+}
+
+.centered-axis-xy {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
 }

@@ -1,6 +1,7 @@
 import React from 'react';
 import { IoReturnDownBackSharp } from 'react-icons/io5';
 import { useLocation, useNavigate } from 'react-router-dom';
+import './index.css';
 
 function GoBackButton() {
   const navigate = useNavigate();
@@ -10,17 +11,18 @@ function GoBackButton() {
   const isCurrentRouteInList = routesToGoBackFrom.includes(currentRoute);
 
   const handleGoBack = () => {
-    if (isCurrentRouteInList) {
-      navigate(-1);
-    }
+    // if (isCurrentRouteInList) {
+    //   navigate(-1);
+    // }
+    navigate(-1);
   };
   return (
     <>
-      {isCurrentRouteInList ? (
-        <div className='m-2 position-absolute bg-main' style={{ zIndex: 1 }}>
+      {currentRoute !== '/' ? (
+        <div className="go-back-btn bg-main" style={{ zIndex: 1 }}>
           <div
-            style={{ width: 'max-content' }}
-            className='custom-button p-1 border-gray '
+            style={{ width: 'max-content', height: '30px' }}
+            className="custom-button p-1 border-gray d-flex justify-content-center align-items-center"
             onClick={handleGoBack}
           >
             <IoReturnDownBackSharp style={{ transform: 'rotate(90deg)' }} /> Go
