@@ -89,9 +89,12 @@ function NewTeam_View({ user }) {
     }
   }, [res]);
   return (
-    <div className="w-100" style={{ height: 'max-content' }}>
-      <Row className="g-0">
-        <Col className="p-3" xs={12} md={6}>
+    <div
+      className="w-100 h-100 d-flex flex-column"
+      style={{ height: 'max-content' }}
+    >
+      <Row className="g-0 flex-grow-1">
+        <Col className="p-2 pb-0 d-flex flex-column" xs={12} md={6}>
           <Form.Group className="mb-2">
             <Form.Label>Name</Form.Label>
             <Form.Control
@@ -108,9 +111,14 @@ function NewTeam_View({ user }) {
               placeholder="Briefly describe the purpose of this team"
             />
           </Form.Group>
-          <Form.Group>
+          <Form.Group className="h-100 d-flex flex-column">
             <Form.Label>README.md</Form.Label>
-            <MD_view editor={true} md={md} setMd={setMd} />
+            <MD_view
+              editor={true}
+              md={md}
+              setMd={setMd}
+              team_placeholder={true}
+            />
           </Form.Group>
           {/* <Form.Label>Privacy</Form.Label>
           <div>
@@ -136,7 +144,7 @@ function NewTeam_View({ user }) {
             </ToggleButtonGroup>
           </div> */}
         </Col>
-        <Col className="p-3" xs={12} md={6}>
+        <Col className="p-2 pb-0 d-flex flex-column" xs={12} md={6}>
           <Form.Group className="w-100 h-100 d-flex flex-column">
             <Form.Label>Team Size & Roles</Form.Label>
             <div
@@ -184,14 +192,14 @@ function NewTeam_View({ user }) {
             </div>
           </Form.Group>
         </Col>
-        <div className="" xs={12}>
-          <div className="p-3 pt-0 w-100 d-flex justify-content-end">
-            <Button variant="outline-light" onClick={() => createTeamFunc()}>
-              Create
-            </Button>
-          </div>
-        </div>
       </Row>
+      <div className="w-100 d-flex justify-content-end pt-3 pb-3 px-2">
+        <div className="d-flex align-items-center">
+          <Button variant="outline-light" onClick={() => createTeamFunc()}>
+            Create
+          </Button>
+        </div>
+      </div>
     </div>
   );
 }

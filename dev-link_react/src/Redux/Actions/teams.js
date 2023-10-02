@@ -8,15 +8,18 @@ export const GET_FEED = 'GET_FEED';
 //actions
 
 //feed
-export const getTeams = ({ from, to }) => {
+export const getTeams = ({ offset, limit }) => {
   return async (dispatch, getState) => {
     try {
       dispatch(setLoading());
       const response = await fetch(
-        `${import.meta.env.VITE_BACKEND_LINK}/feed?from=${from}&to=${to}`
+        `${
+          import.meta.env.VITE_BACKEND_LINK
+        }/feed?offset=${offset}&limit=${limit}`
       );
       if (response.ok) {
         let feed = await response.json();
+        console.log(feed);
         dispatch({
           type: GET_FEED,
           payload: feed,
@@ -168,11 +171,10 @@ export const joinOrLeave = ({ member_id, team_id, method }) => {
             const clean_members = team.members.filter(
               (slot) => slot.member_id !== member_id
             );
-            console.log(clean_members);
             team.members = clean_members;
             team.open_roles.push({
               role: member.role,
-              user_id: user.id,
+              user_id: null,
               member_id: member_id,
             });
           }
