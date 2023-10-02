@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 
 import './styles/App.css';
-import { Alert, Container } from 'react-bootstrap';
+import { Alert, Container, Tooltip } from 'react-bootstrap';
 import Theme_switcher from './components/Theme_switcher';
 // import MainContainer from './views/main/Main';
 import { useDispatch, useSelector } from 'react-redux';
@@ -20,9 +20,10 @@ import NewTeam_View from './views/new/NewTeam_View';
 import Alert_widget from './components/Alert/Alert_widget';
 import Loader_component from './components/loader/Loader_component';
 import Sidebar from './components/Sidebar/Sidebar';
-import { TOGGLE_SIDEBAR, TOGGLE_SIDEBAR_OFF } from './Redux/Actions/ui';
+import { TOGGLE_SIDEBAR_OFF } from './Redux/Actions/ui';
 import Settings_view from './views/settings/Settings_view';
 import Profile_view from './views/profile/Profile_view';
+import Tooltip_component from './components/Tooltip/Tooltip_component';
 
 function App() {
   const location = useLocation();
@@ -42,6 +43,8 @@ function App() {
   return (
     <div className="fs-container text-light position-relative">
       <div className="container-lg p-0 main d-flex flex-column">
+        {/*Tooltip*/}
+        <Tooltip_component />
         {/*note: top bar  */}
         <Main_bar isLoggedIn={isLoggedIn} sidebar={sidebar} />
         {/*note: content (parent div with two layers. one for content and another one for sidebar ) */}

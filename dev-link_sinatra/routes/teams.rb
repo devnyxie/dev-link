@@ -97,9 +97,8 @@ end
 
 
 get '/feed' do
-  limit = params['limit'] || 3
-  offset = params['offset'] || 0
-  # team_data = DB[SELECT_TEAMS_v2]
+  limit = params['limit']
+  offset = params['offset']
   team_data = DB[SELECT_TEAMS_v3, offset: offset.to_i, limit: limit.to_i]
   puts team_data
   team_structure = fill_data_raw(team_data)
@@ -107,6 +106,12 @@ get '/feed' do
   team_structure.to_json
 end
 
+get '/teams/user_id/:user_id' do
+  team_data = DB[SELECT_TEAMS_BY_MEMBER_USER_ID, params[:user_id]]
+  team_structure = fill_data_raw(team_data)
+  content_type :json
+  team_structure.to_json
+end
 
 get '/teams/:team_id' do
   team = DB[SELECT_TEAM_BY_ID_v2, params[:team_id]]

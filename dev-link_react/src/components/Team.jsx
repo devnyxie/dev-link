@@ -35,7 +35,7 @@ function Team({ team, index }) {
                     }}
                     className="team-member-pfp me-1 d-flex justify-content-center align-items-center light-gray"
                   >
-                    <h5 className="m-0 mb-1 ">+{team.members.length - 3}</h5>
+                    <h5 className="m-0">+{team.members.length - 3}</h5>
                   </div>
                 </div>
               );
@@ -45,7 +45,13 @@ function Team({ team, index }) {
       </div>
       <div
         className="text-end position-absolute p-2 light-gray"
-        style={{ right: 0, bottom: 0 }}
+        style={{ right: 0, bottom: 0, cursor: 'pointer', userSelect: 'none' }}
+        data-tooltip-id="tooltip"
+        data-tooltip-content={`Current team capacity: ${
+          team.members.length
+        } out of
+            ${team.open_roles.length + team.members.length}`}
+        data-tooltip-place="bottom"
       >
         Capacity: {team.members.length}/
         {team.open_roles.length + team.members.length}

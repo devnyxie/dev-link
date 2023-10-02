@@ -12,7 +12,9 @@ class User < Sequel::Model(:users)
       name: self.name,
       surname: self.surname,
       pfp: self.pfp,
-      banner: self.banner
+      banner: self.banner,
+      readme: self.readme,
+      created_at: self.created_at.strftime("%Y-%m-%dT%H:%M:%S.%LZ")
     }
   end
 end
@@ -117,7 +119,11 @@ end
 put '/users/:id' do
   user = User.where(id: params[:id]).first
   new_user_data = JSON.parse(request.body.read)
-  data_to_change = extract_changed_data(user, new_user_data)
+  data_to_change = extract_changed_data(user.fill_data, new_user_data)
+  if data_to_change[:password]
+    data_to_change[:password] = BCrypt::Password.create(data_to_change[:password])
+  end
+  puts "UPDATING USER WITH THIS DATA: #{data_to_change}"
   puts data_to_change
   # Update the task in the database
   if user && data_to_change

@@ -81,7 +81,7 @@ function Team_View({ teams, user }) {
                           member={member}
                           config={{
                             role_input: true,
-                            role: member.role,
+                            role: member.role ? member.role : '?',
                             pfp: false,
                             join_btn: true,
                             btn: true,

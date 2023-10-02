@@ -28,6 +28,7 @@ function Member_tile({
       if (member.user_id) {
         if (loggedUser) {
           if (member.user_id === loggedUser.id) {
+            console.log(member.user_id, member.role);
             return (
               <div
                 className="custom-button border-gray rounded me-1 p-1 px-2"
@@ -93,7 +94,7 @@ function Member_tile({
       } else {
         return (
           <>
-            Role: <span className="opacity-75 text-break">{member.role}</span>
+            Role: <span className="opacity-75 text-break">{role}</span>
           </>
         );
       }

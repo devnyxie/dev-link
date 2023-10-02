@@ -19,10 +19,14 @@
 .ico-button {
   transition: 0.15s;
 }
-.ico-button:hover {
+.ico-button.hoverable:hover {
   transition: 0.15s;
   filter: brightness(3);
 }
+.ico-button.disabled {
+  opacity: 0.3;
+}
+
 .light-gray {
   color: var(--light-gray-color) !important;
 }
@@ -46,7 +50,7 @@
 }
 /*bootstrap*/
 .form-control {
-  font-family: "Lato", sans-serif !important;
+  font-family: 'Lato', sans-serif !important;
   background-color: transparent !important;
   border: 1px solid var(--gray-border-color) !important;
   color: white !important;

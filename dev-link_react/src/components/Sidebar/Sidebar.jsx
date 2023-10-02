@@ -9,9 +9,15 @@ import { FiSettings } from 'react-icons/fi';
 import { TOGGLE_SIDEBAR } from '../../Redux/Actions/ui';
 import { IoLogOutOutline } from 'react-icons/io5';
 import { logout } from '../../Redux/Actions/users';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
+import UserPfp from '../user_pfp/UserPfp';
 function Sidebar({ user }) {
   const dispatch = useDispatch();
+  const navigate = useNavigate();
+  function logout_func() {
+    dispatch(logout());
+    navigate('/');
+  }
   return (
     <div className="d-flex flex-fill sidebar-wrapper">
       <div
@@ -25,21 +31,19 @@ function Sidebar({ user }) {
       <div className="sidebar fade-in p-3 d-flex flex-column justify-content-between">
         <div className="d-flex flex-column justify-content-between h-100">
           <div>
-            <div className="d-flex mb-2">
-              <img
-                style={{ width: '90px', aspectRatio: '1/1' }}
-                className="border-gray rounded"
-                src={user.pfp}
-              />
-              <div className="d-flex flex-column justify-content-end ms-1">
-                <small className="opacity-75">@{user.username}</small>
+            <div className="d-flex mb-2 w-100">
+              <div style={{ width: '100px', aspectRatio: '1/1' }}>
+                <UserPfp pfp={user.pfp} img_classes="rounded border-gray" />
+              </div>
+              <div className="d-flex flex-column justify-content-end ms-1 w-100">
                 {user.name ? (
-                  <div>
-                    {user.name} {user.surname ? user.surname : ''}
-                  </div>
+                  <small className="opacity-75 w-100">
+                    {user.name + ' ' + user.surname}
+                  </small>
                 ) : (
                   <></>
                 )}
+                <span className="">@{user.username}</span>
               </div>
             </div>
             <Link
@@ -88,7 +92,7 @@ function Sidebar({ user }) {
         <div className="pb-2">
           <div
             className="border-gray-top border-gray-bottom p-1 d-flex align-items-center custom-button"
-            onClick={() => dispatch(logout())}
+            onClick={() => logout_func()}
           >
             <IoLogOutOutline
               size={18}

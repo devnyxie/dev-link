@@ -1,37 +1,37 @@
 import MDEditor from '@uiw/react-md-editor';
 import { useEffect, useState } from 'react';
 import texts from './texts.json';
-function MD_view({ md, editor, setMd }) {
+function MD_view({ md, editor, setMd, team_placeholder, height }) {
   let isEditorRequired = editor ? true : false;
-  const [value, setValue] = useState('');
   useEffect(() => {
     if (!editor) {
-      setValue(md);
     } else {
-      setMd(value);
+      setMd(md);
     }
   });
 
   return (
-    <div>
+    <>
       {isEditorRequired ? (
         <MDEditor
-          value={value}
-          onChange={setValue}
+          value={md}
+          onChange={setMd}
           hideToolbar={true}
+          visibleDragbar={false}
           enableScroll={false}
           textareaProps={{
-            placeholder: texts.md__new_team_placeholder,
+            placeholder: team_placeholder ? texts.md__new_team_placeholder : '',
           }}
           style={{
-            minHeight: '400px',
+            minHeight: '300px',
+            height: '100%',
             backgroundColor: 'transparent',
           }}
         />
       ) : (
-        <MDEditor.Markdown source={value} style={{ whiteSpace: 'pre-wrap' }} />
+        <MDEditor.Markdown source={md} style={{ whiteSpace: 'pre-wrap' }} />
       )}
-    </div>
+    </>
   );
 }
 

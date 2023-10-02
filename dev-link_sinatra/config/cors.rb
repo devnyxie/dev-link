@@ -5,7 +5,7 @@ configure do
     allow do
       # Whitelist specific origins by adding them to the `origins` array.
       # "*" allows any origin. You should replace it with specific domains.
-      origins '*'
+      origins '*', 'http://localhost:5173'
 
       # Set the HTTP methods you want to allow.
       resource '*', headers: :any, methods: [:get, :post, :put, :patch, :delete, :options]

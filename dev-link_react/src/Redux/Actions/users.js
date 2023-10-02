@@ -71,54 +71,74 @@ export const logout = () => {
     dispatch(unsetLoading());
   };
 };
-//get one user
-// export const getOneUser = ({ id, setUser }) => {
-//   return async (dispatch, getState) => {
-//     try {
-//       const alreadyFetchedUser = getState().user_data[`user_${id}`];
-//       if (alreadyFetchedUser) {
-//         setUser(alreadyFetchedUser);
-//       } else {
-//         const response = await fetch(
-//           `${import.meta.env.VITE_BACKEND_LINK}/users/${id}`
-//         );
-//         if (response.ok) {
-//           let user = await response.json();
-//           setUser(user);
-//           dispatch({
-//             type: GET_ONE_USER,
-//             payload: user,
-//           });
-//         } else {
-//           console.log('Error fetching data');
-//         }
-//       }
-//     } catch (error) {
-//       console.log(error);
-//     }
-//   };
-// };
 
 //get one user by username
 export const getOneUser = ({ username, id, setRes }) => {
   return async (dispatch, getState) => {
+    dispatch(setLoading());
     try {
       let link = `${import.meta.env.VITE_BACKEND_LINK}/users`;
       if (username && !id) {
         link = link + `?username=${username}`;
       } else if (id && !username) {
         link = link + `?id=${id}`;
+      } else if (id && username) {
+        link = link + `?id=${id}` + `?username=${username}`;
       }
       const response = await fetch(link);
       if (response.ok) {
         let user = await response.json();
         setRes(user);
       } else {
-        console.log('Error fetching data');
+        dispatch({
+          type: CHANGE_STATUS,
+          payload: {
+            status: 500,
+            text: 'Error fetching data.',
+          },
+        });
       }
     } catch (error) {
-      console.log(error);
+      dispatch({
+        type: CHANGE_STATUS,
+        payload: {
+          status: 500,
+          text: `Error: ${error}`,
+        },
+      });
     }
+    dispatch(unsetLoading());
+  };
+};
+
+export const getOneUsersTeams = ({ id, setRes }) => {
+  return async (dispatch, getState) => {
+    dispatch(setLoading());
+    try {
+      let link = `${import.meta.env.VITE_BACKEND_LINK}/teams/user_id/${id}`;
+      const response = await fetch(link);
+      if (response.ok) {
+        let teams = await response.json();
+        setRes(teams);
+      } else {
+        dispatch({
+          type: CHANGE_STATUS,
+          payload: {
+            status: 500,
+            text: 'Error fetching data.',
+          },
+        });
+      }
+    } catch (error) {
+      dispatch({
+        type: CHANGE_STATUS,
+        payload: {
+          status: 500,
+          text: `Error: ${error}`,
+        },
+      });
+    }
+    dispatch(unsetLoading());
   };
 };
 

@@ -7,8 +7,8 @@ function UserPfp({ pfp, size, img_classes }) {
       className={`d-flex justify-content-center align-items-center `}
       style={{
         minHeight: '30px',
-        height: size,
-        width: size,
+        height: size ? size + 'px' : '100%',
+        width: size ? size + 'px' : '100%',
         objectFit: 'cover',
         aspectRatio: 1 / 1,
       }}
@@ -23,7 +23,7 @@ function UserPfp({ pfp, size, img_classes }) {
         <div
           className={`w-100 h-100 bg-main light-gray d-flex justify-content-center align-items-center ${img_classes}`}
         >
-          <BiUser size={size} style={{ maxHeight: '50px' }} />
+          <BiUser size={size ? size / 2 : 25} style={{ maxHeight: '50px' }} />
         </div>
       )}
     </div>
