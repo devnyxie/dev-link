@@ -4,8 +4,23 @@ import { useNavigate } from 'react-router-dom';
 
 //exports
 export const GET_FEED = 'GET_FEED';
-
+export const UPDATE_ONE_TEAM = 'UPDATE_ONE_TEAM';
 //actions
+
+export const updateTeamAction = (team) => {
+  return async (dispatch, getState) => {
+    try {
+      dispatch(setLoading());
+      dispatch({
+        type: UPDATE_ONE_TEAM,
+        payload: team,
+      });
+    } catch (error) {
+      console.log(error);
+    }
+    dispatch(unsetLoading());
+  };
+};
 
 //feed
 export const getTeams = ({ offset, limit }) => {
@@ -42,12 +57,8 @@ export const getOneTeam = ({ id, setTeam }) => {
       );
       if (response.ok) {
         let team = await response.json();
-        setTeam(team);
-        let teams = getState().feed.feed;
-        dispatch({
-          type: GET_FEED,
-          payload: [...teams, team],
-        });
+        // setTeam(team);
+        dispatch(updateTeamAction(team));
       } else {
         console.log('Error fetching data');
       }
@@ -140,9 +151,9 @@ export const joinOrLeave = ({ member_id, team_id, method }) => {
               } the team.`,
             },
           });
-          //create a dispatch action which will update one team directly in reducer
-          //what we need: team_id + member_id (we have it) + logged_user.id (we have it)
+          //
           let teams = getState().feed.feed;
+          console.log('Teams: ', teams);
           let team = teams.find((team) => team.id === team_id);
           console.log('team found:', team.id);
           console.log('method:', method);
@@ -162,9 +173,10 @@ export const joinOrLeave = ({ member_id, team_id, method }) => {
               (slot) => slot.member_id !== member_id
             );
             team.members.push(open_role_with_user);
+            dispatch(updateTeamAction(team));
           } else if (method === 'leave') {
             console.log('leave');
-            //brolen leaving
+            //broken leaving
             let member = team.members.find(
               (member) => member.member_id === member_id
             );
@@ -177,6 +189,7 @@ export const joinOrLeave = ({ member_id, team_id, method }) => {
               user_id: null,
               member_id: member_id,
             });
+            dispatch(updateTeamAction(team));
           }
           //1. get team, find the right team, add member, dispatch.
         } else if (response.status === 409) {

@@ -83,14 +83,23 @@ function Profile_view({ logged_user }) {
           </div>
         </div>
       </Col>
-      <Col className="p-2 ps-1" xs={12} md={6}>
-        <div
-          className="border-gray w-100 h-100"
-          style={{ borderRadius: '5px', overflowY: 'auto' }}
-        >
-          {teams.map((team, index) => {
-            return <Team team={team} key={index} index={index} />;
-          })}
+      <Col className="p-2 ps-1" xs={12} md={6} style={{ minHeight: '500px' }}>
+        <div className="border-gray w-100 h-100 overflow-hidden rounded position-relative">
+          <div
+            className="w-100 h-100 position-absolute"
+            style={{ overflowY: 'auto' }}
+          >
+            {teams.map((team, index) => {
+              return (
+                <Team
+                  team={team}
+                  key={index}
+                  index={index}
+                  user={logged_user}
+                />
+              );
+            })}
+          </div>
         </div>
       </Col>
     </Row>

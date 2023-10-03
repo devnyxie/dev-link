@@ -15,19 +15,16 @@ import { AiOutlinePlus } from 'react-icons/ai';
 import uuid4 from 'uuid4';
 import { createTeam } from '../../Redux/Actions/teams';
 import { useNavigate } from 'react-router-dom';
-function NewTeam_View({ user }) {
+function NewOrEditTeam_View({ user, team }) {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const [md, setMd] = useState('');
   const [name, setName] = useState('');
   const [open, setOpen] = useState(true);
   const [description_short, setDescription_short] = useState('');
-
-  //new
   const [roleValue, setRole] = useState('');
   const [members, setMembers] = useState([]);
   const [res, setRes] = useState(false);
-  //new functions
   function addMember() {
     setMembers([
       ...members,
@@ -56,7 +53,6 @@ function NewTeam_View({ user }) {
     };
     editMember(role, id);
   }
-
   //
   function createTeamFunc() {
     const user_id = user.id;
@@ -82,7 +78,6 @@ function NewTeam_View({ user }) {
     );
     // setMembers([]);
   }
-
   useEffect(() => {
     if (res) {
       navigate('/');
@@ -204,4 +199,4 @@ function NewTeam_View({ user }) {
   );
 }
 
-export default NewTeam_View;
+export default NewOrEditTeam_View;

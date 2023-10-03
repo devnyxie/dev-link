@@ -4,7 +4,7 @@ import Team from '../../components/Team';
 import { getTeams } from '../../Redux/Actions/teams';
 import { getDay, getTime } from '../../globalActions';
 
-function Main({ teams }) {
+function Main({ teams, user }) {
   const dispatch = useDispatch();
 
   const [startingPoints, setStartingPoints] = useState([]);
@@ -58,7 +58,7 @@ function Main({ teams }) {
       >
         <div className="">
           {teams.map((team, index) => {
-            return <Team team={team} key={index} index={index} />;
+            return <Team team={team} key={index} index={index} user={user} />;
           })}
         </div>
       </div>
