@@ -16,7 +16,7 @@ import Main from './views/main/Main';
 import Login_View from './views/login/Login_View';
 import Main_bar from './views/main/Main_bar';
 import Team_View from './views/team_view/Team_View';
-import NewTeam_View from './views/new/NewOrEditTeam_View';
+import NewOrEditTeam_View from './views/new/NewOrEditTeam_View';
 import Alert_widget from './components/Alert/Alert_widget';
 import Loader_component from './components/loader/Loader_component';
 import Sidebar from './components/Sidebar/Sidebar';
@@ -40,11 +40,11 @@ function App() {
   const user = useSelector((state) => state.user_data.logged_user);
   const isLoggedIn = useSelector((state) => state.user_data.isLoggedIn);
   const teams = useSelector((state) => state.feed.feed);
-  useEffect(() => {
-    console.log('teams updated', teams);
-  }, [teams]);
   return (
-    <div className="fs-container text-light position-relative">
+    <div
+      className="fs-container text-light position-relative"
+      style={{ overflow: 'hidden' }}
+    >
       <div className="container-lg p-0 main d-flex flex-column">
         {/*Tooltip*/}
         <Tooltip_component />
@@ -70,11 +70,18 @@ function App() {
                 path="/team"
                 element={<Team_View teams={teams} user={user} />}
               />
+              {/* create, edit, del */}
               <Route
                 path="/new"
-                element={<NewTeam_View teams={teams} user={user} />}
+                element={<NewOrEditTeam_View teams={teams} user={user} />}
               />
+              <Route
+                path="/edit"
+                element={<NewOrEditTeam_View teams={teams} user={user} />}
+              />
+              {/* settings */}
               <Route path="/settings" element={<Settings_view user={user} />} />
+              {/* personal profile & other profiles */}
               <Route
                 path="/profile/:username"
                 element={<Profile_view logged_user={user} />}

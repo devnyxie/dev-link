@@ -55,13 +55,15 @@ function Team({ team, index, user }) {
         style={{ cursor: 'pointer' }}
       >
         {team.creator_id === user.id ? (
-          <MdModeEditOutline
-            size={30}
-            className="ico-button hoverable rounded p-1 border-gray text-secondary ms-2"
-            data-tooltip-id="tooltip"
-            data-tooltip-content="Edit"
-            data-tooltip-place="bottom"
-          />
+          <Link to={`/edit?team_id=${team.id}`}>
+            <MdModeEditOutline
+              size={30}
+              className="ico-button hoverable rounded p-1 border-gray text-secondary ms-2"
+              data-tooltip-id="tooltip"
+              data-tooltip-content="Edit"
+              data-tooltip-place="bottom"
+            />
+          </Link>
         ) : (
           <div></div>
         )}

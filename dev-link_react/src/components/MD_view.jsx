@@ -11,7 +11,7 @@ function MD_view({ md, editor, setMd, team_placeholder, height }) {
   });
 
   return (
-    <>
+    <div data-color-mode="dark">
       {isEditorRequired ? (
         <MDEditor
           value={md}
@@ -31,7 +31,7 @@ function MD_view({ md, editor, setMd, team_placeholder, height }) {
       ) : (
         <MDEditor.Markdown source={md} style={{ whiteSpace: 'pre-wrap' }} />
       )}
-    </>
+    </div>
   );
 }
 

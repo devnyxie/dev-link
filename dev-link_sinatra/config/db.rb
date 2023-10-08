@@ -10,4 +10,4 @@ DB = Sequel.connect(
   password: ENV['PG_PASSWORD'],
 )
 #logs
-DB.loggers << Logger.new($stdout);
+# DB.loggers << Logger.new($stdout);

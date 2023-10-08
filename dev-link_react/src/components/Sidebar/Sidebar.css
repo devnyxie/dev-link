@@ -20,12 +20,12 @@
 }
 @media only screen and (max-width: 767px) {
   .sidebar {
-    width: 75%;
+    width: 50%;
   }
 }
 @media only screen and (min-width: 767px) {
   .sidebar {
-    width: 50%;
+    width: 40%;
   }
 }
 @media only screen and (min-width: 1000px) and (max-width: 1200px) {

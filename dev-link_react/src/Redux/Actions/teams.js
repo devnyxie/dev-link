@@ -21,8 +21,27 @@ export const updateTeamAction = (team) => {
     dispatch(unsetLoading());
   };
 };
-
-//feed
+export const isMember = (team_id) => {
+  return async (dispatch, getState) => {
+    try {
+      const teams = getState().feed.feed;
+      const user = getState().user_data.logged_user;
+      const team = teams.find((team) => team.id === team_id);
+      const alreadyMember = team.members.find(
+        (member) => member.user_id === user.id
+      );
+      return alreadyMember ? true : false;
+    } catch (error) {
+      dispatch({
+        type: CHANGE_STATUS,
+        payload: {
+          status: 500,
+          text: 'An error occured in isMember block.',
+        },
+      });
+    }
+  };
+}; //feed
 export const getTeams = ({ offset, limit }) => {
   return async (dispatch, getState) => {
     try {
@@ -110,6 +129,66 @@ export const createTeam = ({ team, setRes }) => {
     dispatch(unsetLoading());
   };
 };
+//update team
+export const updateTeam = ({ team }) => {
+  return async (dispatch, getState) => {
+    dispatch(setLoading());
+    const user = getState().user_data.logged_user;
+    if (team.creator_id !== user.id) {
+      dispatch({
+        type: CHANGE_STATUS,
+        payload: {
+          status: 403,
+          text: 'You must be owner of a team to have an ability to edit this team.',
+        },
+      });
+    } else {
+      try {
+        const requestBody = JSON.stringify(team);
+        const response = await fetch(
+          `${import.meta.env.VITE_BACKEND_LINK}/teams/${team.id}`,
+          {
+            method: 'PUT',
+            headers: {
+              'Content-Type': 'application/json',
+            },
+            body: requestBody,
+          }
+        );
+        if (response.ok) {
+          const res = await response.json();
+          dispatch(updateTeamAction(res));
+          dispatch({
+            type: CHANGE_STATUS,
+            payload: {
+              status: 200,
+              text: `You successfully updated your team.`,
+            },
+          });
+          //
+        } else {
+          dispatch({
+            type: CHANGE_STATUS,
+            payload: {
+              status: response.status,
+              text: `An error occured while updating a team, status: ${response.status}.`,
+            },
+          });
+        }
+      } catch (error) {
+        dispatch({
+          type: CHANGE_STATUS,
+          payload: {
+            status: response.status,
+            text: `An error occured: ${error}.`,
+          },
+        });
+      }
+    }
+    dispatch(unsetLoading());
+  };
+};
+
 //join team
 export const joinOrLeave = ({ member_id, team_id, method }) => {
   console.log('Join/Leave req. Member id: ', member_id);
@@ -206,6 +285,69 @@ export const joinOrLeave = ({ member_id, team_id, method }) => {
         }
       } catch (error) {
         console.log(error);
+      }
+    }
+    dispatch(unsetLoading());
+  };
+};
+//kick member of a team
+export const kickMember = ({ member, team }) => {
+  console.log('Kick member req. Member: ${member.id}');
+  return async (dispatch, getState) => {
+    dispatch(setLoading());
+    const user = getState().user_data.logged_user;
+    if (team.creator_id !== user.id) {
+      dispatch({
+        type: CHANGE_STATUS,
+        payload: {
+          status: 403,
+          text: 'You must be owner of a team to have an ability to kick users.',
+        },
+      });
+    } else {
+      try {
+        const requestBody = JSON.stringify({
+          team_id: team.id,
+          member_id: member.member_id,
+        });
+        const response = await fetch(
+          `${import.meta.env.VITE_BACKEND_LINK}/teams/kick`,
+          {
+            method: 'PUT',
+            headers: {
+              'Content-Type': 'application/json',
+            },
+            body: requestBody,
+          }
+        );
+        if (response.ok) {
+          const res = await response.json();
+          dispatch(updateTeamAction(res));
+          dispatch({
+            type: CHANGE_STATUS,
+            payload: {
+              status: 200,
+              text: `You successfully kicked ${member.username} from your team.`,
+            },
+          });
+          //
+        } else {
+          dispatch({
+            type: CHANGE_STATUS,
+            payload: {
+              status: response.status,
+              text: `An error occured while kicking ${member.username}, status: ${response.status}.`,
+            },
+          });
+        }
+      } catch (error) {
+        dispatch({
+          type: CHANGE_STATUS,
+          payload: {
+            status: response.status,
+            text: `An error occured: ${error}.`,
+          },
+        });
       }
     }
     dispatch(unsetLoading());

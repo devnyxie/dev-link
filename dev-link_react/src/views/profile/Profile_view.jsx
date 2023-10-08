@@ -41,7 +41,7 @@ function Profile_view({ logged_user }) {
             className="border-gray rounded position-relative"
             style={{
               height: '225px',
-              backgroundImage: `linear-gradient(to bottom, rgba(0, 0, 0, 0), rgba(0, 0, 0, 0.8)), url(${user.banner})`,
+              backgroundImage: `linear-gradient(to bottom, rgba(0, 0, 0, 0) 0%, rgba(0, 0, 0, 1) 98%), url(${user.banner})`,
               backgroundSize: 'cover',
               backgroundPosition: 'center',
             }}
