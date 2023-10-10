@@ -4,7 +4,7 @@ import Team from '../../components/Team';
 import { getTeams } from '../../Redux/Actions/teams';
 import { getDay, getTime } from '../../globalActions';
 
-function Main({ teams }) {
+function Main({ teams, user }) {
   const dispatch = useDispatch();
 
   const [startingPoints, setStartingPoints] = useState([]);
@@ -29,7 +29,6 @@ function Main({ teams }) {
       for (var index = 0; index < teams.length; index++) {
         const css_class = `.team-${index}`;
         var teamElement = document.querySelector(css_class);
-
         if (teamElement) {
           // Get the bounding client rect of the team element relative to the parentDiv
           var rectRelativeToParent = teamElement.getBoundingClientRect();
@@ -49,80 +48,92 @@ function Main({ teams }) {
     getStartingPoints();
   }, [teams]);
 
-  return (
-    <div className="w-100 d-flex" style={{ height: 'max-content' }}>
-      <div
-        className="div1"
-        id="parentDiv"
-        style={{ width: '100%', height: 'max-content' }}
-      >
-        <div className="">
-          {teams.map((team, index) => {
-            return <Team team={team} key={index} index={index} />;
-          })}
-        </div>
-      </div>
-      <div
-        className="m-2 me-3 div2 position-relative d-none d-md-block"
-        style={{ width: '10%' }}
-      >
+  if (teams && startingPoints) {
+    return (
+      <div className="w-100 d-flex" style={{ height: 'max-content' }}>
         <div
-          className="position-relative fade-bottom"
-          style={{
-            width: '1px',
-            backgroundColor: '#272c31',
-            height: '100%',
-            left: '50%',
-          }}
+          className="div1"
+          id="parentDiv"
+          style={{ width: '100%', height: 'max-content' }}
         >
-          {startingPoints.map((point, index) => {
-            return (
-              <div
-                key={index}
-                className="position-absolute d-flex border rounded-circle"
-                style={{
-                  left: '50%',
-                  right: '50%',
-                  transform: 'translate(-50%,-50%)',
-                  top: `${point.topPosition}px`,
-                  height: '10px',
-                  width: '10px',
-                  backgroundColor: '#272c31',
-                }}
-              >
-                <div
-                  className="position-relative"
-                  style={{
-                    left: '50%',
-                    right: '50%',
-                    transform: 'translate(-50%,-0%)',
-                  }}
-                >
+          <div className="">
+            {teams.map((team, index) => {
+              return <Team team={team} key={index} index={index} user={user} />;
+            })}
+          </div>
+        </div>
+        <div
+          className="m-2 me-3 div2 position-relative d-none d-md-block"
+          style={{ width: '10%' }}
+        >
+          <div
+            className="position-relative fade-bottom"
+            style={{
+              width: '1px',
+              backgroundColor: '#272c31',
+              height: '100%',
+              left: '50%',
+            }}
+          >
+            {startingPoints.map((point, index) => {
+              if (point) {
+                return (
                   <div
-                    className="d-flex justify-content-between"
+                    key={index}
+                    className="position-absolute d-flex border rounded-circle"
                     style={{
-                      opacity: 0.5,
-                      position: 'absolute',
-                      width: '90px',
-                      top: '50%',
+                      left: '50%',
+                      right: '50%',
                       transform: 'translate(-50%,-50%)',
+                      top: `${point.topPosition}px`,
+                      height: '10px',
+                      width: '10px',
+                      backgroundColor: '#272c31',
                     }}
                   >
-                    <div style={{ textAlign: 'left' }} className="w-100 h-100">
-                      <small>{getDay(teams[point.index].created_at)}</small>
-                    </div>
-                    <div style={{ textAlign: 'right' }} className="w-100 h-100">
-                      <small>{getTime(teams[point.index].created_at)}</small>
+                    <div
+                      className="position-relative"
+                      style={{
+                        left: '50%',
+                        right: '50%',
+                        transform: 'translate(-50%,-0%)',
+                      }}
+                    >
+                      <div
+                        className="d-flex justify-content-between"
+                        style={{
+                          opacity: 0.5,
+                          position: 'absolute',
+                          width: '90px',
+                          top: '50%',
+                          transform: 'translate(-50%,-50%)',
+                        }}
+                      >
+                        <div
+                          style={{ textAlign: 'left' }}
+                          className="w-100 h-100"
+                        >
+                          <small>{getDay(teams[index].created_at)}</small>
+                        </div>
+                        <div
+                          style={{ textAlign: 'right' }}
+                          className="w-100 h-100"
+                        >
+                          <small>{getTime(teams[index].created_at)}</small>
+                        </div>
+                      </div>
                     </div>
                   </div>
-                </div>
-              </div>
-            );
-          })}
+                );
+              } else {
+                console.log('HUuuuuuuuuuuuuuuuuuuuuuuuUUUH');
+              }
+            })}
+          </div>
         </div>
       </div>
-    </div>
-  );
+    );
+  }
 }
 
 export default Main;

@@ -110,7 +110,7 @@ function Settings_view({ user }) {
       changedPassword !== '' ||
       changedReadme !== changedUser.readme ? (
         // Conditionally render the "Save" button when the conditions are met
-        <div className="position-absolute bottom-0 pb-3">
+        <div className="sticky-bottom bottom-0 pb-3">
           <div
             className="custom-button p-1 px-3 rounded border"
             onClick={updateLoggedInUser}

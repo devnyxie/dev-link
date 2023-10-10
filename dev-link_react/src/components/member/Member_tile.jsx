@@ -21,6 +21,7 @@ function Member_tile({
   deleteMemberById,
   joinOrLeaveFunc,
   loggedUser,
+  team,
 }) {
   const showLeftBlock = pfp || username || role ? true : false;
   function renderBtn() {
@@ -38,11 +39,19 @@ function Member_tile({
               </div>
             );
           } else {
-            return (
-              <div className="custom-button border-gray rounded me-1 p-1">
-                <BiLockAlt size={25} className="light-gray" />{' '}
-              </div>
-            );
+            if (team.creator_id === loggedUser.id) {
+              return (
+                <div className="custom-button border-gray rounded me-1 p-1 px-2">
+                  Kick
+                </div>
+              );
+            } else {
+              return (
+                <div className="custom-button border-gray rounded me-1 p-1">
+                  <BiLockAlt size={25} className="light-gray" />{' '}
+                </div>
+              );
+            }
           }
         } else {
           return (
@@ -162,7 +171,8 @@ function Member_tile({
                 onChange={(e) =>
                   findMemberInMembersAndEditRole({
                     role: e.target.value,
-                    id: member.id,
+                    id: member?.id,
+                    member_id: member?.member_id,
                   })
                 }
                 style={{ width: 'min-content' }}

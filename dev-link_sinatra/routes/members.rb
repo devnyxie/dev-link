@@ -1,6 +1,7 @@
 require 'sinatra'
 require 'sequel'
-require_relative 'db'
+require_relative '../config/db'
+
 class Member < Sequel::Model(:members)
   many_to_one :team, key: :team_id
   unrestrict_primary_key

@@ -1,8 +1,7 @@
 require 'sinatra'
 require 'sequel'
-require_relative 'db'
+require_relative '../config/db'
 
-#USERS
 class User < Sequel::Model(:users)
   many_to_many :teams, join_table: :members
   def fill_data
@@ -22,9 +21,8 @@ end
 #put endpoint --- find diff
 def extract_changed_data(user, new_user_data)
   data_to_change = {}
-  # Compare each attribute in new_user_data with the user object
   if user
-    user_columns = User.columns  # Assuming User.columns returns an array of column names
+    user_columns = User.columns
 
     user_columns.each do |column|
       if new_user_data.key?(column.to_s) && user[column] != new_user_data[column.to_s]
@@ -68,18 +66,17 @@ post '/register' do
     encrypted_password = BCrypt::Password.create(credentials["password"])
     credentials["password"] = encrypted_password
     new_user = User.create(credentials)
-    #how to know here if action was successful?
     if new_user
       status 201 # Created
       new_user.fill_data
       content_type :json
       new_user.to_json
     else
-      status 400 # Bad Request
+      status 400
       { error: "Error, can't register." }.to_json
     end
   else
-    status 400 # Bad Request
+    status 400
     { error: "Error, can't register." }.to_json
   end
 end
@@ -94,7 +91,7 @@ post '/users' do
     status 201 # Created
     user.to_json
   else
-    status 400 # Bad Request
+    status 400
     { error: 'User creation failed' }.to_json
   end
 end
@@ -123,9 +120,6 @@ put '/users/:id' do
   if data_to_change[:password]
     data_to_change[:password] = BCrypt::Password.create(data_to_change[:password])
   end
-  puts "UPDATING USER WITH THIS DATA: #{data_to_change}"
-  puts data_to_change
-  # Update the task in the database
   if user && data_to_change
     user.update(
       data_to_change
