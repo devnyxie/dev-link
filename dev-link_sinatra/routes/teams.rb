@@ -51,48 +51,6 @@ class Team < Sequel::Model(:teams)
   end
 end
 
-def fill_data_raw(teams)
-  data = []
-
-  teams.each do |row|
-    team_id = row[:team_id]
-    member = {
-      member_id: row[:member_id],
-      user_id: row[:user_id],
-      username: row[:username],
-      pfp: row[:pfp],
-      name: row[:name],
-      surname: row[:surname],
-      role: row[:role]
-    }
-
-    team = data.find { |t| t[:id] == team_id }
-
-    unless team
-      team = {
-        id: row[:team_id],
-        name: row[:team_name],
-        creator_id: row[:creator_id],
-        description_short: row[:description_short],
-        description_md: row[:description_md],
-        open: row[:open],
-        created_at: row[:team_created_at].strftime("%Y-%m-%dT%H:%M:%S.%LZ"),
-        members: [],
-        open_roles: []
-      }
-      data << team
-    end
-    if member[:user_id].nil?
-      puts member[:username]
-      team[:open_roles] << member
-    else
-      team[:members] << member
-    end
-  end
-
-  data
-end
-
 def extract_changed_data(team, new_team_data)
   data_to_change = {}
   if team

@@ -14,6 +14,7 @@ import { AiOutlinePlus } from 'react-icons/ai';
 import uuid4 from 'uuid4';
 import {
   createTeam,
+  deleteTeam,
   getOneTeam,
   isMember,
   joinOrLeave,
@@ -344,7 +345,14 @@ function NewOrEditTeam_View({ user, teams }) {
                 </>
               ) : (
                 <>
-                  <Button variant="outline-danger">Delete</Button>
+                  <Button
+                    variant="outline-danger"
+                    onClick={() =>
+                      dispatch(deleteTeam({ team: team, setRes: setRes }))
+                    }
+                  >
+                    Delete
+                  </Button>
                   <Button
                     variant="outline-light"
                     onClick={() =>

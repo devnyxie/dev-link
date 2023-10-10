@@ -5,16 +5,34 @@ import { useNavigate } from 'react-router-dom';
 //exports
 export const GET_FEED = 'GET_FEED';
 export const UPDATE_ONE_TEAM = 'UPDATE_ONE_TEAM';
+export const DELETE_ONE_TEAM = 'DELETE_ONE_TEAM';
+
 //actions
 
-export const updateTeamAction = (team) => {
+export const updateTeamAction = (team, method) => {
   return async (dispatch, getState) => {
     try {
       dispatch(setLoading());
-      dispatch({
-        type: UPDATE_ONE_TEAM,
-        payload: team,
-      });
+      let local_method = method;
+      if (!local_method) {
+        local_method = 'PUT';
+      }
+      switch (local_method) {
+        case 'PUT':
+          dispatch({
+            type: UPDATE_ONE_TEAM,
+            payload: team,
+          });
+          break;
+        case 'DELETE':
+          dispatch({
+            type: DELETE_ONE_TEAM,
+            payload: team,
+          });
+          break;
+        default:
+          break;
+      }
     } catch (error) {
       console.log(error);
     }
@@ -188,7 +206,6 @@ export const updateTeam = ({ team }) => {
     dispatch(unsetLoading());
   };
 };
-
 //join team
 export const joinOrLeave = ({ member_id, team_id, method }) => {
   console.log('Join/Leave req. Member id: ', member_id);
@@ -348,6 +365,55 @@ export const kickMember = ({ member, team }) => {
             text: `An error occured: ${error}.`,
           },
         });
+      }
+    }
+    dispatch(unsetLoading());
+  };
+};
+
+export const deleteTeam = ({ team, setRes }) => {
+  return async (dispatch, getState) => {
+    dispatch(setLoading());
+    const user = getState().user_data.logged_user;
+    if (team.creator_id !== user.id) {
+      dispatch({
+        type: CHANGE_STATUS,
+        payload: {
+          status: 403,
+          text: 'You must be owner of a team to have an ability to delete this team.',
+        },
+      });
+    } else {
+      try {
+        const response = await fetch(
+          `${import.meta.env.VITE_BACKEND_LINK}/teams/${team.id}`,
+          {
+            method: 'DELETE',
+          }
+        );
+        console.log(response);
+        if (response.ok) {
+          dispatch(updateTeamAction(team.id, 'delete'));
+          dispatch({
+            type: CHANGE_STATUS,
+            payload: {
+              status: response.status,
+              text: `Successfully deleted.`,
+            },
+          });
+          setRes(true);
+          //
+        } else {
+          dispatch({
+            type: CHANGE_STATUS,
+            payload: {
+              status: response.status,
+              text: `An error occured while deleting a team, status: ${response.status}.`,
+            },
+          });
+        }
+      } catch (error) {
+        console.log(error);
       }
     }
     dispatch(unsetLoading());
