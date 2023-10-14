@@ -8,3 +8,7 @@ configure do
     end
   end
 end
+
+before do
+  response.headers['Access-Control-Allow-Origin'] = 'https://dev-link.up.railway.app'
+end
