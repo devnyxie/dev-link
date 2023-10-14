@@ -19,19 +19,7 @@ class User < Sequel::Model(:users)
 end
 
 #put endpoint --- find diff
-def extract_changed_data(user, new_user_data)
-  data_to_change = {}
-  if user
-    user_columns = User.columns
 
-    user_columns.each do |column|
-      if new_user_data.key?(column.to_s) && user[column] != new_user_data[column.to_s]
-        data_to_change[column] = new_user_data[column.to_s]
-      end
-    end
-  end
-  data_to_change
-end
 
 post '/login' do
   credentials = JSON.parse(request.body.read)
@@ -114,12 +102,36 @@ get '/users' do
 end
 
 put '/users/:id' do
+  #
+  def extract_changed_data(user, new_user_data)
+    puts 'extract_changed_data'
+    puts user
+    puts new_user_data
+    data_to_change = {}
+    if user
+      user_columns = User.columns
+  
+      user_columns.each do |column|
+        if new_user_data.key?(column.to_s) && user[column] != new_user_data[column.to_s]
+          data_to_change[column] = new_user_data[column.to_s]
+        end
+      end
+    end
+    data_to_change
+  end
+  #
   user = User.where(id: params[:id]).first
+  filled_user = user.fill_data
+  puts "filled_user: #{filled_user} "
   new_user_data = JSON.parse(request.body.read)
-  data_to_change = extract_changed_data(user.fill_data, new_user_data)
+  puts new_user_data
+  data_to_change = extract_changed_data(filled_user, new_user_data)
   if data_to_change[:password]
     data_to_change[:password] = BCrypt::Password.create(data_to_change[:password])
   end
+  test()
+  puts 'after func'
+  puts data_to_change
   if user && data_to_change
     user.update(
       data_to_change
