@@ -3,7 +3,7 @@ require 'rack/cors'
 configure do
   use Rack::Cors do
     allow do
-      origins 'http://localhost:5173'
+      origins 'https://dev-link.up.railway.app/'
       resource '*', headers: :any, methods: [:get, :post, :put, :patch, :delete, :options]
     end
   end
