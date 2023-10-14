@@ -1,14 +1,13 @@
 require 'rack/cors'
+require 'dotenv'
 
 configure do
   use Rack::Cors do
     allow do
-      origins 'https://dev-link.up.railway.app'
+      origins ENV['ORIGIN']
       resource '*', headers: :any, methods: [:get, :post, :put, :patch, :delete, :options]
     end
   end
 end
 
-before do
-  response.headers['Access-Control-Allow-Origin'] = 'https://dev-link.up.railway.app'
-end
+set :protection, :except => [:http_origin]

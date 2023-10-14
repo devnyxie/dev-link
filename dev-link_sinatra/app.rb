@@ -4,6 +4,7 @@ require 'sequel'
 require 'bcrypt'
 require 'logger';
 require 'dotenv'
+require_relative 'config/cors'
 
 #load env variables
 Dotenv.load
@@ -35,4 +36,3 @@ end
 require_relative 'routes/teams'
 require_relative 'routes/users'
 require_relative 'routes/members'
-require_relative 'config/cors'
