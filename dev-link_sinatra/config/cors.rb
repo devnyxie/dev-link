@@ -1,7 +1,7 @@
 require 'rack/cors'
 require 'dotenv'
 
-#CORS configuration. ORIGIN = FrontEnd URL.
+#CORS configuration. ORIGIN = FrontEnd URL
 configure do
   use Rack::Cors do
     allow do
