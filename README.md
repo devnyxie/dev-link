@@ -20,6 +20,8 @@ Dev-Link leverages the power of modern web technologies, combining React.js and 
 
 Join the Dev-Link community today and supercharge your programming journey. Whether you're seeking collaborators for your dream project or eager to contribute your skills to a team, Dev-Link is your go-to destination. Let's code, learn, and innovate together!
 
-<p align="center">
-    <strong>Coming soon</strong>
-</p>
+### Demo in Alpha Stage
+
+Please visit: [Dev-Link](https://dev-link.up.railway.app/)
+
+Notes: This demo is a work in progress and is far from finished. It requires a lot more work and is not yet feature-complete. Please note that it may contain bugs and limitations. Your understanding is appreciated.
