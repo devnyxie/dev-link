@@ -24,4 +24,6 @@ Join the Dev-Link community today and supercharge your programming journey. Whet
 
 Please visit: [Dev-Link](https://dev-link.up.railway.app/)
 
-Notes: This demo is a work in progress and is far from finished. It requires a lot more work and is not yet feature-complete. Please note that it may contain bugs and limitations. Your understanding is appreciated.
+Notes: 
+- This demo is a work in progress and is far from finished. It requires a lot more work and is not yet feature-complete. Please note that it may contain bugs and limitations. Your understanding is appreciated.
+- Registration is not yet open. If you are interested in contribution, please DM me and I'll create an account for you.
