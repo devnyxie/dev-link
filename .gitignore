@@ -1,34 +1,15 @@
-# Logs
-dev-link_react/logs
-dev-link_react/*.log
-dev-link_react/npm-debug.log*
-dev-link_react/yarn-debug.log*
-dev-link_react/yarn-error.log*
-dev-link_react/pnpm-debug.log*
-dev-link_react/lerna-debug.log*
+.yarn/*
+!.yarn/patches
+!.yarn/plugins
+!.yarn/releases
+!.yarn/sdks
+!.yarn/versions
+node_modules
+dist
+# Swap the comments on the following lines if you wish to use zero-installs
+# In that case, don't forget to run `yarn config set enableGlobalCache false`!
+# Documentation here: https://yarnpkg.com/features/caching#zero-installs
 
-#react
-dev-link_react/node_modules
-dev-link_react/dist
-dev-link_react/dist-ssr
-dev-link_react/*.local
-
-
-
-# Editor directories and files
-dev-link_react/.vscode/*
-!dev-link_react/.vscode/extensions.json
-dev-link_react/.idea
-dev-link_react/.DS_Store
-dev-link_react/*.suo
-dev-link_react/*.ntvs*
-dev-link_react/*.njsproj
-dev-link_react/*.sln
-dev-link_react/*.sw?
-dev-link_react/.env
-
-
-#sinatra
-# dev-link_sinatra/Gemfile.lock
-dev-link_sinatra/.env
-dev-link_sinatra/.gitattributes
+#!.yarn/cache
+.pnp.*
+.env
