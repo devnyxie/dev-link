@@ -2,8 +2,8 @@
   "name": "dev-link",
   "packageManager": "yarn@4.0.2",
   "scripts": {
-    "dev": "nodemon src/index.ts",
-    "start": "ts-node src/index.ts",
+    "dev": "nodemon src/start.ts",
+    "start": "ts-node src/start.ts",
     "build": "tsc"
   },
   "dependencies": {

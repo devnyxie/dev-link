@@ -39,13 +39,13 @@ const MembersModel = (sequelize: Sequelize) => {
         allowNull: false,
       },
       user_id: {
-        allowNull: false,
+        allowNull: true,
         type: DataTypes.UUID,
         onDelete: "CASCADE",
-        references: {
-          model: UserModel(sequelize),
-          key: "id",
-        },
+        // references: {
+        //   model: UserModel(sequelize),
+        //   key: "id",
+        // },
       },
     },
     {
