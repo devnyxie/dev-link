@@ -1,17 +1,16 @@
 import express, { Express, Request, Response } from "express";
-import { database } from "..";
-import { Team } from "../database/db";
-const router = express.Router();
+import { Member, Team, User } from "../database/db";
+const teamsRouter = express.Router();
 
-router.get("/api/teams", async (req: Request, res: Response) => {
+teamsRouter.get("/api/teams", async (req: Request, res: Response) => {
   try {
     const teams = await Team.findAll({
       include: [
         {
-          model: database.models.Member,
+          model: Member,
           include: [
             {
-              model: database.models.User,
+              model: User,
             },
           ],
         },
@@ -28,7 +27,7 @@ router.get("/api/teams", async (req: Request, res: Response) => {
 //create a team
 //1. create a team
 //2. create all members (leader from creator_id + all selected roles without user_id)
-router.post("/api/teams", async (req: Request, res: Response) => {
+teamsRouter.post("/api/teams", async (req: Request, res: Response) => {
   try {
     const requested_team = req.body;
     console.log("---");
@@ -42,4 +41,4 @@ router.post("/api/teams", async (req: Request, res: Response) => {
   }
 });
 
-export default router;
+export default teamsRouter;

@@ -28,7 +28,7 @@ const MembersModel = (sequelize: Sequelize) => {
       team_id: {
         allowNull: false,
         type: DataTypes.UUID,
-        // onDelete: "CASCADE",
+        onDelete: "CASCADE",
         // references: {
         //   model: TeamModel(sequelize),
         //   key: "id",
@@ -54,7 +54,7 @@ const MembersModel = (sequelize: Sequelize) => {
   );
   // Member.belongsTo(TeamModel(sequelize), { foreignKey: "team_id" });
   Member.belongsTo(UserModel(sequelize), { foreignKey: "user_id" });
-  // Member.belongsTo(TeamModel(sequelize), { foreignKey: "teamId" });
+  Member.belongsTo(TeamModel(sequelize), { foreignKey: "team_id" });
   return Member;
 };
 

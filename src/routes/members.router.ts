@@ -1,12 +1,11 @@
 import express, { Express, Request, Response } from "express";
-import { database } from "..";
+import { Member } from "../database/db";
 const membersRouter = express.Router();
 
 membersRouter.post("/api/members", async (req: Request, res: Response) => {
   try {
     const requested_member = req.body;
-    console.log(requested_member);
-    const new_member = await database.models.Member.create(requested_member);
+    const new_member = await Member.create(requested_member);
     res.status(200).json(new_member);
   } catch (error) {
     // Handle errors

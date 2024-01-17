@@ -1,34 +1,36 @@
 import express, { Express, Request, Response } from "express";
-import { database } from "..";
-import UserModel from "../database/models/user.model";
 import { User } from "../database/db";
+import { handleResponse } from "./utils";
 
-const router = express.Router();
+const usersRouter = express.Router();
 
-// GET all users
-router.get("/api/users", async (req: Request, res: Response) => {
+// Get all users
+usersRouter.get("/api/users", async (req: Request, res: Response) => {
   try {
     const users = await User.findAll();
     res.status(200).json(users);
   } catch (error) {
-    // Handle errors
     console.error(error);
     res.status(500).send("Internal Server Error");
   }
 });
 
-// POST a new user
-router.post("/api/users", async (req, res) => {
+// Create user
+usersRouter.post("/api/users", async (req, res) => {
   try {
     const requestedUser = req.body;
     const newUser = await User.create(requestedUser);
-    res.status(200).json(newUser);
+    handleResponse({
+      res,
+      response: newUser,
+      expectedType: User,
+      successMessage: "User was successfully created.",
+      errorMessage: "An error occured. No changes were made.",
+    });
   } catch (error: any) {
     if (error.name === "SequelizeUniqueConstraintError") {
-      // If the error is due to a unique constraint (duplicate username)
+      // (duplicate username)
       return res.status(409).json({
-        error: "Username conflict",
-        status: 409,
         message:
           "The requested username is already in use. Please choose a different username.",
       });
@@ -39,4 +41,51 @@ router.post("/api/users", async (req, res) => {
   }
 });
 
-export default router;
+// Update user
+usersRouter.put("/api/users/:user_id", async (req, res) => {
+  try {
+    const { user_id } = req.params;
+    const updated_data = req.body;
+    const [affectedCount]: [number] = await User.update(updated_data, {
+      where: {
+        id: user_id,
+      },
+    });
+    handleResponse({
+      res,
+      response: affectedCount,
+      expectedValue: 1,
+      successMessage: "User data was successfully updated.",
+      errorMessage: "An error occured. No changes were made.",
+    });
+  } catch (error: any) {
+    // Handle other errors
+    console.error(error);
+    res.status(500).send("Internal Server Error");
+  }
+});
+
+// Delete user
+usersRouter.delete("/api/users/:user_id", async (req, res) => {
+  try {
+    const { user_id } = req.params;
+    const response = await User.destroy({
+      where: {
+        id: user_id,
+      },
+    });
+    handleResponse({
+      res,
+      response,
+      expectedValue: 1,
+      successMessage: "User was successfully deleted.",
+      errorMessage: "An error occured. User was not deleted.",
+    });
+  } catch (error: any) {
+    // Handle other errors
+    console.error(error);
+    res.status(500).send("Internal Server Error");
+  }
+});
+
+export default usersRouter;
