@@ -1,6 +1,7 @@
 import { DataTypes, Model, Sequelize } from "sequelize";
 import TeamModel from "./team.model";
 import UserModel from "./user.model";
+import RequestsModel from "./requests.model";
 
 interface MembersAttributes {
   id: string;
@@ -29,10 +30,6 @@ const MembersModel = (sequelize: Sequelize) => {
         allowNull: false,
         type: DataTypes.UUID,
         onDelete: "CASCADE",
-        // references: {
-        //   model: TeamModel(sequelize),
-        //   key: "id",
-        // },
       },
       role: {
         type: DataTypes.TEXT,
@@ -42,19 +39,15 @@ const MembersModel = (sequelize: Sequelize) => {
         allowNull: true,
         type: DataTypes.UUID,
         onDelete: "CASCADE",
-        // references: {
-        //   model: UserModel(sequelize),
-        //   key: "id",
-        // },
       },
     },
     {
       timestamps: true,
     }
   );
-  // Member.belongsTo(TeamModel(sequelize), { foreignKey: "team_id" });
   Member.belongsTo(UserModel(sequelize), { foreignKey: "user_id" });
-  Member.belongsTo(TeamModel(sequelize), { foreignKey: "team_id" });
+  Member.hasMany(RequestsModel(sequelize), { foreignKey: "member_id" });
+
   return Member;
 };
 

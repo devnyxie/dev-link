@@ -2,6 +2,7 @@ import { DataTypes, Model, Sequelize } from "sequelize";
 import bcrypt from "bcrypt";
 import MembersModel from "./members.model";
 import UserModel from "./user.model";
+import RequestsModel from "./requests.model";
 
 interface TeamAttributes {
   id: string;
@@ -46,7 +47,8 @@ const TeamModel = (sequelize: Sequelize) => {
     }
   );
   try {
-    // Team.hasMany(MembersModel(sequelize), { foreignKey: "team_id" });
+    Team.hasMany(MembersModel(sequelize), { foreignKey: "team_id" });
+    Team.hasMany(RequestsModel(sequelize), { foreignKey: "team_id" });
     Team.belongsTo(UserModel(sequelize), { foreignKey: "creator_id" });
   } catch (error) {
     console.log(error);

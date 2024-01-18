@@ -44,10 +44,6 @@ const UserModel = (sequelize: Sequelize) => {
       timestamps: true,
     }
   );
-  // Many-To-Many relationship with Team
-  // User.belongsToMany(TeamModel(sequelize), { through: "members" });
-  // User.hasMany(TeamModel(sequelize), { foreignKey: "creator_id" });
-
   // Password Hashing
   User.beforeCreate(async (user) => {
     const saltRounds = 10;

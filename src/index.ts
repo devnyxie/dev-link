@@ -8,6 +8,7 @@ import bodyParser from "body-parser";
 import teamsRouter from "./routes/teams.router";
 import usersRouter from "./routes/users.router";
 import membersRouter from "./routes/members.router";
+import requestsRouter from "./routes/requests.router";
 
 // App Setup
 const app: Express = express();
@@ -27,3 +28,5 @@ app.use("/", teamsRouter);
 app.use("/", usersRouter);
 //   - Members Router
 app.use("/", membersRouter);
+//   - Requests Router
+app.use("/", requestsRouter);

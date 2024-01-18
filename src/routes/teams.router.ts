@@ -1,5 +1,5 @@
 import express, { Express, Request, Response } from "express";
-import { Member, Team, User } from "../database/db";
+import { Member, Request as RequestModel, Team, User } from "../database/db";
 const teamsRouter = express.Router();
 
 teamsRouter.get("/api/teams", async (req: Request, res: Response) => {
@@ -11,6 +11,14 @@ teamsRouter.get("/api/teams", async (req: Request, res: Response) => {
           include: [
             {
               model: User,
+            },
+            {
+              model: RequestModel,
+              include: [
+                {
+                  model: User,
+                },
+              ],
             },
           ],
         },

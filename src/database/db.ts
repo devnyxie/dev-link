@@ -2,6 +2,7 @@ import { Sequelize } from "sequelize";
 import UserModel from "./models/user.model"; // Assuming UserModel is the exported model definition
 import TeamModel from "./models/team.model";
 import MembersModel from "./models/members.model";
+import RequestsModel from "./models/requests.model";
 
 async function syncDatabase(database: Sequelize) {
   try {
@@ -30,9 +31,10 @@ const sequelize: Sequelize = new Sequelize(process.env.DB_URL);
 // test
 syncDatabase(sequelize);
 // export
-export const { database, User, Team, Member } = {
+export const { database, User, Team, Member, Request } = {
   database: sequelize,
   User: UserModel(sequelize),
   Team: TeamModel(sequelize),
   Member: MembersModel(sequelize),
+  Request: RequestsModel(sequelize),
 };
