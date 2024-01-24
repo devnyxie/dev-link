@@ -20,13 +20,7 @@ usersRouter.post("/api/users", async (req, res) => {
   try {
     const requestedUser = req.body;
     const newUser = await User.create(requestedUser);
-    handleResponse({
-      res,
-      response: newUser,
-      expectedType: User,
-      successMessage: "User was successfully created.",
-      errorMessage: "An error occured. No changes were made.",
-    });
+    res.status(200).json(newUser);
   } catch (error: any) {
     if (error.name === "SequelizeUniqueConstraintError") {
       // (duplicate username)

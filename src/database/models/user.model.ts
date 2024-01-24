@@ -4,6 +4,8 @@ import bcrypt from "bcrypt";
 
 interface UserAttributes {
   id: string;
+  gh_id?: string;
+  gh_username?: string;
   username: string;
   password: string;
   pfp?: string;
@@ -24,6 +26,17 @@ const UserModel = (sequelize: Sequelize) => {
         primaryKey: true,
         type: DataTypes.UUID,
         defaultValue: DataTypes.UUIDV4,
+        unique: true,
+      },
+      gh_id: {
+        allowNull: true,
+        primaryKey: true,
+        type: DataTypes.STRING,
+        unique: true,
+      },
+      gh_username: {
+        allowNull: true,
+        type: DataTypes.STRING,
         unique: true,
       },
       username: {

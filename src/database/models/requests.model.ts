@@ -8,7 +8,7 @@ interface RequestsAttributes {
   team_id: string;
   user_id: string;
   member_id: string;
-  approved: boolean;
+  accepted: boolean;
 }
 
 interface RequestsCreationAttributes extends RequestsAttributes {}
@@ -41,7 +41,7 @@ const RequestsModel = (sequelize: Sequelize) => {
         allowNull: false,
         type: DataTypes.UUID,
       },
-      approved: {
+      accepted: {
         allowNull: true,
         type: DataTypes.BOOLEAN,
       },
@@ -50,10 +50,7 @@ const RequestsModel = (sequelize: Sequelize) => {
       timestamps: true,
     }
   );
-  // Request.belongsTo(TeamModel(sequelize), { foreignKey: "team_id" });
   Request.belongsTo(UserModel(sequelize), { foreignKey: "user_id" });
-  // Request.belongsTo(MembersModel(sequelize), { foreignKey: "member_id" });
-
   return Request;
 };
 

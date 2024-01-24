@@ -1,8 +1,10 @@
 import express, { Express, Request, Response } from "express";
 import { Member } from "../database/db";
+import { handleResponse } from "./utils";
 const membersRouter = express.Router();
 
-membersRouter.post("/api/members", async (req: Request, res: Response) => {
+// single member creation
+membersRouter.post("/api/member", async (req: Request, res: Response) => {
   try {
     const requested_member = req.body;
     const new_member = await Member.create(requested_member);

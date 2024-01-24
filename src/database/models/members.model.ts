@@ -4,7 +4,7 @@ import UserModel from "./user.model";
 import RequestsModel from "./requests.model";
 
 interface MembersAttributes {
-  id: string;
+  id?: string;
   team_id: string;
   role: string;
   user_id: string;
@@ -43,8 +43,15 @@ const MembersModel = (sequelize: Sequelize) => {
     },
     {
       timestamps: true,
+      indexes: [
+        {
+          unique: true,
+          fields: ["team_id", "user_id"],
+        },
+      ],
     }
   );
+
   Member.belongsTo(UserModel(sequelize), { foreignKey: "user_id" });
   Member.hasMany(RequestsModel(sequelize), { foreignKey: "member_id" });
 

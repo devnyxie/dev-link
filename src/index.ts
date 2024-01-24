@@ -19,7 +19,7 @@ const port = process.env.PORT || 3000;
 // App Start
 app.listen(port, async () => {
   console.log(`[server]: Server is running at http://localhost:${port} ⚡`);
-  await handleGracefulShutdown(app, database);
+  // await handleGracefulShutdown(app, database);
 });
 // Routers
 //   - Teams Router
