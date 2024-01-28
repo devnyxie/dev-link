@@ -1,6 +1,9 @@
 # ----- Server -----
 FROM node:18.17.0 as build
 
+#enable yarn
+RUN corepack enable
+
 WORKDIR /base
 #copy monorepo package.json and yarn.lock
 COPY package.json .
