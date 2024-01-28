@@ -1,6 +1,5 @@
 {
   "name": "dev-link",
-  "packageManager": "yarn@4.0.2",
   "private": true,
   "workspaces": [
     "apps/*"
