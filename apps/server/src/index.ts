@@ -15,7 +15,7 @@ const app: Express = express();
 // Middleware
 app.use(bodyParser.json());
 // Port
-const port = process.env.PORT || 3000;
+const port = process.env.SERVER_PORT || 3000;
 // App Start
 app.listen(port, async () => {
   console.log(`[server]: Server is running at http://localhost:${port} ⚡`);
