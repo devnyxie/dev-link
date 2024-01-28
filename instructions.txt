@@ -1,0 +1,22 @@
+Locally, we need to start Docker image with Port arg.
+   Inside of a Dockerfile (if arg) then we pass variables from arg to env file.
+Remotely, we don't need to do such hustle.
+
+Set env variables:
+  export CLIENT_PORT=3000 && echo "CLIENT_PORT=$CLIENT_PORT" >> .env; export SERVER_PORT=8080 && echo "SERVER_PORT=$SERVER_PORT" >> .env
+  source ~/.bashrc
+Start docker:
+  systemctl start docker
+Docker-compose:
+  Build all:
+    docker-compose build
+  Run all:
+    docker-compose up
+
+
+client:
+  Build:
+    docker build -t client_docker .
+
+  Run:
+    docker run -p $CLIENT_PORT:80 client_docker .  
