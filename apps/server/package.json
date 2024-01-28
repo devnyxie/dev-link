@@ -1,7 +1,6 @@
 {
   "name": "server",
   "version": "0.1.0",
-  "packageManager": "yarn@4.0.2",
   "scripts": {
     "dev": "nodemon src/start.ts",
     "start": "ts-node src/start.ts"
