@@ -7,6 +7,7 @@
   ],
   "scripts": {
     "dev": "yarn workspace client dev & yarn workspace server dev",
-    "build": "docker-compose build && docker-compose up"
+    "build": "docker-compose build",
+    "start": "docker-compose up"
   }
 }
