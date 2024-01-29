@@ -48,8 +48,38 @@ const RequestsModel = (sequelize: Sequelize) => {
     },
     {
       timestamps: true,
+      indexes: [
+        {
+          unique: true,
+          fields: ["team_id", "user_id"],
+        },
+      ],
     }
   );
+  //
+  Request.beforeCreate(async (request, options) => {
+    const existingMember = await MembersModel(sequelize).findOne({
+      where: { team_id: request.team_id, user_id: request.user_id },
+    });
+
+    if (existingMember) {
+      throw new Error(
+        "User is already a member of the team and cannot create a request."
+      );
+    }
+  });
+
+  // Add a hook to limit users who are not members to only one request
+  Request.beforeCreate(async (request, options) => {
+    const existingRequest = await Request.findOne({
+      where: { team_id: request.team_id, user_id: request.user_id },
+    });
+
+    if (existingRequest) {
+      throw new Error("User has already created a request for this team.");
+    }
+  });
+  //
   Request.belongsTo(UserModel(sequelize), { foreignKey: "user_id" });
   return Request;
 };
