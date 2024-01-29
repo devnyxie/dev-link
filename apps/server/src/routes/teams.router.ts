@@ -21,7 +21,7 @@ teamsRouter.get("/api/teams", async (req: Request, res: Response) => {
             },
             {
               model: RequestModel,
-              attributes: ["id", "createdAt", "updatedAt"],
+              attributes: ["id", "accepted", "createdAt", "updatedAt"],
               include: [
                 {
                   model: User,

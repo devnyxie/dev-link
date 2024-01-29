@@ -6,6 +6,7 @@
   ],
   "scripts": {
     "dev": "yarn workspace client dev & yarn workspace server dev",
+    "client:dev": "yarn workspace client dev",
     "client:build": "yarn workspace client build",
     "client:start": "yarn workspace client start",
     "docker:build": "docker-compose build",
