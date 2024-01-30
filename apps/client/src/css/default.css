@@ -1,4 +1,8 @@
 /* Margin (start)*/
+.m-0 {
+  margin: 0;
+}
+
 .m-1 {
   margin: 0.25rem;
 }
@@ -79,6 +83,10 @@
   margin-top: 3rem;
 }
 
+.mb-0 {
+  margin-bottom: 0;
+}
+
 .mb-1 {
   margin-bottom: 0.25rem;
 }
@@ -101,6 +109,10 @@
 /* Margin (end)*/
 
 /* Padding (start)*/
+.p-0 {
+  padding: 0 !important;
+}
+
 .p-1 {
   padding: 0.25rem;
 }
@@ -180,6 +192,10 @@
   padding-top: 3rem;
 }
 
+.pb-0 {
+  padding-bottom: 0;
+}
+
 .pb-1 {
   padding-bottom: 0.25rem;
 }
@@ -217,4 +233,17 @@
 /* Colors */
 .terminal-green {
   color: #4af626;
+}
+
+/* Flex */
+.d-flex {
+  display: flex;
+}
+
+.justify-content-center {
+  justify-content: center;
+}
+
+.align-items-center {
+  align-items: center;
 }
