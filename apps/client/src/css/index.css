@@ -14,6 +14,10 @@
   -moz-osx-font-smoothing: grayscale;
 }
 
+html {
+  scroll-behavior: smooth;
+}
+
 .text-monospace {
   font-family: "Red Hat Mono", monospace;
 }
@@ -33,4 +37,18 @@
   position: -webkit-sticky;
   position: sticky;
   top: 0;
+}
+
+/* .MuiFormControl-root.MuiTextField-root:hover {
+  border-color: transparent;
+}
+
+.MuiFormControl-root.MuiTextField-root:hover {
+  border-width: 1px;
+  border-color: transparent;
+} */
+
+.css-152n16g-MuiInputBase-root-MuiOutlinedInput-root:hover
+  .MuiOutlinedInput-notchedOutline {
+  /* border-color: gray !important; */
 }
