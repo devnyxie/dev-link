@@ -22,19 +22,6 @@ html {
   font-family: "Red Hat Mono", monospace;
 }
 
-.widget {
-  background: rgba(24, 24, 24, 0.77);
-  border-radius: var(--border-radius);
-  box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
-  backdrop-filter: blur(4px);
-  -webkit-backdrop-filter: blur(6.5px);
-  border: 1px solid rgba(24, 24, 24, 0.3);
-}
-
-/* --- Default classes --- */
-
-.sticky-top {
-  position: -webkit-sticky;
-  position: sticky;
-  top: 0;
+* {
+  transition: background 0.25s ease-in-out, border 0.25s ease-in-out;
 }

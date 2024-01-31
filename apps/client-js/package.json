@@ -1,19 +1,22 @@
 {
-  "name": "client",
+  "name": "client-js",
+  "author": "devnyxie",
   "private": true,
   "version": "0.1.0",
   "type": "module",
   "scripts": {
     "dev": "vite",
-    "build": "tsc && vite build",
+    "build": "vite build",
     "start": "npx http-server ./dist",
-    "lint": "eslint . --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
+    "lint": "eslint . --ext js,jsx --report-unused-disable-directives --max-warnings 0",
     "preview": "vite preview"
   },
   "dependencies": {
     "@emotion/react": "^11.11.3",
     "@emotion/styled": "^11.11.0",
+    "@fontsource/inter": "^5.0.16",
     "@mui/icons-material": "^5.15.6",
+    "@mui/joy": "^5.0.0-beta.24",
     "@mui/material": "^5.15.6",
     "@reduxjs/toolkit": "^2.1.0",
     "@types/react-redux": "^7.1.33",
@@ -25,16 +28,11 @@
   "devDependencies": {
     "@types/react": "^18.2.43",
     "@types/react-dom": "^18.2.17",
-    "@typescript-eslint/eslint-plugin": "^6.14.0",
-    "@typescript-eslint/parser": "^6.14.0",
     "@vitejs/plugin-react-swc": "^3.5.0",
     "eslint": "^8.55.0",
+    "eslint-plugin-react": "^7.33.2",
     "eslint-plugin-react-hooks": "^4.6.0",
     "eslint-plugin-react-refresh": "^0.4.5",
-    "serve": "^14.2.1",
-    "typescript": "^5.2.2",
     "vite": "^5.0.8"
-  },
-  "main": "src/main.tsx",
-  "author": "devnyxie"
+  }
 }

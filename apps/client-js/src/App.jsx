@@ -1,13 +1,12 @@
-import React, { useState } from "react";
-import { Grid } from "@mui/material";
+import { useState } from "react";
 import Container from "./components/Container";
-import Box from "@mui/material/Box";
-import DemoPosts from "./components/DemoPosts";
+import { Box } from "@mui/joy";
 import Sidebar from "./components/Sidebar";
-
+import DemoPosts from "./components/DemoPosts";
+import Grid from "@mui/joy/Grid";
 function App() {
   return (
-    <Container>
+    <>
       <Grid container spacing={1}>
         <Sidebar />
         <Grid item xs={12} md={8}>
@@ -16,7 +15,7 @@ function App() {
           </Box>
         </Grid>
       </Grid>
-    </Container>
+    </>
   );
 }
 
