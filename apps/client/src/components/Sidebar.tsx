@@ -1,23 +1,11 @@
-import {
-  Box,
-  Button,
-  ButtonGroup,
-  Divider,
-  Grid,
-  IconButton,
-  List,
-  ListItem,
-  ListItemButton,
-  ListItemIcon,
-  ListItemText,
-  TextField,
-} from "@mui/material";
+import { Box, Button, Grid } from "@mui/material";
 import React from "react";
 import NotificationsIcon from "@mui/icons-material/Notifications";
 import BookmarksIcon from "@mui/icons-material/Bookmarks";
 import TuneIcon from "@mui/icons-material/Tune";
 import SearchBar, { RedditTextField } from "./SearchBar";
 import { themeOptions } from "./Theme";
+import ThemeToggler from "./ThemeToggler";
 
 function Sidebar() {
   const buttons = [
@@ -42,18 +30,24 @@ function Sidebar() {
           >
             <span>dev-link$~/home</span>
           </Box>
-
-          <Divider />
-
           <SearchBar />
           {/* --------------- */}
           {buttons.map((button) => {
             return (
               <Button
                 className="w-100"
-                color="secondary"
+                color="primary"
                 startIcon={button.icon}
                 style={{ justifyContent: "start", textTransform: "none" }}
+                sx={{
+                  // color: themeOptions.palette.primary.contrastText,
+                  ":hover": {
+                    bgcolor: themeOptions.palette.primary.dark,
+                    // bgcolor: "transparent",
+                    // border: "1px solid " + themeOptions.palette.primary.dark,
+                    // color: "white",
+                  },
+                }}
               >
                 {button.label}
               </Button>
