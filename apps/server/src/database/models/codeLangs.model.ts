@@ -4,24 +4,20 @@ import UserModel from "./user.model";
 import MembersModel from "./members.model";
 import { Team } from "../db";
 
-interface ProgrammingLanguagesAttributes {
+interface CodeLangsAttributes {
   id: string;
   name: string;
 }
 
-interface ProgrammingLanguagesCreationAttributes
-  extends ProgrammingLanguagesAttributes {}
+interface CodeLangsCreationAttributes extends CodeLangsAttributes {}
 
-export interface ProgrammingLanguagesInstance
-  extends Model<
-      ProgrammingLanguagesAttributes,
-      ProgrammingLanguagesCreationAttributes
-    >,
-    ProgrammingLanguagesAttributes {}
+export interface CodeLangsInstance
+  extends Model<CodeLangsAttributes, CodeLangsCreationAttributes>,
+    CodeLangsAttributes {}
 
-const ProgrammingLanguagesModel = (sequelize: Sequelize) => {
-  const Language = sequelize.define<ProgrammingLanguagesInstance>(
-    "ProgrammingLanguages",
+const CodeLangsModel = (sequelize: Sequelize) => {
+  const Language = sequelize.define<CodeLangsInstance>(
+    "CodeLangs",
     {
       id: {
         allowNull: false,
@@ -42,4 +38,4 @@ const ProgrammingLanguagesModel = (sequelize: Sequelize) => {
   return Language;
 };
 
-export default ProgrammingLanguagesModel;
+export default CodeLangsModel;

@@ -3,7 +3,7 @@ import UserModel from "./models/user.model"; // Assuming UserModel is the export
 import TeamModel from "./models/team.model";
 import MembersModel from "./models/members.model";
 import RequestsModel from "./models/requests.model";
-import ProgrammingLanguagesModel from "./models/programmingLanguages.model";
+import CodeLangsModel from "./models/codeLangs.model";
 
 async function syncDatabase(database: Sequelize) {
   try {
@@ -34,18 +34,18 @@ syncDatabase(sequelize);
 // associations
 
 // export
-export const { database, User, Team, Member, Request, ProgrammingLanguages } = {
+export const { database, User, Team, Member, Request, CodeLangs } = {
   database: sequelize,
   User: UserModel(sequelize),
   Team: TeamModel(sequelize),
   Member: MembersModel(sequelize),
   Request: RequestsModel(sequelize),
-  ProgrammingLanguages: ProgrammingLanguagesModel(sequelize),
+  CodeLangs: CodeLangsModel(sequelize),
 };
 
-Team.belongsToMany(ProgrammingLanguages, {
-  through: "TeamLanguages",
+Team.belongsToMany(CodeLangs, {
+  through: "TeamCodeLanguages",
 });
-ProgrammingLanguages.belongsToMany(Team, {
-  through: "TeamLanguages",
+CodeLangs.belongsToMany(Team, {
+  through: "TeamCodeLanguages",
 });
