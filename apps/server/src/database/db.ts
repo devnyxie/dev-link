@@ -31,7 +31,6 @@ if (!process.env.DB_URL) {
 const sequelize: Sequelize = new Sequelize(process.env.DB_URL);
 // test
 syncDatabase(sequelize);
-// associations
 
 // export
 export const { database, User, Team, Member, Request, CodeLangs } = {
@@ -43,9 +42,12 @@ export const { database, User, Team, Member, Request, CodeLangs } = {
   CodeLangs: CodeLangsModel(sequelize),
 };
 
+// --- associtaions ---
+//Team
 Team.belongsToMany(CodeLangs, {
   through: "TeamCodeLanguages",
 });
+//CodeLangs
 CodeLangs.belongsToMany(Team, {
   through: "TeamCodeLanguages",
 });

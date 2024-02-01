@@ -32,8 +32,6 @@ import { useSelector } from "react-redux";
 
 function Sidebar() {
   const user = useSelector(selectUser);
-  // const dispatch = useDispatch();
-  // const user = dispatch(selectUser());
   useEffect(() => {
     console.log(user);
   });
@@ -42,6 +40,8 @@ function Sidebar() {
     { icon: <BookmarksIcon />, label: "Bookmarks" },
     { icon: <TuneIcon />, label: "Settings" },
   ];
+  console.log("change");
+
   return (
     <Grid item xs={12} md={4}>
       <div className="sticky-top pt-3">
@@ -63,9 +63,10 @@ function Sidebar() {
               </Button>
             </ListItem>
             <Divider sx={{ mt: 1, mb: 1 }} />
-            {buttons.map((button) => {
+            {buttons.map((button, index) => {
               return (
                 <ListItem
+                  key={index}
                   style={{
                     justifyContent: "start",
                     textTransform: "none",

@@ -2,8 +2,6 @@
 import CssBaseline from "@mui/joy/CssBaseline";
 import { ThemeProvider, createTheme } from "@mui/material";
 import { Container as MUIContainer } from "@mui/material";
-import { useSelector } from "react-redux";
-import { selectTheme } from "../redux/slices/theme.slice";
 import { CssVarsProvider, extendTheme } from "@mui/joy/styles";
 
 function Container({ children }) {
@@ -119,10 +117,8 @@ function Container({ children }) {
   return (
     <>
       <CssVarsProvider>
-        {/* <ThemeProvider theme={themeOpts}> */}
         <CssBaseline />
         <MUIContainer maxWidth="md"> {children}</MUIContainer>
-        {/* </ThemeProvider> */}
       </CssVarsProvider>
     </>
   );
