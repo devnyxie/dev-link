@@ -3,6 +3,7 @@ import UserModel from "./models/user.model"; // Assuming UserModel is the export
 import TeamModel from "./models/team.model";
 import MembersModel from "./models/members.model";
 import RequestsModel from "./models/requests.model";
+import LanguagesModel from "./models/languages.model";
 
 async function syncDatabase(database: Sequelize) {
   try {
@@ -30,11 +31,19 @@ if (!process.env.DB_URL) {
 const sequelize: Sequelize = new Sequelize(process.env.DB_URL);
 // test
 syncDatabase(sequelize);
+// associations
+// LanguagesModel(sequelize).belongsToMany(TeamModel(sequelize), {
+//   through: "TeamLanguages",
+// });
+// TeamModel(sequelize).belongsToMany(LanguagesModel(sequelize), {
+//   through: "TeamLanguages",
+// });
 // export
-export const { database, User, Team, Member, Request } = {
+export const { database, User, Team, Member, Request, Languages } = {
   database: sequelize,
   User: UserModel(sequelize),
   Team: TeamModel(sequelize),
   Member: MembersModel(sequelize),
   Request: RequestsModel(sequelize),
+  Languages: LanguagesModel(sequelize),
 };

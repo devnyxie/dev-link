@@ -1,4 +1,4 @@
-import { DataTypes, Model, Sequelize } from "sequelize";
+import { DataTypes, Model, Sequelize, Op } from "sequelize";
 import TeamModel from "./team.model";
 import UserModel from "./user.model";
 import RequestsModel from "./requests.model";
@@ -47,6 +47,11 @@ const MembersModel = (sequelize: Sequelize) => {
         {
           unique: true,
           fields: ["team_id", "user_id"],
+          where: {
+            user_id: {
+              [Op.ne]: null,
+            },
+          },
         },
       ],
     }

@@ -1,6 +1,6 @@
 import React from "react";
 import { useDispatch } from "react-redux";
-import { ThemeProvider, createTheme, useTheme } from "@mui/material";
+
 import App from "../App";
 import { useSelector } from "react-redux";
 import { toggle } from "../redux/slices/theme.slice";
@@ -9,18 +9,50 @@ import Button from "@mui/joy/Button";
 import DarkModeOutlinedIcon from "@mui/icons-material/DarkModeOutlined";
 import LightModeOutlinedIcon from "@mui/icons-material/LightModeOutlined";
 import { Padding } from "@mui/icons-material";
+import { Dropdown, Menu, MenuButton, MenuItem, Sheet } from "@mui/joy";
 function ThemeToggler() {
   const { mode, setMode } = useColorScheme();
 
   return (
-    <Button
+    <Sheet
       variant="outlined"
-      color="neutral"
-      onClick={() => setMode(mode === "dark" ? "light" : "dark")}
-      sx={{ padding: "5px", aspectRatio: "1/1" }}
+      sx={{
+        borderRadius: "var(--joy-radius-sm)",
+        marginLeft: "5px",
+        overflow: "hidden",
+      }}
     >
-      {mode === "dark" ? <LightModeOutlinedIcon /> : <DarkModeOutlinedIcon />}
-    </Button>
+      <Button
+        variant="outlined"
+        color="neutral"
+        onClick={() => setMode(mode === "dark" ? "light" : "dark")}
+        sx={{
+          padding: "5px",
+          aspectRatio: "1/1",
+          backgroundColor: "transparent",
+          border: "none",
+          flexGrow: 1,
+          maxWidth: "40px",
+          borderRadius: 0,
+        }}
+      >
+        {mode === "dark" ? <LightModeOutlinedIcon /> : <DarkModeOutlinedIcon />}
+      </Button>
+      {/* <Dropdown>
+        <MenuButton>
+          {mode === "dark" ? (
+            <LightModeOutlinedIcon />
+          ) : (
+            <DarkModeOutlinedIcon />
+          )}
+        </MenuButton>
+        <Menu>
+          <MenuItem>Profile</MenuItem>
+          <MenuItem>My account</MenuItem>
+          <MenuItem>Logout</MenuItem>
+        </Menu>
+      </Dropdown> */}
+    </Sheet>
   );
 }
 
