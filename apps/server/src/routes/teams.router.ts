@@ -6,7 +6,7 @@ import {
   User,
   database,
 } from "../database/db";
-import { ProgrammingLanguages } from "../database/db";
+import { CodeLangs } from "../database/db";
 
 const teamsRouter = express.Router();
 
@@ -34,7 +34,7 @@ teamsRouter.get("/api/teams", async (req: Request, res: Response) => {
           ],
         },
         {
-          model: ProgrammingLanguages,
+          model: CodeLangs,
           // as: "teamLanguages",
           through: { attributes: [] },
         },
@@ -79,7 +79,7 @@ teamsRouter.post("/api/teams", async (req: Request, res: Response) => {
           console.log("Creating languages...");
           const languageInstances = await Promise.all(
             requested_languages.map((name: string) =>
-              ProgrammingLanguages.findOrCreate({
+              CodeLangs.findOrCreate({
                 where: { name },
                 transaction: t,
               })
@@ -93,7 +93,7 @@ teamsRouter.post("/api/teams", async (req: Request, res: Response) => {
           // Add the languages to the team
           console.log("Adding languages to team...");
           try {
-            await team.addProgrammingLanguages(languageIds, { transaction: t });
+            await team.addCodeLangs(languageIds, { transaction: t });
           } catch (error) {
             console.log(error);
           }
