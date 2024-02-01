@@ -11,7 +11,6 @@ function App() {
   return (
     <>
       <Grid container spacing={1}>
-        <Sidebar />
         <Grid item xs={12} md={8}>
           <Box className="pt-3" sx={{ borderColor: "secondary.main" }}>
             <Box className="d-flex" sx={{ pb: 1 }}>
@@ -21,6 +20,7 @@ function App() {
             <DemoPosts />
           </Box>
         </Grid>
+        <Sidebar />
       </Grid>
     </>
   );
