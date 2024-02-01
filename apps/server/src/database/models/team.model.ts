@@ -3,7 +3,9 @@ import bcrypt from "bcrypt";
 import MembersModel from "./members.model";
 import UserModel from "./user.model";
 import RequestsModel from "./requests.model";
-import LanguagesModel, { LanguagesInstance } from "./languages.model";
+import ProgrammingLanguagesModel, {
+  ProgrammingLanguagesInstance,
+} from "./programmingLanguages.model";
 import { BelongsToManyAddAssociationsMixin } from "sequelize/types";
 
 interface TeamAttributes {
@@ -19,9 +21,9 @@ interface TeamCreationAttributes extends TeamAttributes {}
 interface TeamInstance
   extends Model<TeamAttributes, TeamCreationAttributes>,
     TeamAttributes {
-  addLanguages: BelongsToManyAddAssociationsMixin<
-    LanguagesInstance,
-    LanguagesInstance["id"]
+  addProgrammingLanguages: BelongsToManyAddAssociationsMixin<
+    ProgrammingLanguagesInstance,
+    ProgrammingLanguagesInstance["id"]
   >;
 }
 
@@ -63,8 +65,6 @@ const TeamModel = (sequelize: Sequelize) => {
     Team.hasMany(RequestsModel(sequelize), { foreignKey: "team_id" });
     Team.belongsTo(UserModel(sequelize), { foreignKey: "creator_id" });
     //
-    Team.belongsToMany(LanguagesModel(sequelize), { through: "TeamLanguages" });
-    LanguagesModel(sequelize).belongsToMany(Team, { through: "TeamLanguages" });
   } catch (error) {
     console.log(error);
   }

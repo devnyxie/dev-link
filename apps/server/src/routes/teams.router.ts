@@ -1,12 +1,13 @@
 import express, { Express, Request, Response } from "express";
 import {
-  Languages,
   Member,
   Request as RequestModel,
   Team,
   User,
   database,
 } from "../database/db";
+import { ProgrammingLanguages } from "../database/db";
+
 const teamsRouter = express.Router();
 
 teamsRouter.get("/api/teams", async (req: Request, res: Response) => {
@@ -33,11 +34,12 @@ teamsRouter.get("/api/teams", async (req: Request, res: Response) => {
           ],
         },
         {
-          model: Languages,
+          model: ProgrammingLanguages,
           // as: "teamLanguages",
           through: { attributes: [] },
         },
       ],
+      order: [["createdAt", "DESC"]],
     });
     res.status(200).json(teams);
   } catch (error) {
@@ -77,7 +79,10 @@ teamsRouter.post("/api/teams", async (req: Request, res: Response) => {
           console.log("Creating languages...");
           const languageInstances = await Promise.all(
             requested_languages.map((name: string) =>
-              Languages.findOrCreate({ where: { name }, transaction: t })
+              ProgrammingLanguages.findOrCreate({
+                where: { name },
+                transaction: t,
+              })
             )
           );
           // mapping ids of created languages
@@ -88,7 +93,7 @@ teamsRouter.post("/api/teams", async (req: Request, res: Response) => {
           // Add the languages to the team
           console.log("Adding languages to team...");
           try {
-            await team.addLanguages(languageIds, { transaction: t });
+            await team.addProgrammingLanguages(languageIds, { transaction: t });
           } catch (error) {
             console.log(error);
           }
