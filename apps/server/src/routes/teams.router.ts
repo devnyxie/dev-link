@@ -77,25 +77,28 @@ teamsRouter.post("/api/teams", async (req: Request, res: Response) => {
         if (requested_languages && requested_languages.length > 0) {
           // create languages
           console.log("Creating languages...");
-          const languageInstances = await Promise.all(
-            requested_languages.map((name: string) =>
-              CodeLangs.findOrCreate({
-                where: { name },
-                transaction: t,
-              })
-            )
-          );
-          // mapping ids of created languages
-          const languageIds = languageInstances.map(
-            ([language]) => language.id
-          );
-
-          // Add the languages to the team
-          console.log("Adding languages to team...");
           try {
+            const languages = requested_languages.map((name: string) => ({
+              name,
+            }));
+            const languageInstances = await CodeLangs.bulkCreate(languages, {
+              updateOnDuplicate: ["name"],
+              transaction: t,
+            });
+            // mapping ids of created languages
+            console.log(languageInstances);
+            const languageIds = languageInstances.map(
+              (language) => language.id
+            );
+            console.log(languageIds);
+
+            // Add the languages to the team
+            console.log("Adding languages to team...");
+
             await team.addCodeLangs(languageIds, { transaction: t });
           } catch (error) {
             console.log(error);
+            throw new Error();
           }
         }
 
