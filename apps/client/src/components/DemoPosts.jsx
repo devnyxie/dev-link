@@ -16,15 +16,33 @@ import {
   Chip,
 } from "@mui/joy";
 
-import React from "react";
+import React, { useEffect } from "react";
 import TranslateIcon from "@mui/icons-material/Translate";
 import ForumIcon from "@mui/icons-material/Forum";
 import GroupIcon from "@mui/icons-material/Group";
 import { FavoriteBorder, FavoriteBorderOutlined } from "@mui/icons-material";
 import PositionedMenu from "./PositionedMenu";
 import { Box } from "@mui/material";
+import { useDispatch } from "react-redux";
+import { useSelector } from "react-redux";
+import { fetchTeam } from "../redux/slices/teams.slice";
 
 function DemoPosts() {
+  const dispatch = useDispatch();
+  const { teams, loading, error } = useSelector((state) => state.teams);
+  console.log("change");
+  useEffect(() => {
+    dispatch(fetchTeam());
+  }, [dispatch]);
+
+  if (loading) {
+    return <div>Loading...</div>;
+  }
+
+  if (error) {
+    return <div>Error: {error}</div>;
+  }
+
   const card = (
     <React.Fragment>
       <CardContent style={{ paddingBottom: 0 }}>
@@ -60,9 +78,9 @@ function DemoPosts() {
                 let chips = [];
                 content.forEach((element) => {
                   console.log(element);
-                  // chips.push(<div>{element}</div>);
                   chips.push(
                     <Chip
+                      key={element}
                       color="primary"
                       variant="outlined"
                       sx={{ mr: "3px", mb: "3px" }}
@@ -95,9 +113,9 @@ function DemoPosts() {
             }
             return (
               <Grid
+                key={itemName}
                 item
                 xs={12}
-                // sx={{ textAlign: "start" }}
                 sx={{
                   display: "flex",
                   alignItems: "start",
@@ -108,8 +126,6 @@ function DemoPosts() {
                 <Box sx={{ mr: 1, display: "flex", alignItems: "center" }}>
                   {icon}
                 </Box>
-                {/* {content} */}
-
                 {renderText()}
               </Grid>
             );
@@ -141,7 +157,7 @@ function DemoPosts() {
 
     for (let i = 0; i < 20; i++) {
       posts.push(
-        <Card variant="outlined" className="mb-2">
+        <Card key={i} variant="outlined" className="mb-2">
           {card}
         </Card>
       );
@@ -150,12 +166,7 @@ function DemoPosts() {
     return posts;
   };
 
-  return (
-    <>
-      {renderPosts()}
-      {/* <Pagination count={10} variant="outlined" /> */}
-    </>
-  );
+  return <>{renderPosts()}</>;
 }
 
 export default DemoPosts;

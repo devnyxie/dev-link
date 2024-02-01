@@ -1,15 +1,9 @@
 import React from "react";
-import { useDispatch } from "react-redux";
-
-import App from "../App";
-import { useSelector } from "react-redux";
-import { toggle } from "../redux/slices/theme.slice";
 import { useColorScheme } from "@mui/joy/styles";
 import Button from "@mui/joy/Button";
 import DarkModeOutlinedIcon from "@mui/icons-material/DarkModeOutlined";
 import LightModeOutlinedIcon from "@mui/icons-material/LightModeOutlined";
-import { Padding } from "@mui/icons-material";
-import { Dropdown, Menu, MenuButton, MenuItem, Sheet } from "@mui/joy";
+import { Sheet } from "@mui/joy";
 function ThemeToggler() {
   const { mode, setMode } = useColorScheme();
 
