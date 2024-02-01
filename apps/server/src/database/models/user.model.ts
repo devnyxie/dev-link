@@ -30,7 +30,6 @@ const UserModel = (sequelize: Sequelize) => {
       },
       gh_id: {
         allowNull: true,
-        primaryKey: true,
         type: DataTypes.STRING,
         unique: true,
       },

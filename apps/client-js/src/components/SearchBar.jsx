@@ -1,29 +1,24 @@
-import { Box, InputAdornment } from "@mui/material";
 import React from "react";
-import { alpha, styled } from "@mui/material/styles";
-import TextField from "@mui/material/TextField";
-import { useTheme } from "@emotion/react";
+import { Textarea } from "@mui/joy";
 
 function SearchBar() {
-  const theme = useTheme();
-  const style = {
-    "&:hover fieldset": {
-      borderColor: theme.palette.primary.main + "!important", // doesnt work
-    },
-  };
+  // const style = {
+  //   "&:hover fieldset": {
+  //     borderColor: theme.palette.primary.main + "!important", // doesnt work
+  //   },
+  // };
   return (
     <div
-      className="pt-2 pb-2 "
       style={{
         zIndex: "2",
+        flexGrow: 1,
       }}
     >
-      <TextField
-        sx={style}
-        id="outlined-basic"
+      <Textarea
+        name="Neutral"
+        placeholder="Type in here…"
         variant="outlined"
-        placeholder="Search"
-        className="w-100"
+        color="neutral"
       />
     </div>
   );

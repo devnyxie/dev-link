@@ -3,19 +3,27 @@ import bcrypt from "bcrypt";
 import MembersModel from "./members.model";
 import UserModel from "./user.model";
 import RequestsModel from "./requests.model";
+import LanguagesModel, { LanguagesInstance } from "./languages.model";
+import { BelongsToManyAddAssociationsMixin } from "sequelize/types";
 
 interface TeamAttributes {
   id: string;
   creator_id: string;
   name: string;
   description: string;
+  // languages: Array<string>;
 }
 
 interface TeamCreationAttributes extends TeamAttributes {}
 
 interface TeamInstance
   extends Model<TeamAttributes, TeamCreationAttributes>,
-    TeamAttributes {}
+    TeamAttributes {
+  addLanguages: BelongsToManyAddAssociationsMixin<
+    LanguagesInstance,
+    LanguagesInstance["id"]
+  >;
+}
 
 const TeamModel = (sequelize: Sequelize) => {
   const Team = sequelize.define<TeamInstance>(
@@ -41,6 +49,10 @@ const TeamModel = (sequelize: Sequelize) => {
         allowNull: true,
         type: DataTypes.STRING,
       },
+      // languages: {
+      //   allowNull: true,
+      //   type: DataTypes.ARRAY(DataTypes.STRING),
+      // },
     },
     {
       timestamps: true,
@@ -50,6 +62,9 @@ const TeamModel = (sequelize: Sequelize) => {
     Team.hasMany(MembersModel(sequelize), { foreignKey: "team_id" });
     Team.hasMany(RequestsModel(sequelize), { foreignKey: "team_id" });
     Team.belongsTo(UserModel(sequelize), { foreignKey: "creator_id" });
+    //
+    Team.belongsToMany(LanguagesModel(sequelize), { through: "TeamLanguages" });
+    LanguagesModel(sequelize).belongsToMany(Team, { through: "TeamLanguages" });
   } catch (error) {
     console.log(error);
   }

@@ -21,7 +21,3 @@ html {
 .text-monospace {
   font-family: "Red Hat Mono", monospace;
 }
-
-* {
-  transition: background 0.25s ease-in-out, border 0.25s ease-in-out;
-}

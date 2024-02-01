@@ -1,10 +1,7 @@
-import React from "react";
+import React, { useEffect } from "react";
 import NotificationsIcon from "@mui/icons-material/Notifications";
 import BookmarksIcon from "@mui/icons-material/Bookmarks";
 import TuneIcon from "@mui/icons-material/Tune";
-// import SearchBar from "./SearchBar";
-import ThemeToggler from "./ThemeToggler";
-import { useTheme } from "@emotion/react";
 import {
   Button,
   Box,
@@ -20,11 +17,26 @@ import {
   Sheet,
   Link,
   Divider,
+  Dropdown,
+  MenuButton,
+  Menu,
+  MenuItem,
+  IconButton,
 } from "@mui/joy";
 import "../css/default.css";
 import GitHubIcon from "@mui/icons-material/GitHub";
+import { MoreVertOutlined } from "@mui/icons-material";
+import { useDispatch } from "react-redux";
+import { selectUser } from "../redux/slices/user.slice";
+import { useSelector } from "react-redux";
 
 function Sidebar() {
+  const user = useSelector(selectUser);
+  // const dispatch = useDispatch();
+  // const user = dispatch(selectUser());
+  useEffect(() => {
+    console.log(user);
+  });
   const buttons = [
     { icon: <NotificationsIcon />, label: "Notifications" },
     { icon: <BookmarksIcon />, label: "Bookmarks" },
@@ -33,8 +45,6 @@ function Sidebar() {
   return (
     <Grid item xs={12} md={4}>
       <div className="sticky-top pt-3">
-        {/* <SearchBar /> */}
-
         <Sheet
           variant="outlined"
           sx={{ borderRadius: "var(--joy-radius-sm)" }}
@@ -77,13 +87,24 @@ function Sidebar() {
                 <Avatar variant="outlined" className="mr-2">
                   JK
                 </Avatar>
-                <div>
+                <div style={{ textAlign: "left" }}>
                   <Typography sx={{ fontSize: 12 }}>@joecole</Typography>
                   <Typography sx={{ fontSize: 14 }}>Joe Cole</Typography>
                 </div>
               </div>
-
-              <ThemeToggler />
+              <Dropdown>
+                <MenuButton
+                  slots={{ root: IconButton }}
+                  slotProps={{
+                    root: { variant: "outlined", color: "neutral" },
+                  }}
+                >
+                  <MoreVertOutlined />
+                </MenuButton>
+                <Menu>
+                  <MenuItem>Logout</MenuItem>
+                </Menu>
+              </Dropdown>
             </ListItem>
           </List>
         </Sheet>

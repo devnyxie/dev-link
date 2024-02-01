@@ -11,6 +11,9 @@ import {
   CardActions,
   ListItemDecorator,
   ListItemContent,
+  Grid,
+  Sheet,
+  Chip,
 } from "@mui/joy";
 
 import React from "react";
@@ -19,7 +22,7 @@ import ForumIcon from "@mui/icons-material/Forum";
 import GroupIcon from "@mui/icons-material/Group";
 import { FavoriteBorder, FavoriteBorderOutlined } from "@mui/icons-material";
 import PositionedMenu from "./PositionedMenu";
-import { Pagination } from "@mui/material";
+import { Box } from "@mui/material";
 
 function DemoPosts() {
   const card = (
@@ -46,50 +49,72 @@ function DemoPosts() {
           <PositionedMenu />
         </IconButton>
       </CardContent>
-      <Divider />
+      {/* <Divider /> */}
       <CardContent style={{ padding: 0 }}>
-        <List
-          dense={true}
-          orientation="horizontal"
-          // variant="outlined"
-          sx={{
-            flexGrow: 0,
-            mx: "auto",
-          }}
-          className=""
-        >
+        <Grid container spacing={2} sx={{ display: "flex" }}>
           {["Capacity", "Communication", "Language"].map((itemName) => {
             let icon;
-            let text;
+            let content;
+            function renderText() {
+              if (Array.isArray(content)) {
+                let chips = [];
+                content.forEach((element) => {
+                  console.log(element);
+                  // chips.push(<div>{element}</div>);
+                  chips.push(
+                    <Chip
+                      color="primary"
+                      variant="outlined"
+                      sx={{ mr: "3px", mb: "3px" }}
+                    >
+                      {element}
+                    </Chip>
+                  );
+                });
+                return chips;
+              } else {
+                return content;
+              }
+            }
             switch (itemName) {
               case "Capacity":
                 icon = <GroupIcon />;
-                text = "0/5";
+                content = "0/5";
                 break;
               case "Communication":
                 icon = <ForumIcon />;
-                text = "WeChat";
+                content = ["WeChat", "Discord"];
                 break;
               case "Language":
                 icon = <TranslateIcon />;
-                text = "English, Chinese";
+                content = ["English", "Chinese"];
                 break;
               default:
-                text = "...";
+                content = "?";
                 break;
             }
             return (
-              // <ListItem key={itemName}>
-              //   {icon && <ListItemDecorator>{icon}</ListItemDecorator>}
-              //   <ListItemContent>{text}</ListItemContent>
-              // </ListItem>
-              <ListItem>
-                <ListItemDecorator>{icon}</ListItemDecorator>
-                {text}
-              </ListItem>
+              <Grid
+                item
+                xs={12}
+                // sx={{ textAlign: "start" }}
+                sx={{
+                  display: "flex",
+                  alignItems: "start",
+                  justifyContent: "start",
+                  flexWrap: "wrap",
+                }}
+              >
+                <Box sx={{ mr: 1, display: "flex", alignItems: "center" }}>
+                  {icon}
+                </Box>
+                {/* {content} */}
+
+                {renderText()}
+              </Grid>
             );
           })}
-        </List>
+        </Grid>
       </CardContent>
       <Divider />
       <div className="w-100 d-flex" style={{ justifyContent: "end" }}>
@@ -128,7 +153,7 @@ function DemoPosts() {
   return (
     <>
       {renderPosts()}
-      <Pagination count={10} variant="outlined" />
+      {/* <Pagination count={10} variant="outlined" /> */}
     </>
   );
 }
