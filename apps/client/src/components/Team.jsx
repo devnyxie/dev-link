@@ -120,7 +120,7 @@ const Team = ({ team }) => {
                                         })}
                                 </Grid>
             </CardContent> */}
-      {team.programming_languages.length > 0 ? (
+      {team.codeLangs.length > 0 ? (
         <Box
           sx={{
             display: "flex",
@@ -130,7 +130,7 @@ const Team = ({ team }) => {
           }}
         >
           <CodeOutlinedIcon sx={{ mr: 1 }} />
-          {team.programming_languages.map((lang) => {
+          {team.codeLangs.map((lang) => {
             console.log(lang);
             return (
               <Chip

@@ -44,7 +44,7 @@ teamsRouter.get("/api/teams", async (req: Request, res: Response) => {
           // as: "teamLanguages",1
           attributes: ["name"],
           through: { attributes: [] },
-          as: "programming_languages", // Change column name to "programming_languages"
+          as: "codeLangs", // Change column name to "programming_languages"
         },
       ],
       order: [["createdAt", "DESC"]],

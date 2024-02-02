@@ -9,9 +9,7 @@ import "./css/index.css";
 ReactDOM.createRoot(document.getElementById("root")).render(
   <React.StrictMode>
     <Provider store={store}>
-      <Container>
-        <App />
-      </Container>
+      <App />
     </Provider>
   </React.StrictMode>
 );

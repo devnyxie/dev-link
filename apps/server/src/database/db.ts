@@ -46,7 +46,7 @@ export const { database, User, Team, Member, Request, CodeLangs } = {
 //Teams
 Team.belongsToMany(CodeLangs, {
   through: "TeamCodeLanguages",
-  as: "programming_languages",
+  as: "codeLangs",
 });
 Team.belongsTo(User, {
   foreignKey: "creator_id",

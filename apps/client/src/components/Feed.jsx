@@ -1,11 +1,11 @@
 import React, { useEffect } from "react";
 import { FavoriteBorder, FavoriteBorderOutlined } from "@mui/icons-material";
 import PositionedMenu from "./PositionedMenu";
-import { Box } from "@mui/material";
 import { useDispatch } from "react-redux";
 import { useSelector } from "react-redux";
 import { fetchTeam } from "../redux/slices/teams.slice";
 import Team from "./Team";
+import { Box } from "@mui/joy";
 
 function Feed() {
   const dispatch = useDispatch();
@@ -23,7 +23,7 @@ function Feed() {
     return <div>Error: {error}</div>;
   }
   return (
-    <>
+    <Box sx={{ pt: 2, pb: 2 }}>
       {teams && teams.length ? (
         <>
           {teams.map((team) => {
@@ -33,7 +33,7 @@ function Feed() {
       ) : (
         <></>
       )}
-    </>
+    </Box>
   );
 }
 
