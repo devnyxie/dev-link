@@ -43,11 +43,21 @@ export const { database, User, Team, Member, Request, CodeLangs } = {
 };
 
 // --- associtaions ---
-//Team
+//Teams
 Team.belongsToMany(CodeLangs, {
   through: "TeamCodeLanguages",
+  as: "programming_languages",
+});
+Team.belongsTo(User, {
+  foreignKey: "creator_id",
+  as: "creator",
 });
 //CodeLangs
 CodeLangs.belongsToMany(Team, {
   through: "TeamCodeLanguages",
+});
+//Users
+User.hasMany(Team, {
+  foreignKey: "creator_id",
+  as: "teams",
 });

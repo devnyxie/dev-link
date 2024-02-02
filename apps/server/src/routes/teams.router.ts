@@ -20,6 +20,7 @@ teamsRouter.get("/api/teams", async (req: Request, res: Response) => {
           include: [
             {
               model: User,
+              attributes: ["id", "username", "pfp"],
             },
             {
               model: RequestModel,
@@ -34,14 +35,31 @@ teamsRouter.get("/api/teams", async (req: Request, res: Response) => {
           ],
         },
         {
+          model: User,
+          as: "creator",
+          attributes: ["username", "pfp"],
+        },
+        {
           model: CodeLangs,
-          // as: "teamLanguages",
+          // as: "teamLanguages",1
+          attributes: ["name"],
           through: { attributes: [] },
+          as: "programming_languages", // Change column name to "programming_languages"
         },
       ],
       order: [["createdAt", "DESC"]],
     });
-    res.status(200).json(teams);
+
+    const teamsWithUsersCount = teams.map((team: any) => {
+      const members = team.members.filter((member: any) => member.user_id);
+      const usersCount = members.length;
+      return {
+        ...team.toJSON(),
+        users_count: usersCount,
+      };
+    });
+
+    res.status(200).json(teamsWithUsersCount);
   } catch (error) {
     // Handle errors
     console.error(error);
@@ -61,52 +79,66 @@ teamsRouter.post("/api/teams", async (req: Request, res: Response) => {
     const requested_languages = req.body.languages;
     try {
       const result = await database.transaction(async (t) => {
-        console.log("Creating team...");
-        const team = await Team.create(requested_team, { transaction: t });
-        // let's add team_id to each member.
-        await requested_members.forEach((member: any) => {
-          member["team_id"] = team.id;
-        });
-        // create members
-        console.log("Creating members...");
-        const members = await Member.bulkCreate(requested_members, {
-          transaction: t,
-        });
-        // --- Languages ---
-        console.log("Languages check...");
-        if (requested_languages && requested_languages.length > 0) {
-          // create languages
-          console.log("Creating languages...");
-          try {
-            const languages = requested_languages.map((name: string) => ({
-              name,
-            }));
-            const languageInstances = await CodeLangs.bulkCreate(languages, {
-              updateOnDuplicate: ["name"],
+        //
+        //
+        try {
+          console.log("Creating team...");
+          const team = await Team.create(requested_team, { transaction: t });
+
+          // --- Members ---
+          if (requested_members && requested_members.length > 0) {
+            // let's add team_id to each member.
+            await requested_members.forEach((member: any) => {
+              member["team_id"] = team.id;
+            });
+            // create members
+            console.log("Creating members...");
+            await Member.bulkCreate(requested_members, {
               transaction: t,
             });
-            // mapping ids of created languages
-            console.log(languageInstances);
-            const languageIds = languageInstances.map(
-              (language) => language.id
-            );
-            console.log(languageIds);
+          }
+          // --- Languages ---
+          console.log("Languages check...");
+          if (requested_languages && requested_languages.length > 0) {
+            // create languages
+            console.log("Creating languages...");
+            try {
+              const languages = requested_languages.map((name: string) => ({
+                name,
+              }));
+              const languageInstances = await CodeLangs.bulkCreate(languages, {
+                updateOnDuplicate: ["name"],
+                transaction: t,
+              });
+              // mapping ids of created languages
+              console.log(languageInstances);
+              const languageIds = languageInstances.map(
+                (language) => language.id
+              );
+              console.log(languageIds);
 
-            // Add the languages to the team
-            console.log("Adding languages to team...");
+              // Add the languages to the team
+              console.log("Adding languages to team...");
 
-            await team.addCodeLangs(languageIds, { transaction: t });
-          } catch (error) {
-            console.log(error);
+              await team.addCodeLangs(languageIds, { transaction: t });
+            } catch (error) {
+              console.log(error);
+              throw new Error();
+            }
+          }
+
+          if (team) {
+            return team;
+          } else {
             throw new Error();
           }
-        }
-
-        if (team && members) {
-          return team;
-        } else {
+        } catch (error) {
+          console.log(error);
           throw new Error();
         }
+        //
+        //
+
         //just redirect user to /teams/id :)
       });
       res.status(200).json(result);
