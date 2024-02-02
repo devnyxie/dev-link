@@ -1,7 +1,4 @@
-// import CssBaseline from "@mui/material/CssBaseline";
 import CssBaseline from "@mui/joy/CssBaseline";
-import { ThemeProvider, createTheme } from "@mui/material";
-import { Container as MUIContainer } from "@mui/material";
 import { CssVarsProvider, extendTheme } from "@mui/joy/styles";
 
 function Container({ children }) {

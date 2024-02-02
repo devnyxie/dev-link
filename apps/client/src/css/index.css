@@ -21,3 +21,33 @@ html {
 .text-monospace {
   font-family: "Red Hat Mono", monospace;
 }
+
+/* Navbar */
+.mobile-menu {
+  display: none;
+}
+
+.desktop-menu {
+  display: none;
+}
+
+/*hide mobile on desktop*/
+@media (min-width: 768px) {
+  .mobile-menu {
+    display: none;
+  }
+
+  .desktop-menu {
+    display: block;
+  }
+}
+/*hide desktop on mobile*/
+@media (max-width: 768px) {
+  .mobile-menu {
+    display: block;
+  }
+
+  .desktop-menu * {
+    display: none !important;
+  }
+}
