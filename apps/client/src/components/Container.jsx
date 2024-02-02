@@ -118,7 +118,8 @@ function Container({ children }) {
     <>
       <CssVarsProvider>
         <CssBaseline />
-        <MUIContainer maxWidth="md"> {children}</MUIContainer>
+        {/* <MUIContainer maxWidth="md"> {children}</MUIContainer> */}
+        <div className="container"> {children}</div>
       </CssVarsProvider>
     </>
   );

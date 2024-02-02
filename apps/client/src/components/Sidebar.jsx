@@ -29,9 +29,10 @@ import { MoreVertOutlined } from "@mui/icons-material";
 import { useDispatch } from "react-redux";
 import { selectUser } from "../redux/slices/user.slice";
 import { useSelector } from "react-redux";
+import LoginOutlinedIcon from "@mui/icons-material/LoginOutlined";
 
 function Sidebar() {
-  const user = useSelector(selectUser);
+  const { user } = useSelector(selectUser);
   useEffect(() => {
     console.log(user);
   });
@@ -59,7 +60,7 @@ function Sidebar() {
                 className="w-100 d-flex"
                 sx={{ justifyContent: "start" }}
               >
-                dev-link$~/home
+                dev-link$~
               </Button>
             </ListItem>
             <Divider sx={{ mt: 1, mb: 1 }} />
@@ -80,32 +81,73 @@ function Sidebar() {
               );
             })}
             <Divider sx={{ mt: 1, mb: 1 }} />
-            <ListItem
-              className="d-flex w-100"
-              style={{ justifyContent: "space-between" }}
-            >
-              <div className="d-flex">
-                <Avatar variant="outlined" className="mr-2">
-                  JK
-                </Avatar>
-                <div style={{ textAlign: "left" }}>
-                  <Typography sx={{ fontSize: 12 }}>@joecole</Typography>
-                  <Typography sx={{ fontSize: 14 }}>Joe Cole</Typography>
-                </div>
-              </div>
-              <Dropdown>
-                <MenuButton
-                  slots={{ root: IconButton }}
-                  slotProps={{
-                    root: { variant: "outlined", color: "neutral" },
-                  }}
-                >
-                  <MoreVertOutlined />
-                </MenuButton>
-                <Menu>
-                  <MenuItem>Logout</MenuItem>
-                </Menu>
-              </Dropdown>
+            <ListItem>
+              <>
+                {user ? (
+                  <div
+                    className="d-flex w-100"
+                    style={{
+                      justifyContent: "space-between",
+                      alignItems: "center",
+                    }}
+                  >
+                    <Button
+                      variant="outlined"
+                      color="neutral"
+                      sx={{
+                        p: "2px",
+                        px: 1,
+                        borderRadius: "var(--joy-radius-sm)",
+                        justifyContent: "start",
+                        alignItems: "center",
+                        fontWeight: "normal",
+                      }}
+                      className="d-flex"
+                    >
+                      <Avatar size="sm" variant="outlined" className="mr-2">
+                        JK
+                      </Avatar>
+                      <div style={{ textAlign: "left" }}>
+                        <Typography sx={{ fontSize: 12 }}>
+                          {user.username}
+                        </Typography>
+                        <Typography sx={{ fontSize: 14 }}>
+                          {user.name + " " + user.surname}
+                        </Typography>
+                      </div>
+                    </Button>
+                    <Dropdown>
+                      <MenuButton
+                        slots={{ root: IconButton }}
+                        slotProps={{
+                          root: {
+                            variant: "outlined",
+                            color: "neutral",
+                            size: "sm",
+                          },
+                        }}
+                        sx={{ height: "max-content" }}
+                      >
+                        <MoreVertOutlined />
+                      </MenuButton>
+                      <Menu>
+                        <MenuItem>Logout</MenuItem>
+                      </Menu>
+                    </Dropdown>
+                  </div>
+                ) : (
+                  <div className="w-100 d-flex justify-content-center">
+                    <Button
+                      variant="outlined"
+                      component="a"
+                      href="#as-link"
+                      startDecorator={<LoginOutlinedIcon />}
+                    >
+                      Login
+                    </Button>
+                  </div>
+                )}
+              </>
             </ListItem>
           </List>
         </Sheet>
