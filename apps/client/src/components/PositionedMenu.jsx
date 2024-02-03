@@ -4,25 +4,27 @@ import Menu from "@mui/joy/Menu";
 import MenuItem from "@mui/joy/MenuItem";
 import ListItemDecorator from "@mui/joy/ListItemDecorator";
 import ListDivider from "@mui/joy/ListDivider";
-import MoreHorizIcon from "@mui/icons-material/MoreHoriz";
-import Edit from "@mui/icons-material/Edit";
-import DeleteForever from "@mui/icons-material/DeleteForever";
+import { GoPencil } from "react-icons/go";
+import { GoTrash } from "react-icons/go";
 import MenuButton from "@mui/joy/MenuButton";
 import Dropdown from "@mui/joy/Dropdown";
+import { MdOutlineMoreHoriz } from "react-icons/md";
 
 export default function PositionedMenu() {
   return (
     <Dropdown>
       <MenuButton
         slots={{ root: IconButton }}
-        slotProps={{ root: { variant: "outlined", color: "neutral" } }}
+        slotProps={{
+          root: { variant: "outlined", color: "neutral", overflow: "hidden" },
+        }}
       >
-        <MoreHorizIcon />
+        <MdOutlineMoreHoriz size={20} />
       </MenuButton>
       <Menu placement="bottom-end">
         <MenuItem>
           <ListItemDecorator>
-            <Edit />
+            <GoPencil />
           </ListItemDecorator>{" "}
           Edit post
         </MenuItem>
@@ -33,7 +35,7 @@ export default function PositionedMenu() {
         <ListDivider />
         <MenuItem variant="soft" color="danger">
           <ListItemDecorator sx={{ color: "inherit" }}>
-            <DeleteForever />
+            <GoTrash />
           </ListItemDecorator>{" "}
           Delete
         </MenuItem>

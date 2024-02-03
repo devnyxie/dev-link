@@ -10,7 +10,7 @@ import {
   ListItemContent,
   ListItemDecorator,
 } from "@mui/joy";
-import TuneOutlinedIcon from "@mui/icons-material/TuneOutlined";
+import { CiSettings } from "react-icons/ci";
 
 export default function SettingsModal() {
   const [open, setOpen] = React.useState(false);
@@ -28,7 +28,7 @@ export default function SettingsModal() {
           onClick={() => setOpen(true)}
         >
           <ListItemDecorator>
-            <TuneOutlinedIcon />
+            <CiSettings />
           </ListItemDecorator>
           <ListItemContent>Settings</ListItemContent>
         </ListItemButton>

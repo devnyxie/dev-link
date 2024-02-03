@@ -17,14 +17,14 @@ import {
   Chip,
   Avatar,
   Box,
+  AvatarGroup,
 } from "@mui/joy";
 import PropTypes from "prop-types";
 import PositionedMenu from "./PositionedMenu";
-import { FavoriteBorder } from "@mui/icons-material";
-import TranslateIcon from "@mui/icons-material/Translate";
-import ForumIcon from "@mui/icons-material/Forum";
-import GroupIcon from "@mui/icons-material/Group";
-import CodeOutlinedIcon from "@mui/icons-material/CodeOutlined";
+import { GoHeart } from "react-icons/go";
+import { GoCode } from "react-icons/go";
+import { GoBookmark } from "react-icons/go";
+import { PiUsersThreeLight } from "react-icons/pi";
 
 const Team = ({ team }) => {
   return (
@@ -32,17 +32,16 @@ const Team = ({ team }) => {
       <CardContent style={{ paddingBottom: 0 }}>
         <Typography
           sx={{ fontSize: 14, display: "flex", alignItems: "start" }}
-          color="text.secondary"
+          color="neutral"
           gutterBottom
         >
-          <Avatar size="sm" sx={{ mr: 1 }} src={team.creator.pfp} />
-
+          {/* <Avatar size="sm" sx={{ mr: 1 }} src={team.creator.pfp} /> */}@
           {team.creator.username}
         </Typography>
-        <Typography variant="h5" component="div">
+        <Typography level="h5" component="div">
           {team.name}
         </Typography>
-        <Typography sx={{ mb: 1.5 }} color="text.secondary">
+        <Typography sx={{ mb: 1.5 }} color="neutral">
           {team.description}
         </Typography>
         <IconButton
@@ -55,81 +54,32 @@ const Team = ({ team }) => {
           <PositionedMenu />
         </IconButton>
       </CardContent>
-      {/* <Divider /> */}
-      {/* <CardContent style={{ padding: 0 }}>
-                <Grid container spacing={2} sx={{ display: "flex" }}>
-                                        {team.items.map((item) => {
-                                                let icon;
-                                                let content;
-                                                function renderText() {
-                                                        if (Array.isArray(content)) {
-                                                                let chips = [];
-                                                                content.forEach((element) => {
-                                                                        console.log(element);
-                                                                        chips.push(
-                                                                                <Chip
-                                                                                        key={element}
-                                                                                        color="primary"
-                                                                                        variant="outlined"
-                                                                                        sx={{ mr: "3px", mb: "3px" }}
-                                                                                >
-                                                                                        {element}
-                                                                                </Chip>
-                                                                        );
-                                                                });
-                                                                return chips;
-                                                        } else {
-                                                                return content;
-                                                        }
-                                                }
-                                                switch (item.name) {
-                                                        case "Capacity":
-                                                                icon = <GroupIcon />;
-                                                                content = item.value;
-                                                                break;
-                                                        case "Communication":
-                                                                icon = <ForumIcon />;
-                                                                content = item.value;
-                                                                break;
-                                                        case "Language":
-                                                                icon = <TranslateIcon />;
-                                                                content = item.value;
-                                                                break;
-                                                        default:
-                                                                content = "?";
-                                                                break;
-                                                }
-                                                return (
-                                                        <Grid
-                                                                key={item.name}
-                                                                item
-                                                                xs={12}
-                                                                sx={{
-                                                                        display: "flex",
-                                                                        alignItems: "start",
-                                                                        justifyContent: "start",
-                                                                        flexWrap: "wrap",
-                                                                }}
-                                                        >
-                                                                <Box sx={{ mr: 1, display: "flex", alignItems: "center" }}>
-                                                                        {icon}
-                                                                </Box>
-                                                                {renderText()}
-                                                        </Grid>
-                                                );
-                                        })}
-                                </Grid>
-            </CardContent> */}
+      <Box
+        sx={{
+          display: "flex",
+          width: "100%",
+          flexWrap: "wrap",
+          alignItems: "center",
+        }}
+      >
+        <PiUsersThreeLight size={20} style={{ marginRight: "8px" }} />
+        <Typography color="primary" level="title-sm">
+          {team.takenRoles.length +
+            "/" +
+            (team.openRoles.length + team.takenRoles.length)}
+        </Typography>
+      </Box>
+
       {team.codeLangs.length > 0 ? (
         <Box
           sx={{
             display: "flex",
             width: "100%",
             flexWrap: "wrap",
-            alignItems: "start",
+            alignItems: "center",
           }}
         >
-          <CodeOutlinedIcon sx={{ mr: 1 }} />
+          <GoCode size="20" style={{ marginRight: "8px" }} />
           {team.codeLangs.map((lang) => {
             console.log(lang);
             return (
@@ -137,7 +87,7 @@ const Team = ({ team }) => {
                 key={team}
                 color="primary"
                 variant="outlined"
-                sx={{ mr: "3px", mb: "3px" }}
+                sx={{ mr: "3px" }}
                 onClick={() => console.log(lang.name)}
               >
                 {lang.name}
@@ -150,25 +100,42 @@ const Team = ({ team }) => {
       )}
 
       <Divider />
-      <div className="w-100 d-flex" style={{ justifyContent: "end" }}>
-        <IconButton
-          variant="plain"
-          //   variant="plain"
-          size="sm"
-          color="primary"
-          sx={{ marginRight: "5px" }}
-        >
-          <FavoriteBorder style={{ fontSize: "20px" }} />
-        </IconButton>
-        <Button
-          variant="plain"
-          size="sm"
-          className=""
-          style={{ width: "max-content" }}
-        >
-          Learn More
-        </Button>
-      </div>
+      <Box
+        className=""
+        sx={{
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "space-between",
+        }}
+      >
+        <div>
+          <AvatarGroup sx={{ flexDirection: "row-reverse" }}>
+            {/* <Avatar>{members.length - 3}</Avatar> */}
+
+            {/* <Avatar alt="Cindy Baker" src="/static/images/avatar/3.jpg" />
+            <Avatar alt="Travis Howard" src="/static/images/avatar/2.jpg" />
+            <Avatar alt="Remy Sharp" src="/static/images/avatar/1.jpg" /> */}
+          </AvatarGroup>
+        </div>
+        <div>
+          <IconButton
+            variant="plain"
+            size="sm"
+            color="primary"
+            sx={{ marginRight: "5px" }}
+          >
+            <GoBookmark size={20} />
+          </IconButton>
+          <Button
+            variant="plain"
+            size="sm"
+            className=""
+            style={{ width: "max-content" }}
+          >
+            Learn More
+          </Button>
+        </div>
+      </Box>
     </Card>
   );
 };

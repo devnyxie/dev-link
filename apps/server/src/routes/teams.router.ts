@@ -12,7 +12,12 @@ const teamsRouter = express.Router();
 
 teamsRouter.get("/api/teams", async (req: Request, res: Response) => {
   try {
+    const limit = req.query.limit ? Number(req.query.limit) : undefined;
+    const offset = req.query.offset ? Number(req.query.offset) : undefined;
     const teams = await Team.findAll({
+      order: [["createdAt", "DESC"]],
+      limit: limit,
+      offset: offset,
       include: [
         {
           model: Member,
@@ -47,19 +52,20 @@ teamsRouter.get("/api/teams", async (req: Request, res: Response) => {
           as: "codeLangs", // Change column name to "programming_languages"
         },
       ],
-      order: [["createdAt", "DESC"]],
     });
 
-    const teamsWithUsersCount = teams.map((team: any) => {
-      const members = team.members.filter((member: any) => member.user_id);
-      const usersCount = members.length;
+    const teamsWithRoles = teams.map((team: any) => {
+      const { members, ...teamWithoutMembers } = team.toJSON();
+      const openRoles = members.filter((member: any) => !member.user);
+      const takenRoles = members.filter((member: any) => member.user);
       return {
-        ...team.toJSON(),
-        users_count: usersCount,
+        ...teamWithoutMembers,
+        openRoles: openRoles,
+        takenRoles: takenRoles,
       };
     });
 
-    res.status(200).json(teamsWithUsersCount);
+    res.status(200).json(teamsWithRoles);
   } catch (error) {
     // Handle errors
     console.error(error);

@@ -14,4 +14,9 @@ export default defineConfig({
   define: {
     "process.env": process.env,
   },
+  build: {
+    rollupOptions: {
+      external: ["@mui/material/utils"],
+    },
+  },
 });
