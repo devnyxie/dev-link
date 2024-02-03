@@ -22,17 +22,16 @@ function Feed() {
     return <div>Error: {error}</div>;
   }
   return (
-    <Box sx={{ pt: 2, pb: 2 }}>
+    <Box sx={{ pt: 1, pb: 1 }}>
       <Box
         sx={{
-          pb: 1,
           px: 1,
           display: "flex",
           justifyContent: "space-between",
           alignItems: "end",
         }}
       >
-        <Typography level="title-sm" fontSize="xl" color="neutral">
+        {/* <Typography level="title-sm" fontSize="xl" color="neutral">
           Home
         </Typography>
         <Box>
@@ -42,7 +41,7 @@ function Feed() {
             <Option value="25">25</Option>
             <Option value="50">50</Option>
           </Select>
-        </Box>
+        </Box> */}
       </Box>
       {teams && teams.length ? (
         <>

@@ -117,7 +117,7 @@ const Team = ({ team }) => {
             <Avatar alt="Remy Sharp" src="/static/images/avatar/1.jpg" /> */}
           </AvatarGroup>
         </div>
-        <div>
+        <Box sx={{ display: "flex", justifyItems: "center" }}>
           <IconButton
             variant="plain"
             size="sm"
@@ -134,7 +134,7 @@ const Team = ({ team }) => {
           >
             Learn More
           </Button>
-        </div>
+        </Box>
       </Box>
     </Card>
   );
