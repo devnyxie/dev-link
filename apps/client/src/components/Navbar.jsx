@@ -54,16 +54,25 @@ const Navbar = () => {
       </Typography>
 
       <Box sx={{ display: "flex", gap: "8px", alignItems: "center" }}>
-        <Input
-          startDecorator={<CiSearch size={20} />}
-          variant="outlined"
-          color="neutral"
-          placeholder="Search"
-          sx={{ backgroundColor: "transparent" }}
-        />
-        <Divider orientation="vertical" sx={{ mx: 1, mt: "5px", mb: "5px" }} />
+        {isTabletOrMobile ? (
+          <> </>
+        ) : (
+          <>
+            {" "}
+            <Input
+              startDecorator={<CiSearch size={20} />}
+              variant="outlined"
+              color="neutral"
+              placeholder="Search"
+              sx={{ backgroundColor: "transparent" }}
+            />
+            <Divider
+              orientation="vertical"
+              sx={{ mx: 1, mt: "5px", mb: "5px" }}
+            />
+          </>
+        )}
         <ThemeToggler />
-
         {user ? (
           <>
             {" "}
