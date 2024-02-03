@@ -25,12 +25,11 @@ import {
 } from "@mui/joy";
 import "../css/default.css";
 import GitHubIcon from "@mui/icons-material/GitHub";
-import { MoreVertOutlined } from "@mui/icons-material";
+import { IoMdMore } from "react-icons/io";
 import { useDispatch } from "react-redux";
 import { selectUser } from "../redux/slices/user.slice";
 import { useSelector } from "react-redux";
-import LoginOutlinedIcon from "@mui/icons-material/LoginOutlined";
-
+import { GoSignIn } from "react-icons/go";
 function Sidebar() {
   const { user } = useSelector(selectUser);
   useEffect(() => {
@@ -128,7 +127,7 @@ function Sidebar() {
                         }}
                         sx={{ height: "max-content" }}
                       >
-                        <MoreVertOutlined />
+                        <IoMdMore />
                       </MenuButton>
                       <Menu>
                         <MenuItem>Logout</MenuItem>
@@ -141,7 +140,7 @@ function Sidebar() {
                       variant="outlined"
                       component="a"
                       href="#as-link"
-                      startDecorator={<LoginOutlinedIcon />}
+                      startDecorator={<GoSignIn />}
                     >
                       Login
                     </Button>

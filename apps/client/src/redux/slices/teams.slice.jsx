@@ -3,7 +3,7 @@ import axios from "axios";
 
 export const fetchTeam = createAsyncThunk("teams/fetchTeams", async () => {
   const response = await axios.get(
-    process.env.VITE_APP_SERVER_URL + "/api/teams"
+    process.env.VITE_APP_SERVER_URL + "/api/teams?offset=0&limit=5"
   );
   return response.data;
 });
