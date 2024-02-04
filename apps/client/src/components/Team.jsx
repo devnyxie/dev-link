@@ -7,17 +7,9 @@ import {
   Button,
   AspectRatio,
   Divider,
-  List,
-  ListItem,
-  CardActions,
-  ListItemDecorator,
-  ListItemContent,
-  Grid,
-  Sheet,
   Chip,
-  Avatar,
   Box,
-  AvatarGroup,
+  Skeleton,
 } from "@mui/joy";
 import PropTypes from "prop-types";
 import PositionedMenu from "./PositionedMenu";
@@ -26,7 +18,42 @@ import { GoCode } from "react-icons/go";
 import { GoBookmark } from "react-icons/go";
 import { PiUsersThreeLight } from "react-icons/pi";
 
-const Team = ({ team }) => {
+const Team = ({ team, loading }) => {
+  if (loading) {
+    return (
+      <Card sx={{ mb: 1 }}>
+        <CardContent style={{ paddingBottom: 0 }}>
+          <AspectRatio ratio={10 / 1} sx={{ width: "30%" }}>
+            <Skeleton variant="overlay"></Skeleton>
+          </AspectRatio>
+          <AspectRatio ratio={18 / 1} sx={{ width: "60%" }}>
+            <Skeleton variant="overlay"></Skeleton>
+          </AspectRatio>
+          <AspectRatio ratio={20 / 2} sx={{ width: "100%" }}>
+            <Skeleton variant="overlay"></Skeleton>
+          </AspectRatio>
+          <AspectRatio ratio={7 / 1} sx={{ width: "30%" }}>
+            <Skeleton variant="overlay"></Skeleton>
+          </AspectRatio>
+          <AspectRatio ratio={8 / 1} sx={{ width: "40%" }}>
+            <Skeleton variant="overlay"></Skeleton>
+          </AspectRatio>
+        </CardContent>
+        <Divider />
+        <Box
+          sx={{
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "end",
+          }}
+        >
+          <AspectRatio ratio={4 / 1} sx={{ width: "150px" }}>
+            <Skeleton variant="overlay"></Skeleton>
+          </AspectRatio>
+        </Box>
+      </Card>
+    );
+  }
   return (
     <Card sx={{ mb: 1 }}>
       <CardContent style={{ paddingBottom: 0 }}>
@@ -63,7 +90,7 @@ const Team = ({ team }) => {
         }}
       >
         <PiUsersThreeLight size={20} style={{ marginRight: "8px" }} />
-        <Typography color="primary" level="title-sm">
+        <Typography level="title-xs">
           {team.takenRoles.length +
             "/" +
             (team.openRoles.length + team.takenRoles.length)}
@@ -81,7 +108,6 @@ const Team = ({ team }) => {
         >
           <GoCode size="20" style={{ marginRight: "8px" }} />
           {team.codeLangs.map((lang) => {
-            console.log(lang);
             return (
               <Chip
                 key={team}
@@ -108,15 +134,7 @@ const Team = ({ team }) => {
           justifyContent: "space-between",
         }}
       >
-        <div>
-          <AvatarGroup sx={{ flexDirection: "row-reverse" }}>
-            {/* <Avatar>{members.length - 3}</Avatar> */}
-
-            {/* <Avatar alt="Cindy Baker" src="/static/images/avatar/3.jpg" />
-            <Avatar alt="Travis Howard" src="/static/images/avatar/2.jpg" />
-            <Avatar alt="Remy Sharp" src="/static/images/avatar/1.jpg" /> */}
-          </AvatarGroup>
-        </div>
+        <div></div>
         <Box sx={{ display: "flex", justifyItems: "center" }}>
           <IconButton
             variant="plain"
@@ -139,22 +157,5 @@ const Team = ({ team }) => {
     </Card>
   );
 };
-
-// Team.propTypes = {
-//   team: PropTypes.shape({
-//     username: PropTypes.string.isRequired,
-//     title: PropTypes.string.isRequired,
-//     description: PropTypes.string.isRequired,
-//     items: PropTypes.arrayOf(
-//       PropTypes.shape({
-//         name: PropTypes.string.isRequired,
-//         value: PropTypes.oneOfType([
-//           PropTypes.string,
-//           PropTypes.arrayOf(PropTypes.string),
-//         ]).isRequired,
-//       })
-//     ).isRequired,
-//   }).isRequired,
-// };
 
 export default Team;

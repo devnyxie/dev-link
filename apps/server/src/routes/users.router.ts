@@ -1,7 +1,7 @@
 import express, { Express, Request, Response } from "express";
 import { User } from "../database/db";
 import { handleResponse } from "./utils";
-
+import bcrypt from "bcrypt";
 const usersRouter = express.Router();
 
 // Get all users
@@ -77,6 +77,34 @@ usersRouter.delete("/api/users/:user_id", async (req, res) => {
     });
   } catch (error: any) {
     // Handle other errors
+    console.error(error);
+    res.status(500).send("Internal Server Error");
+  }
+});
+
+// Login user
+usersRouter.post("/api/login", async (req, res) => {
+  try {
+    const { username, password } = req.body;
+    if (!username || !password) {
+      return res
+        .status(400)
+        .json({ message: "Both username and password are required" });
+    }
+    const user = await User.findOne({ where: { username } });
+    if (!user) {
+      return res.status(404).json({ message: "No user with such username" });
+    }
+    const isPasswordValid = await bcrypt.compare(password, user.password);
+    if (!isPasswordValid) {
+      return res.status(401).json({ message: "Invalid password" });
+    }
+
+    // Remove password from user before response
+    user["password"] = "";
+
+    res.status(200).json({ message: "Login was successful", user: user });
+  } catch (error: any) {
     console.error(error);
     res.status(500).send("Internal Server Error");
   }

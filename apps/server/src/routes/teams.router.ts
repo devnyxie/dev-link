@@ -64,8 +64,8 @@ teamsRouter.get("/api/teams", async (req: Request, res: Response) => {
         takenRoles: takenRoles,
       };
     });
-
-    res.status(200).json(teamsWithRoles);
+    const teamsCount = await Team.count();
+    res.status(200).json({ teams: teamsWithRoles, count: teamsCount });
   } catch (error) {
     // Handle errors
     console.error(error);

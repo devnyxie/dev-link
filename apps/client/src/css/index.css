@@ -18,8 +18,8 @@ html {
   scroll-behavior: smooth;
 }
 
-.text-monospace {
-  font-family: "Red Hat Mono", monospace;
+.monospace {
+  font-family: "Red Hat Mono", monospace !important;
 }
 
 /* Navbar */
@@ -29,6 +29,25 @@ html {
 
 .desktop-menu {
   display: none;
+}
+
+.fade-in-out {
+  animation: fadeInOut 2s forwards;
+}
+
+@keyframes fadeInOut {
+  0% {
+    opacity: 0;
+  }
+  20% {
+    opacity: 1;
+  }
+  80% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+  }
 }
 
 /*hide mobile on desktop*/
@@ -49,5 +68,36 @@ html {
 
   .desktop-menu * {
     display: none !important;
+  }
+}
+
+/*animations*/
+@keyframes error-neutral-border {
+  0% {
+    border: 1px solid var(--joy-palette-danger-700, #7d1212);
+  }
+  100% {
+  }
+}
+
+.error-neutral-border-animation {
+  animation: error-neutral-border 2s forwards;
+}
+
+@keyframes inAnimation {
+  0% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+
+@keyframes outAnimation {
+  0% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
   }
 }
