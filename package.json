@@ -9,6 +9,7 @@
     "client:dev": "yarn workspace client dev",
     "client:build": "yarn workspace client build",
     "client:start": "yarn workspace client start",
+    "server:start": "yarn workspace server start",
     "docker:build": "docker-compose build",
     "docker:start": "docker-compose up"
   }
