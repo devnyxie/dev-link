@@ -1,9 +1,5 @@
 import express, { Express, Request, Response } from "express";
 import dotenv from "dotenv";
-// import { connectToDatabase } from "./database/db";
-import { database } from "./database/db";
-import { handleGracefulShutdown } from "./shutdown";
-import { DataTypes, Sequelize } from "sequelize";
 import bodyParser from "body-parser";
 import teamsRouter from "./routes/teams.router";
 import usersRouter from "./routes/users.router";
@@ -15,7 +11,15 @@ import cors from "cors";
 const app: Express = express();
 
 // Middleware
-app.use(cors({ origin: process.env.CLIENT_URL }));
+app.use(
+  cors({
+    origin: [
+      process.env.CLIENT_URL_DEV || "",
+      process.env.CLIENT_URL_PROD || "",
+    ],
+  })
+);
+
 app.use(bodyParser.json());
 
 // Port
