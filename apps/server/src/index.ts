@@ -23,7 +23,7 @@ app.use(
 app.use(bodyParser.json());
 
 // Port
-const port = process.env.SERVER_PORT || 3000;
+const port = process.env.PORT || 8080;
 
 // App Start
 app.listen(port, async () => {
