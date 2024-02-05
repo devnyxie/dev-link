@@ -5,14 +5,17 @@ import store from "./redux/store/store.jsx";
 import "./css/index.css";
 import { CssBaseline, CssVarsProvider, extendTheme } from "@mui/joy";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
-import Feed from "./views/feed/Feed.jsx";
+import Feed from "./views/home/Feed.jsx";
 import ErrorPage from "./views/error/ErrorPage.jsx";
 import Layout from "./layout/Layout.jsx";
 import LoginPage from "./views/login/LoginPage.jsx";
+import Test from "./views/Test.jsx";
+import NoSuchRoute from "./views/404/404.jsx";
+import TeamView from "./views/team/Team.view.jsx";
 
 const theme = extendTheme({});
 
-const router = createBrowserRouter([
+export const router = createBrowserRouter([
   {
     path: "/",
     element: (
@@ -30,8 +33,20 @@ const router = createBrowserRouter([
     ),
   },
   {
-    path: "/test",
-    element: <Layout>{/* <PaginatedItems itemsPerPage={4} /> */}</Layout>,
+    path: "/team/:teamId",
+    element: (
+      <Layout>
+        <TeamView />
+      </Layout>
+    ),
+  },
+  {
+    path: "*",
+    element: (
+      <Layout>
+        <NoSuchRoute />
+      </Layout>
+    ),
   },
 ]);
 
@@ -40,7 +55,7 @@ ReactDOM.createRoot(document.getElementById("root")).render(
     <Provider store={store}>
       <CssVarsProvider theme={theme}>
         <CssBaseline />
-        <RouterProvider router={router} />
+        <RouterProvider router={router} history={history} />
       </CssVarsProvider>
     </Provider>
   </React.StrictMode>

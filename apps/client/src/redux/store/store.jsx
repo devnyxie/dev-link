@@ -4,7 +4,7 @@ import storage from "redux-persist/lib/storage"; // defaults to localStorage for
 import { userSlice } from "../slices/user.slice";
 import teamsSlice from "../slices/teams.slice";
 import loadingSlice from "../slices/loading.slice";
-import alertSlice from "../slices/alertSlice";
+import snackbarSlice from "../slices/snackbar.slice";
 
 const persistConfig = {
   key: "root",
@@ -21,7 +21,7 @@ const rootReducer = {
   user: persistReducer(userPersistConfig, userSlice.reducer),
   teams: teamsSlice.reducer,
   loading: loadingSlice,
-  alert: alertSlice,
+  snackbar: snackbarSlice,
   // Add more reducers here if needed
 };
 

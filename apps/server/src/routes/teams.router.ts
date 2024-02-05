@@ -10,6 +10,21 @@ import { CodeLangs } from "../database/db";
 
 const teamsRouter = express.Router();
 
+function setupRoles(teams: any) {
+  const teamsWithRoles = teams.map((team: any) => {
+    const { members, ...teamWithoutMembers } = team.toJSON();
+    const openRoles = members.filter((member: any) => !member.user);
+    const takenRoles = members.filter((member: any) => member.user);
+    return {
+      ...teamWithoutMembers,
+      openRoles: openRoles,
+      takenRoles: takenRoles,
+    };
+  });
+  return teamsWithRoles;
+}
+
+//get
 teamsRouter.get("/api/teams", async (req: Request, res: Response) => {
   try {
     const limit = req.query.limit ? Number(req.query.limit) : undefined;
@@ -54,16 +69,7 @@ teamsRouter.get("/api/teams", async (req: Request, res: Response) => {
       ],
     });
 
-    const teamsWithRoles = teams.map((team: any) => {
-      const { members, ...teamWithoutMembers } = team.toJSON();
-      const openRoles = members.filter((member: any) => !member.user);
-      const takenRoles = members.filter((member: any) => member.user);
-      return {
-        ...teamWithoutMembers,
-        openRoles: openRoles,
-        takenRoles: takenRoles,
-      };
-    });
+    const teamsWithRoles = setupRoles(teams);
     const teamsCount = await Team.count();
     res.status(200).json({ teams: teamsWithRoles, count: teamsCount });
   } catch (error) {
@@ -73,11 +79,57 @@ teamsRouter.get("/api/teams", async (req: Request, res: Response) => {
   }
 });
 
-// Expected input:
-// {
-//   team: {},
-//   members: { including the creator_id }
-// }
+//get one
+teamsRouter.get("/api/teams/:id", async (req: Request, res: Response) => {
+  try {
+    const id = req.params.id;
+    const team = await Team.findByPk(id, {
+      include: [
+        {
+          model: Member,
+          attributes: ["id", "role"],
+          include: [
+            {
+              model: User,
+              attributes: ["id", "username", "pfp"],
+            },
+            {
+              model: RequestModel,
+              attributes: ["id", "accepted", "createdAt", "updatedAt"],
+              include: [
+                {
+                  model: User,
+                  attributes: ["id", "username", "pfp"],
+                },
+              ],
+            },
+          ],
+        },
+        {
+          model: User,
+          as: "creator",
+          attributes: ["username", "pfp"],
+        },
+        {
+          model: CodeLangs,
+          attributes: ["name"],
+          through: { attributes: [] },
+          as: "codeLangs",
+        },
+      ],
+    });
+    if (team) {
+      const teamWithRoles = setupRoles([team]);
+      res.json(teamWithRoles[0]);
+    } else {
+      res.status(404).send({ message: "Team was not found" });
+    }
+  } catch (error) {
+    res.status(500).send({ message: "An error occured" });
+  }
+});
+
+//post
 teamsRouter.post("/api/teams", async (req: Request, res: Response) => {
   try {
     const requested_team = req.body.team;

@@ -1,11 +1,13 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import axios from "axios";
 import { finishLoading, startLoading } from "./loading.slice";
-import { setAlert } from "./alertSlice";
+import { setSnackbar } from "./snackbar.slice";
+import { redirectTo } from "../../utils/utils";
+// import history from "../../utils/history";
 
 export const loginUser = createAsyncThunk(
   "user/loginUser",
-  async ({ userCredentials, navigate }, { dispatch }) => {
+  async ({ userCredentials }, { dispatch }) => {
     let alert = {};
     try {
       dispatch(startLoading());
@@ -14,45 +16,44 @@ export const loginUser = createAsyncThunk(
         userCredentials
       );
       if (response.data && response.status === 200) {
-        alert = { message: response.data.message, status: response.status };
         dispatch(finishLoading());
-        dispatch(setAlert(alert));
-        navigate("/");
-        console.log("----------", response.data.user);
+        dispatch(
+          setSnackbar({ message: response.data.message, color: "success" })
+        );
+        redirectTo("/");
         return response.data.user;
       }
     } catch (error) {
       console.log("error...");
       if (error.response) {
-        console.log(
-          "setting normal alert...",
-          error.response.data.message,
-          error.response.status
-        );
         dispatch(
-          setAlert({
+          setSnackbar({
             message: error.response.data.message,
-            status: error.response.status,
+            color: "danger",
           })
         );
       } else {
-        dispatch(setAlert());
+        dispatch(setSnackbar());
       }
-
       throw error;
     } finally {
       dispatch(finishLoading());
     }
-    // dispatch(setAlert({ status: 500, message: "test" }));
   }
 );
 
 export const logoutUser = createAsyncThunk(
   "user/logoutUser",
-  async ({ navigate }, { dispatch }) => {
+  async (_, { dispatch }) => {
     try {
       dispatch(userSlice.actions.clearUser());
-      navigate("/login");
+      redirectTo("/login");
+      dispatch(
+        setSnackbar({
+          message: "You have successfully logged out",
+          color: "success",
+        })
+      );
     } catch (error) {
       console.log("Logout error: ", error);
     }

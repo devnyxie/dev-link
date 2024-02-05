@@ -20,7 +20,6 @@ import { loginUser } from "../../redux/slices/user.slice";
 import { useNavigate } from "react-router-dom";
 
 const LoginPage = () => {
-  let navigate = useNavigate();
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const dispatch = useDispatch();
@@ -30,7 +29,6 @@ const LoginPage = () => {
     dispatch(
       loginUser({
         userCredentials: { username, password },
-        navigate,
       })
     );
   };

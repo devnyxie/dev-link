@@ -2,7 +2,9 @@ import React from "react";
 import Navbar from "../components/Navbar";
 import { Container } from "@mui/system";
 import Footer from "../components/Footer";
-import StatusAlert from "../components/AlertSnackbar";
+import StatusAlert from "../components/SnackbarNotify";
+import Test from "../views/Test";
+import SnackbarNotify from "../components/SnackbarNotify";
 
 const Layout = ({ children }) => {
   return (
@@ -30,7 +32,7 @@ const Layout = ({ children }) => {
       >
         {children} <Footer />
       </Container>
-      <StatusAlert />
+      <SnackbarNotify />
     </div>
   );
 };

@@ -16,8 +16,8 @@ import PositionedMenu from "./PositionedMenu";
 import { GoHeart } from "react-icons/go";
 import { GoCode } from "react-icons/go";
 import { GoBookmark } from "react-icons/go";
-import { PiUsersThreeLight } from "react-icons/pi";
-
+import { PiUsersThree } from "react-icons/pi";
+import { Link } from "react-router-dom";
 const Team = ({ team, loading, index }) => {
   if (loading) {
     return (
@@ -89,7 +89,7 @@ const Team = ({ team, loading, index }) => {
           alignItems: "center",
         }}
       >
-        <PiUsersThreeLight size={20} style={{ marginRight: "8px" }} />
+        <PiUsersThree size={20} style={{ marginRight: "8px" }} />
         <Typography level="title-xs">
           {team.takenRoles.length +
             "/" +
@@ -146,14 +146,16 @@ const Team = ({ team, loading, index }) => {
           >
             <GoBookmark size={20} />
           </IconButton>
-          <Button
-            variant="plain"
-            size="sm"
-            className=""
-            style={{ width: "max-content" }}
-          >
-            Learn More
-          </Button>
+          <Link to={`/team/${team.id}`}>
+            <Button
+              variant="plain"
+              size="sm"
+              className=""
+              style={{ width: "max-content" }}
+            >
+              Learn More
+            </Button>
+          </Link>
         </Box>
       </Box>
     </Card>

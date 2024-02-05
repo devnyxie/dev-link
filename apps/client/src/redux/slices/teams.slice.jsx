@@ -2,7 +2,7 @@ import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import axios from "axios";
 import { finishLoading, startLoading } from "./loading.slice";
 import { useDispatch } from "react-redux";
-import { setAlert } from "./alertSlice";
+import { setSnackbar } from "./snackbar.slice";
 
 export const fetchTeam = createAsyncThunk(
   "teams/fetchTeams",
@@ -15,11 +15,50 @@ export const fetchTeam = createAsyncThunk(
       return response.data;
     } catch (error) {
       console.log(error);
-      dispatch(setAlert());
+      dispatch(setSnackbar());
       throw new Error("Failed to fetch teams.");
     } finally {
       dispatch(finishLoading());
     }
+  }
+);
+
+export const findTeamById = createAsyncThunk(
+  "teams/findByIdStatus",
+  async (id, { getState, dispatch }) => {
+    let team = undefined;
+    try {
+      //
+      dispatch(startLoading());
+      const state = getState();
+      const teams = state.teams.teams;
+      const teamRes = teams.find((team) => team.id === id);
+      if (teamRes) {
+        team = teamRes;
+      } else {
+        const response = await axios.get(
+          `${process.env.VITE_APP_SERVER_URL}/api/teams/${id}`
+        );
+        if (response.data.id) {
+          team = response.data;
+        } else {
+          throw new Error("Failed to fetch team.");
+        }
+      }
+    } catch (error) {
+      dispatch(
+        setSnackbar({
+          message: error.response
+            ? error.response.data.message
+            : "Team was not found",
+          color: "danger",
+        })
+      );
+      throw new Error("Failed to fetch team.");
+    } finally {
+      dispatch(finishLoading());
+    }
+    return team;
   }
 );
 

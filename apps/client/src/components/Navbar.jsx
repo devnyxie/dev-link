@@ -18,12 +18,6 @@ import {
 import React from "react";
 import { GoBell } from "react-icons/go";
 import { useMediaQuery } from "react-responsive";
-import { IoBookmarksOutline } from "react-icons/io5";
-import { GoPerson } from "react-icons/go";
-import { CiSettings } from "react-icons/ci";
-import { FiSettings } from "react-icons/fi";
-import { IoSettingsOutline } from "react-icons/io5";
-import { GoSignOut } from "react-icons/go";
 import ThemeToggler from "./ThemeToggler";
 import { useSelector } from "react-redux";
 import { logoutUser, selectUser } from "../redux/slices/user.slice";
@@ -32,12 +26,27 @@ import { CiSearch } from "react-icons/ci";
 import Brand from "./Brand";
 import { Link, useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
+import Sidebar from "./Sidebar";
+import { GoPlus } from "react-icons/go";
 const Navbar = () => {
-  const dispatch = useDispatch();
-  const navigate = useNavigate();
+  const [open, setOpen] = React.useState(false);
   const isLoading = useSelector((state) => state.loading);
   const { user } = useSelector(selectUser);
-  const isTabletOrMobile = useMediaQuery({ query: "(max-width: 768px)" });
+  const isMobile = useMediaQuery({ query: "(max-width: 768px)" });
+  const isTablet = useMediaQuery({
+    query: "(min-width: 768px) and (max-width: 1400px)",
+  });
+  //
+  const toggleDrawer = (inOpen) => (event) => {
+    setOpen(inOpen);
+    console.log("switching ", inOpen);
+  };
+
+  // function toggleDrawer(inOpen) {
+  //   console.log("switching ", inOpen);
+  //   setOpen(inOpen);
+  // }
+  //
   return (
     <>
       <Box
@@ -73,7 +82,7 @@ const Navbar = () => {
               alignItems: "center",
             }}
           >
-            {isTabletOrMobile ? (
+            {isMobile ? (
               <> </>
             ) : (
               <>
@@ -85,16 +94,26 @@ const Navbar = () => {
                   placeholder="Search"
                   sx={{ backgroundColor: "transparent" }}
                 />
-                <Divider
+                {/* <Divider
                   orientation="vertical"
                   sx={{ mx: 1, mt: "5px", mb: "5px" }}
-                />
+                /> */}
               </>
             )}
             <ThemeToggler />
+            <Divider
+              orientation="vertical"
+              sx={{ mx: 1, mt: "5px", mb: "5px" }}
+            />
             {user ? (
               <>
-                {" "}
+                <IconButton
+                  variant="outlined"
+                  color="neutral"
+                  sx={{ p: "5px", aspectRatio: "1/1" }}
+                >
+                  <GoPlus size={20} />
+                </IconButton>
                 <IconButton
                   variant="outlined"
                   color="neutral"
@@ -102,54 +121,25 @@ const Navbar = () => {
                 >
                   <GoBell size={20} />
                 </IconButton>
-                <Dropdown>
-                  <MenuButton
-                    sx={{
-                      p: 0,
-                      border: "none",
-                      height: "min-content",
-                      borderRadius: "50%",
-                    }}
-                    size="sm"
-                  >
-                    <Avatar
-                      color="neutral"
-                      variant="outlined"
-                      src={user.pfp}
-                      sx={{ height: "36px", width: " 36px" }}
-                    />
-                  </MenuButton>
-                  <Menu placement="bottom-end">
-                    <MenuItem sx={{ px: 3 }}>
-                      <ListItemDecorator>
-                        <GoPerson size={20} />
-                      </ListItemDecorator>
-                      Profile
-                    </MenuItem>
-                    <MenuItem sx={{ px: 3 }}>
-                      <ListItemDecorator>
-                        <IoBookmarksOutline size={20} />
-                      </ListItemDecorator>
-                      Bookmarks
-                    </MenuItem>
-                    <MenuItem sx={{ px: 3 }}>
-                      <ListItemDecorator>
-                        <IoSettingsOutline size={20} />
-                      </ListItemDecorator>
-                      Settings
-                    </MenuItem>
-                    <MenuItem
-                      color="danger"
-                      sx={{ px: 3 }}
-                      onClick={() => dispatch(logoutUser({ navigate }))}
-                    >
-                      <ListItemDecorator>
-                        <GoSignOut size={20} />
-                      </ListItemDecorator>
-                      Logout
-                    </MenuItem>
-                  </Menu>
-                </Dropdown>
+                <IconButton
+                  style={{ borderRadius: "50%", aspectRatio: 1 / 1 }}
+                  onClick={() => setOpen(!open)}
+                >
+                  <Avatar
+                    color="neutral"
+                    variant="outlined"
+                    src={user.pfp}
+                    sx={{ height: "36px", width: " 36px" }}
+                  />
+                </IconButton>
+                <Sidebar
+                  toggleDrawer={toggleDrawer}
+                  setOpen={setOpen}
+                  open={open}
+                  user={user}
+                  isMobile={isMobile}
+                  isTablet={isTablet}
+                />
               </>
             ) : (
               <>

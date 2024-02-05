@@ -7,6 +7,8 @@ interface UserAttributes {
   gh_id?: string;
   gh_username?: string;
   username: string;
+  name: string;
+  surname: string;
   password: string;
   pfp?: string;
 }
@@ -42,6 +44,12 @@ const UserModel = (sequelize: Sequelize) => {
         allowNull: false,
         type: DataTypes.STRING,
         unique: true,
+      },
+      name: {
+        type: DataTypes.STRING,
+      },
+      surname: {
+        type: DataTypes.STRING,
       },
       password: {
         allowNull: false,

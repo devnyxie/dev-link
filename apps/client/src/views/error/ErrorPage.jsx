@@ -2,7 +2,7 @@ import { Box } from "@mui/joy";
 import { useRouteError } from "react-router-dom";
 
 export default function ErrorPage() {
-  const error = useRouteError();
+  // const error = useRouteError();
   return (
     <Box
       id="error-page"
@@ -17,13 +17,6 @@ export default function ErrorPage() {
     >
       <h1>Oops!</h1>
       <p>Sorry, an unexpected error has occurred.</p>
-      {error ? (
-        <p>
-          <i>{error.statusText || error.message}</i>
-        </p>
-      ) : (
-        <></>
-      )}
     </Box>
   );
 }
