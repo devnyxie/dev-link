@@ -1,27 +1,23 @@
 import {
   Box,
   Button,
-  Container,
   Divider,
   FormControl,
   FormLabel,
-  IconButton,
-  Input,
   Sheet,
   Snackbar,
   Stack,
+  Input,
   Typography,
 } from "@mui/joy";
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import Logo from "../../components/Logo";
 import { GoPerson } from "react-icons/go";
 import { BsKey } from "react-icons/bs";
 import { useSelector } from "react-redux";
 import { useDispatch } from "react-redux";
 import { loginUser } from "../../redux/slices/user.slice";
-import { setAlert } from "../../redux/slices/alertSlice";
 import { useNavigate } from "react-router-dom";
-import { useTheme } from "@emotion/react";
 
 const LoginPage = () => {
   let navigate = useNavigate();

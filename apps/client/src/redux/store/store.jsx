@@ -14,7 +14,7 @@ const persistConfig = {
 const userPersistConfig = {
   key: "user",
   storage,
-  blacklist: ["error", "user"], // 'error' will not be persisted
+  blacklist: ["error"], // 'error' will not be persisted
 };
 
 const rootReducer = {

@@ -22,57 +22,8 @@ html {
   font-family: "Red Hat Mono", monospace !important;
 }
 
-/* Navbar */
-.mobile-menu {
-  display: none;
-}
-
-.desktop-menu {
-  display: none;
-}
-
-.fade-in-out {
-  animation: fadeInOut 2s forwards;
-}
-
-@keyframes fadeInOut {
-  0% {
-    opacity: 0;
-  }
-  20% {
-    opacity: 1;
-  }
-  80% {
-    opacity: 1;
-  }
-  100% {
-    opacity: 0;
-  }
-}
-
-/*hide mobile on desktop*/
-@media (min-width: 768px) {
-  .mobile-menu {
-    display: none;
-  }
-
-  .desktop-menu {
-    display: block;
-  }
-}
-/*hide desktop on mobile*/
-@media (max-width: 768px) {
-  .mobile-menu {
-    display: block;
-  }
-
-  .desktop-menu * {
-    display: none !important;
-  }
-}
-
 /*animations*/
-@keyframes error-neutral-border {
+/* @keyframes error-neutral-border {
   0% {
     border: 1px solid var(--joy-palette-danger-700, #7d1212);
   }
@@ -82,7 +33,7 @@ html {
 
 .error-neutral-border-animation {
   animation: error-neutral-border 2s forwards;
-}
+} */
 
 @keyframes inAnimation {
   0% {
@@ -100,4 +51,12 @@ html {
   100% {
     opacity: 0;
   }
+}
+
+.fade-in {
+  animation: inAnimation 0.2s ease-in-out forwards;
+}
+
+* {
+  transition: color 0.2s, background-color 0.2s, border-color 0.2s, opacity 0.2s;
 }

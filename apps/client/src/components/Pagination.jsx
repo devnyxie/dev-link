@@ -1,73 +1,63 @@
-import ReactPaginate from "react-paginate";
-import React, { useEffect, useState } from "react";
-import ReactDOM from "react-dom";
-import { useSelector } from "react-redux";
-import { useDispatch } from "react-redux";
-import { fetchTeam } from "../redux/slices/teams.slice";
+import React from "react";
+import { Button, Box, ButtonGroup, Sheet } from "@mui/joy";
 
-// Example items, to simulate fetching from another resources.
-const items = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14];
-
-function Items({ teams }) {
-  return (
-    <>
-      {teams &&
-        teams.map((item) => (
-          <div>
-            <h3>Item #{item.id}</h3>
-          </div>
-        ))}
-    </>
-  );
-}
-
-export function PaginatedItems({ itemsPerPage }) {
-  const [itemOffset, setItemOffset] = useState(0);
-
-  const dispatch = useDispatch();
-
-  useEffect(() => {
-    dispatch(fetchTeam({ offset: itemOffset, limit: 5 }));
-  }, [itemOffset]);
-  const { teams, count, loading, error } = useSelector((state) => state.teams);
-
-  try {
-  } catch (error) {}
-
-  // Here we use item offsets; we could also use page offsets
-  // following the API or data you're working with.
-  // Simulate fetching items from another resources.
-  // (This could be items from props; or items loaded in a local state
-  // from an API endpoint with useEffect and useState)
-  const endOffset = itemOffset + itemsPerPage;
-  console.log(`Loading items from ${itemOffset} to ${endOffset}`);
-
-  // BEGIN: be15d9bcejpp
-  //   const [currentItems, setCurrentItems] = useState([]);
+export function Pagination({
+  itemsPerPage,
+  currentPage,
+  setCurrentPage,
+  count,
+}) {
   const pageCount = Math.ceil(count / itemsPerPage);
 
-  // Invoke when user click to request another page.
-  const handlePageClick = (event) => {
-    const newOffset = (event.selected * itemsPerPage) % items.length;
-    console.log(
-      `User requested page number ${event.selected}, which is offset ${newOffset}`
-    );
-    setItemOffset(newOffset);
+  const goToPage = (number) => {
+    setCurrentPage(number);
   };
-  // END: be15d9bcejpp
+
+  const goToNextPage = () => {
+    setCurrentPage((prevPageNumber) => prevPageNumber + 1);
+  };
+
+  const goToPreviousPage = () => {
+    setCurrentPage((prevPageNumber) => prevPageNumber - 1);
+  };
 
   return (
-    <>
-      <Items teams={teams} />
-      <ReactPaginate
-        breakLabel="..."
-        nextLabel="next >"
-        onPageChange={handlePageClick}
-        pageRangeDisplayed={5}
-        pageCount={pageCount}
-        previousLabel="< previous"
-        renderOnZeroPageCount={null}
-      />
-    </>
+    <Box
+      sx={{
+        width: "100%",
+        display: "flex",
+        justifyContent: "center",
+        pt: 1,
+        pb: 2,
+      }}
+    >
+      <Sheet
+        variant="outlined"
+        sx={{ borderRadius: "sm", backgroundColor: "transparent" }}
+      >
+        <ButtonGroup variant="plain" color="neutral">
+          <Button onClick={goToPreviousPage} disabled={currentPage === 0}>
+            Previous
+          </Button>
+          {[...Array(pageCount)].map((_, index) => (
+            <Button
+              className="pagination-button"
+              key={index}
+              onClick={() => goToPage(index)}
+              color={currentPage === index ? "primary" : "neutral"}
+              variant={currentPage === index ? "soft" : "plain"}
+            >
+              {index + 1}
+            </Button>
+          ))}
+          <Button
+            onClick={goToNextPage}
+            disabled={currentPage === pageCount - 1}
+          >
+            Next
+          </Button>
+        </ButtonGroup>
+      </Sheet>
+    </Box>
   );
 }

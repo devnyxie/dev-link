@@ -18,10 +18,10 @@ import { GoCode } from "react-icons/go";
 import { GoBookmark } from "react-icons/go";
 import { PiUsersThreeLight } from "react-icons/pi";
 
-const Team = ({ team, loading }) => {
+const Team = ({ team, loading, index }) => {
   if (loading) {
     return (
-      <Card sx={{ mb: 1 }}>
+      <Card sx={{ mb: 1 }} key={index}>
         <CardContent style={{ paddingBottom: 0 }}>
           <AspectRatio ratio={10 / 1} sx={{ width: "30%" }}>
             <Skeleton variant="overlay"></Skeleton>
@@ -55,7 +55,7 @@ const Team = ({ team, loading }) => {
     );
   }
   return (
-    <Card sx={{ mb: 1 }}>
+    <Card sx={{ mb: 1 }} key={index}>
       <CardContent style={{ paddingBottom: 0 }}>
         <Typography
           sx={{ fontSize: 14, display: "flex", alignItems: "start" }}
@@ -107,17 +107,18 @@ const Team = ({ team, loading }) => {
           }}
         >
           <GoCode size="20" style={{ marginRight: "8px" }} />
-          {team.codeLangs.map((lang) => {
+          {team.codeLangs.map((lang, index) => {
             return (
-              <Chip
-                key={team}
-                color="primary"
-                variant="outlined"
-                sx={{ mr: "3px" }}
-                onClick={() => console.log(lang.name)}
-              >
-                {lang.name}
-              </Chip>
+              <div key={index}>
+                <Chip
+                  color="primary"
+                  variant="outlined"
+                  sx={{ mr: "3px" }}
+                  onClick={() => console.log(lang.name)}
+                >
+                  {lang.name}
+                </Chip>
+              </div>
             );
           })}
         </Box>
@@ -137,6 +138,7 @@ const Team = ({ team, loading }) => {
         <div></div>
         <Box sx={{ display: "flex", justifyItems: "center" }}>
           <IconButton
+            disabled
             variant="plain"
             size="sm"
             color="primary"

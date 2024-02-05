@@ -24,7 +24,9 @@ const Layout = ({ children }) => {
           justifyContent: "space-between",
           flexGrow: 1,
           alignItems: "center",
+          animation: "inAnimation 0.2s ease-in-out forwards",
         }}
+        classes={{ root: "fade-in" }}
       >
         {children} <Footer />
       </Container>

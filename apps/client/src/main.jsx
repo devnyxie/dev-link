@@ -9,7 +9,6 @@ import Feed from "./views/feed/Feed.jsx";
 import ErrorPage from "./views/error/ErrorPage.jsx";
 import Layout from "./layout/Layout.jsx";
 import LoginPage from "./views/login/LoginPage.jsx";
-import { PaginatedItems } from "./components/Pagination.jsx";
 
 const theme = extendTheme({});
 
@@ -32,11 +31,7 @@ const router = createBrowserRouter([
   },
   {
     path: "/test",
-    element: (
-      <Layout>
-        <PaginatedItems itemsPerPage={4} />
-      </Layout>
-    ),
+    element: <Layout>{/* <PaginatedItems itemsPerPage={4} /> */}</Layout>,
   },
 ]);
 

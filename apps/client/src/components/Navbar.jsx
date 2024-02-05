@@ -37,7 +37,6 @@ const Navbar = () => {
   const navigate = useNavigate();
   const isLoading = useSelector((state) => state.loading);
   const { user } = useSelector(selectUser);
-  console.log(user);
   const isTabletOrMobile = useMediaQuery({ query: "(max-width: 768px)" });
   return (
     <>

@@ -6,11 +6,13 @@ import { useColorScheme } from "@mui/joy";
 function Logo() {
   const { mode } = useColorScheme();
   return (
-    <img
-      src={mode === "dark" ? logoDark : logoLight}
-      alt="Logo"
-      style={{ width: "100%" }}
-    />
+    <>
+      <img
+        src={mode === "dark" ? logoDark : logoLight}
+        alt="Logo"
+        style={{ width: "100%" }}
+      />
+    </>
   );
 }
 
