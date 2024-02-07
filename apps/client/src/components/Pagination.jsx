@@ -49,17 +49,6 @@ export function Pagination({
           <Button onClick={goToPreviousPage} disabled={currentPage === 0}>
             Previous
           </Button>
-          {/* {[...Array(pageCount)].map((_, index) => (
-            <Button
-              className="pagination-button"
-              key={index}
-              onClick={() => goToPage(index)}
-              color={currentPage === index ? "primary" : "neutral"}
-              variant={currentPage === index ? "soft" : "plain"}
-            >
-              {index + 1}
-            </Button>
-          ))} */}
           {getPaginationRange(currentPage, pageCount).map((page) => (
             <Button
               className="pagination-button"
@@ -71,7 +60,7 @@ export function Pagination({
               {page + 1}
             </Button>
           ))}
-          {currentPage < pageCount - 3 && <Button disabled>...</Button>}
+
           <Button
             onClick={goToNextPage}
             disabled={currentPage === pageCount - 1}

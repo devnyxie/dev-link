@@ -26,6 +26,7 @@ const CodeLangsModel = (sequelize: Sequelize) => {
         defaultValue: DataTypes.UUIDV4,
       },
       name: {
+        unique: true,
         allowNull: false,
         type: DataTypes.STRING,
       },

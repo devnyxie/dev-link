@@ -24,6 +24,7 @@ import { GrFormView } from "react-icons/gr";
 import { GrFormViewHide } from "react-icons/gr";
 import { GoCheck, GoCode } from "react-icons/go";
 import TechnologyIcon from "../../components/TechnologyIcon";
+import JoyTooltip from "../../components/JoyTooltip";
 
 function NewTeam() {
   const [markdownDescription, setMarkdownDescription] = React.useState("");
@@ -130,13 +131,16 @@ function NewTeam() {
                 Preview
               </Tab>
             </div>
-            <IconButton
-              variant={hideMarkdown ? "plain" : "solid"}
-              sx={{ borderRadius: 0 }}
-              onClick={() => setHideMarkdown(!hideMarkdown)}
-            >
-              {hideMarkdown ? <GrFormViewHide /> : <GrFormView />}
-            </IconButton>
+
+            <JoyTooltip title="Hide Markdown">
+              <IconButton
+                variant={hideMarkdown ? "plain" : "solid"}
+                sx={{ borderRadius: 0 }}
+                onClick={() => setHideMarkdown(!hideMarkdown)}
+              >
+                {hideMarkdown ? <GrFormViewHide /> : <GrFormView />}
+              </IconButton>
+            </JoyTooltip>
           </TabList>
 
           <TabPanel

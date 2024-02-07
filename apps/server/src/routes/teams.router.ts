@@ -161,23 +161,46 @@ teamsRouter.post("/api/teams", async (req: Request, res: Response) => {
             // create languages
             console.log("Creating languages...");
             try {
-              const languages = requested_languages.map((name: string) => ({
+              //array of all langs
+              let languages = requested_languages.map((name: string) => ({
                 name,
               }));
+              console.log("------------------- requested_langs: ", languages);
+              //check if they already exist in DB
+              let languagesFromDB = await CodeLangs.findAll({
+                where: {
+                  name: requested_languages,
+                },
+              });
+              console.log("------------------- db langs: ", languagesFromDB);
+
+              //filter out the ones that already exist
+              languages = languages.filter((language: any) => {
+                return !languagesFromDB.some(
+                  (lang) => lang.name === language.name
+                );
+              });
+              console.log("------------------- langs to create: ", languages);
+
               const languageInstances = await CodeLangs.bulkCreate(languages, {
                 updateOnDuplicate: ["name"],
                 transaction: t,
               });
               // mapping ids of created languages
-              console.log(languageInstances);
               const languageIds = languageInstances.map(
                 (language) => language.id
               );
-              console.log(languageIds);
+              //add ids of already existing languages
+              languagesFromDB.forEach((lang: any) => {
+                languageIds.push(lang.id);
+              });
+              console.log(
+                "------------------- ids to add to the team: ",
+                languageIds
+              );
 
               // Add the languages to the team
               console.log("Adding languages to team...");
-
               await team.addCodeLangs(languageIds, { transaction: t });
             } catch (error) {
               console.log(error);
