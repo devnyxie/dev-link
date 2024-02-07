@@ -75,13 +75,21 @@ const TeamView = () => {
         display: "flex",
         justifyContent: "center",
         alignItems: "start",
+        flexDirection: "column",
         overflowX: "hidden",
       }}
+      className="fade-in"
     >
       <Tabs
         value={index}
         onChange={(event, value) => setIndex(value)}
-        sx={{ backgroundColor: "transparent", width: "100%" }}
+        sx={{
+          backgroundColor: "transparent",
+          width: "100%",
+          display: "flex",
+          flexDirection: "column",
+          flexGrow: 1,
+        }}
       >
         <TabList
           disableUnderline
@@ -110,7 +118,7 @@ const TeamView = () => {
             Settings
           </Tab>
         </TabList>
-        <Sheet variant="outlined">
+        <Sheet variant="outlined" sx={{ height: "100%", flexGrow: 1 }}>
           <TabPanel value={0}>
             {" "}
             <Typography level="title-md" sx={{ mb: 2 }}>

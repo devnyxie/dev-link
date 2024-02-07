@@ -4,7 +4,15 @@ import { useDispatch } from "react-redux";
 import { useSelector } from "react-redux";
 import { fetchTeam } from "../../redux/slices/teams.slice";
 import Team from "../../components/Team";
-import { Alert, Box, Option, Select, Typography } from "@mui/joy";
+import {
+  Alert,
+  Box,
+  Divider,
+  Option,
+  Select,
+  Stack,
+  Typography,
+} from "@mui/joy";
 import { Pagination } from "../../components/Pagination";
 
 function Feed() {
@@ -38,22 +46,21 @@ function Feed() {
         sx={{
           px: 1,
           pb: 1,
-          display: "flex",
-          justifyContent: "space-between",
-          alignItems: "end",
         }}
       >
-        <Typography level="title-sm" fontSize="xl" color="neutral">
-          Recent Teams
-        </Typography>
-        <Box>
-          <Select size="sm" defaultValue="5">
-            <Option value="5">5</Option>
-            <Option value="10">10</Option>
-            <Option value="25">25</Option>
-            <Option value="50">50</Option>
-          </Select>
-        </Box>
+        <Stack
+          spacing={1}
+          sx={{
+            fontSize: "sm",
+            mb: 1,
+            mt: 1,
+            width: "100%",
+          }}
+        >
+          <Divider sx={{ "--Divider-childPosition": `50%` }}>
+            <Typography color="neutral">Recent Teams</Typography>
+          </Divider>
+        </Stack>
       </Box>
       {loading ? (
         <>

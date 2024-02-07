@@ -3,7 +3,6 @@ import axios from "axios";
 import { finishLoading, startLoading } from "./loading.slice";
 import { setSnackbar } from "./snackbar.slice";
 import { redirectTo } from "../../utils/utils";
-// import history from "../../utils/history";
 
 export const loginUser = createAsyncThunk(
   "user/loginUser",

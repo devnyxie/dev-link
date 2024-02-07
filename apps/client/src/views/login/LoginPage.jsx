@@ -65,42 +65,55 @@ const LoginPage = () => {
         variant="outlined"
         sx={{ width: "100%", p: 2, borderRadius: "sm" }}
       >
-        <Stack
-          direction="column"
-          justifyContent="center"
-          alignItems="center"
-          sx={{ width: "100%" }}
-          spacing={1}
+        <form
+          onSubmit={(event) => {
+            console.log(event);
+            event.preventDefault();
+            handleLogin();
+          }}
         >
-          <FormControl>
-            <FormLabel>Username</FormLabel>
-            <Input
-              value={username}
-              onChange={(e) => setUsername(e.target.value)}
-              startDecorator={<GoPerson />}
-              type="text"
-              placeholder="Username"
-              className={error ? "error-neutral-border-animation" : ""}
-            />
-          </FormControl>
-          <FormControl>
-            <FormLabel>Password</FormLabel>
-            <Input
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-              startDecorator={<BsKey />}
-              type="password"
-              placeholder="Password"
-              className={error ? "error-neutral-border-animation" : ""}
-            />
-          </FormControl>
+          <Stack
+            direction="column"
+            justifyContent="center"
+            alignItems="center"
+            sx={{ width: "100%" }}
+            spacing={1}
+          >
+            <FormControl>
+              <FormLabel>Username</FormLabel>
+              <Input
+                required
+                value={username}
+                onChange={(e) => setUsername(e.target.value)}
+                startDecorator={<GoPerson />}
+                type="text"
+                placeholder="Username"
+                className={error ? "error-neutral-border-animation" : ""}
+              />
+            </FormControl>
+            <FormControl>
+              <FormLabel>Password</FormLabel>
+              <Input
+                required
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                startDecorator={<BsKey />}
+                type="password"
+                placeholder="Password"
+                className={error ? "error-neutral-border-animation" : ""}
+              />
+            </FormControl>
 
-          <Box>
-            <Button variant="outlined" onClick={handleLogin}>
+            <Button
+              type="submit"
+              loading={loading}
+              variant="outlined"
+              // onClick={handleLogin}
+            >
               Sign in
             </Button>
-          </Box>
-        </Stack>
+          </Stack>
+        </form>
       </Sheet>
       <Divider sx={{ mt: 2, mb: 2, mx: 4 }} />
       <Sheet

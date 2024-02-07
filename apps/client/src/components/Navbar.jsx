@@ -107,13 +107,15 @@ const Navbar = () => {
             />
             {user ? (
               <>
-                <IconButton
-                  variant="outlined"
-                  color="neutral"
-                  sx={{ p: "5px", aspectRatio: "1/1" }}
-                >
-                  <GoPlus size={20} />
-                </IconButton>
+                <Link to="/team/create">
+                  <IconButton
+                    variant="outlined"
+                    color="neutral"
+                    sx={{ p: "5px", aspectRatio: "1/1" }}
+                  >
+                    <GoPlus size={20} />
+                  </IconButton>
+                </Link>
                 <IconButton
                   variant="outlined"
                   color="neutral"

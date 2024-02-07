@@ -18,6 +18,7 @@ import { GoCode } from "react-icons/go";
 import { GoBookmark } from "react-icons/go";
 import { PiUsersThree } from "react-icons/pi";
 import { Link } from "react-router-dom";
+import TechnologyIcon from "./TechnologyIcon";
 const Team = ({ team, loading, index }) => {
   if (loading) {
     return (
@@ -107,20 +108,27 @@ const Team = ({ team, loading, index }) => {
           }}
         >
           <GoCode size="20" style={{ marginRight: "8px" }} />
-          {team.codeLangs.map((lang, index) => {
-            return (
-              <div key={index}>
-                <Chip
-                  color="primary"
-                  variant="outlined"
-                  sx={{ mr: "3px" }}
-                  onClick={() => console.log(lang.name)}
-                >
-                  {lang.name}
-                </Chip>
-              </div>
-            );
-          })}
+          <Box
+            role="group"
+            aria-labelledby="fav-movie"
+            sx={{ display: "flex", flexWrap: "wrap", gap: 1 }}
+          >
+            {" "}
+            {team.codeLangs.map((lang, index) => {
+              return (
+                <div key={index}>
+                  <Chip
+                    color="primary"
+                    variant="outlined"
+                    onClick={() => console.log(lang.name)}
+                  >
+                    {TechnologyIcon({ technology: lang.name })}
+                    {lang.name}
+                  </Chip>
+                </div>
+              );
+            })}
+          </Box>
         </Box>
       ) : (
         <></>

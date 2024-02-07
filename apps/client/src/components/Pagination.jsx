@@ -21,6 +21,16 @@ export function Pagination({
     setCurrentPage((prevPageNumber) => prevPageNumber - 1);
   };
 
+  function getPaginationRange(currentPage, pageCount) {
+    if (currentPage < 2) {
+      return [...Array(4).keys()];
+    } else if (currentPage > pageCount - 3) {
+      return [...Array(4).keys()].map((n) => pageCount - 4 + n);
+    } else {
+      return [currentPage - 1, currentPage, currentPage + 1, currentPage + 2];
+    }
+  }
+
   return (
     <Box
       sx={{
@@ -39,7 +49,7 @@ export function Pagination({
           <Button onClick={goToPreviousPage} disabled={currentPage === 0}>
             Previous
           </Button>
-          {[...Array(pageCount)].map((_, index) => (
+          {/* {[...Array(pageCount)].map((_, index) => (
             <Button
               className="pagination-button"
               key={index}
@@ -49,7 +59,19 @@ export function Pagination({
             >
               {index + 1}
             </Button>
+          ))} */}
+          {getPaginationRange(currentPage, pageCount).map((page) => (
+            <Button
+              className="pagination-button"
+              key={page}
+              onClick={() => goToPage(page)}
+              color={currentPage === page ? "primary" : "neutral"}
+              variant={currentPage === page ? "soft" : "plain"}
+            >
+              {page + 1}
+            </Button>
           ))}
+          {currentPage < pageCount - 3 && <Button disabled>...</Button>}
           <Button
             onClick={goToNextPage}
             disabled={currentPage === pageCount - 1}
