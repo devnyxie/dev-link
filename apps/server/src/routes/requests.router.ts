@@ -15,13 +15,6 @@ requestsRouter.post("/api/request", async (req: Request, res: Response) => {
   }
 });
 
-// manage request (accept/deny)
-// expected request:
-// {
-//   token: token (to-do);
-//   accepted: true/false;
-// }
-
 requestsRouter.put(
   "/api/request/:request_id",
   async (req: Request, res: Response) => {

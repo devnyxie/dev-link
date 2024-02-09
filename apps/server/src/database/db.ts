@@ -43,6 +43,7 @@ export const { database, User, Team, Member, Request, CodeLangs } = {
 };
 
 // --- associtaions ---
+
 //Teams
 Team.belongsToMany(CodeLangs, {
   through: "TeamCodeLanguages",
@@ -52,12 +53,20 @@ Team.belongsTo(User, {
   foreignKey: "creator_id",
   as: "creator",
 });
+Team.hasMany(Member, { foreignKey: "team_id" });
+Team.hasMany(Request, { foreignKey: "team_id" });
+
 //CodeLangs
 CodeLangs.belongsToMany(Team, {
   through: "TeamCodeLanguages",
 });
+
 //Users
 User.hasMany(Team, {
   foreignKey: "creator_id",
   as: "teams",
 });
+
+//Members
+Member.belongsTo(User, { foreignKey: "user_id" });
+Member.hasMany(Request, { foreignKey: "member_id" });

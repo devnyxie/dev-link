@@ -7,6 +7,7 @@ import {
   database,
 } from "../database/db";
 import { CodeLangs } from "../database/db";
+import { Op } from "sequelize";
 
 const teamsRouter = express.Router();
 
@@ -222,13 +223,88 @@ teamsRouter.post("/api/teams", async (req: Request, res: Response) => {
 
         //just redirect user to /teams/id :)
       });
-      res.status(200).json(result);
+      res
+        .status(200)
+        .json({ team: result, message: "Team created successfully" });
     } catch (error) {
       res.status(400).json({
         message:
           "An error occurred while creating your team! Please try again.",
       });
     }
+  } catch (error) {
+    // Handle errors
+    console.error(error);
+    res.status(500).send("Internal Server Error");
+  }
+});
+
+//get all teams where creator_id = :id and :id is in members of the team
+teamsRouter.get("/api/teams/user/:id", async (req: Request, res: Response) => {
+  try {
+    const id = req.params.id;
+    const limit = req.query.limit ? Number(req.query.limit) : undefined;
+    const offset = req.query.offset ? Number(req.query.offset) : undefined;
+
+    //
+    //
+    const teamIds = await Member.findAll({
+      order: [["createdAt", "DESC"]],
+      where: {
+        user_id: id,
+      },
+      attributes: ["team_id"],
+      limit: limit,
+      offset: offset,
+    });
+
+    const usersTeams = await Team.findAll({
+      order: [["createdAt", "DESC"]],
+      where: {
+        id: {
+          [Op.in]: teamIds.map((team) => team.team_id),
+        },
+      },
+      include: [
+        {
+          model: Member,
+          attributes: ["id", "role"],
+          include: [
+            {
+              model: User,
+              attributes: ["id", "username", "pfp"],
+            },
+            {
+              model: RequestModel,
+              attributes: ["id", "accepted", "createdAt", "updatedAt"],
+              include: [
+                {
+                  model: User,
+                  attributes: ["id", "username", "pfp"],
+                },
+              ],
+            },
+          ],
+        },
+        {
+          model: User,
+          as: "creator",
+          attributes: ["username", "pfp"],
+        },
+        {
+          model: CodeLangs,
+          // as: "teamLanguages",1
+          attributes: ["name"],
+          through: { attributes: [] },
+          as: "codeLangs", // Change column name to "programming_languages"
+        },
+      ],
+    });
+    //
+    //
+
+    const teamsWithRoles = setupRoles(usersTeams);
+    res.status(200).json(teamsWithRoles);
   } catch (error) {
     // Handle errors
     console.error(error);

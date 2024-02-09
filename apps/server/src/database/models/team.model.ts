@@ -11,7 +11,6 @@ interface TeamAttributes {
   creator_id: string;
   name: string;
   description: string;
-  // languages: Array<string>;
 }
 
 interface TeamCreationAttributes extends TeamAttributes {}
@@ -49,22 +48,11 @@ const TeamModel = (sequelize: Sequelize) => {
         allowNull: true,
         type: DataTypes.TEXT,
       },
-      // languages: {
-      //   allowNull: true,
-      //   type: DataTypes.ARRAY(DataTypes.STRING),
-      // },
     },
     {
       timestamps: true,
     }
   );
-  try {
-    Team.hasMany(MembersModel(sequelize), { foreignKey: "team_id" });
-    Team.hasMany(RequestsModel(sequelize), { foreignKey: "team_id" });
-    //
-  } catch (error) {
-    console.log(error);
-  }
   return Team;
 };
 

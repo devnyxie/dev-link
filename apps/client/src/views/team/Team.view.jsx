@@ -39,7 +39,6 @@ const TeamView = () => {
   const dispatch = useDispatch();
   const { teamId } = useParams();
   const [eligibleToJoin, setEligibleToJoin] = useState(false);
-
   const [team, setTeam] = useState(undefined);
   const [index, setIndex] = useState(0);
 

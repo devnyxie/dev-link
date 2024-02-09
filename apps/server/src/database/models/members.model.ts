@@ -56,10 +56,6 @@ const MembersModel = (sequelize: Sequelize) => {
       ],
     }
   );
-
-  Member.belongsTo(UserModel(sequelize), { foreignKey: "user_id" });
-  Member.hasMany(RequestsModel(sequelize), { foreignKey: "member_id" });
-
   return Member;
 };
 

@@ -1,6 +1,5 @@
 import express, { Express, Request, Response } from "express";
 import { Member } from "../database/db";
-import { handleResponse } from "./utils";
 const membersRouter = express.Router();
 
 // single member creation

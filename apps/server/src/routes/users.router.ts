@@ -1,7 +1,7 @@
 import express, { Express, Request, Response } from "express";
 import { User } from "../database/db";
-import { handleResponse } from "./utils";
 import bcrypt from "bcrypt";
+
 const usersRouter = express.Router();
 
 // Get all users
@@ -45,13 +45,16 @@ usersRouter.put("/api/users/:user_id", async (req, res) => {
         id: user_id,
       },
     });
-    handleResponse({
-      res,
-      response: affectedCount,
-      expectedValue: 1,
-      successMessage: "User data was successfully updated.",
-      errorMessage: "An error occured. No changes were made.",
-    });
+
+    if (affectedCount === 0) {
+      return res.status(404).json({ message: "No user with such ID" });
+    } else if (affectedCount === 1) {
+      return res
+        .status(200)
+        .json({ message: "User data was successfully updated." });
+    } else {
+      return res.status(500).json({ message: "An error occured." });
+    }
   } catch (error: any) {
     // Handle other errors
     console.error(error);
@@ -68,13 +71,15 @@ usersRouter.delete("/api/users/:user_id", async (req, res) => {
         id: user_id,
       },
     });
-    handleResponse({
-      res,
-      response,
-      expectedValue: 1,
-      successMessage: "User was successfully deleted.",
-      errorMessage: "An error occured. User was not deleted.",
-    });
+    if (response === 0) {
+      return res.status(404).json({ message: "No user with such ID" });
+    } else if (response === 1) {
+      return res
+        .status(200)
+        .json({ message: "User was successfully deleted." });
+    } else {
+      return res.status(500).json({ message: "An error occured." });
+    }
   } catch (error: any) {
     // Handle other errors
     console.error(error);

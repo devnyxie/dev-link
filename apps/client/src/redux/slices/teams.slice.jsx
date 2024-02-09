@@ -3,6 +3,7 @@ import axios from "axios";
 import { finishLoading, startLoading } from "./loading.slice";
 import { useDispatch } from "react-redux";
 import { setSnackbar } from "./snackbar.slice";
+import { redirectTo } from "../../utils/utils";
 
 export const fetchTeam = createAsyncThunk(
   "teams/fetchTeams",
@@ -59,6 +60,39 @@ export const findTeamById = createAsyncThunk(
       dispatch(finishLoading());
     }
     return team;
+  }
+);
+
+export const createTeam = createAsyncThunk(
+  "teams/createTeam",
+  async (data, { dispatch }) => {
+    try {
+      dispatch(startLoading());
+      const response = await axios.post(
+        `${process.env.VITE_APP_SERVER_URL}/api/teams`,
+        data
+      );
+      dispatch(
+        setSnackbar({
+          message: response.data.message,
+          color: "success",
+        })
+      );
+      redirectTo("/team/" + response.data.team.id);
+      return response.data;
+    } catch (error) {
+      dispatch(
+        setSnackbar({
+          message: error.response
+            ? error.response.data.message
+            : "Failed to create team",
+          color: "danger",
+        })
+      );
+      throw new Error("Failed to create team.");
+    } finally {
+      dispatch(finishLoading());
+    }
   }
 );
 

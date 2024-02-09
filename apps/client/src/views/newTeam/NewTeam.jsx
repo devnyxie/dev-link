@@ -1,5 +1,6 @@
 import {
   Box,
+  Button,
   Checkbox,
   Chip,
   Divider,
@@ -25,10 +26,22 @@ import { GrFormViewHide } from "react-icons/gr";
 import { GoCheck, GoCode } from "react-icons/go";
 import TechnologyIcon from "../../components/TechnologyIcon";
 import JoyTooltip from "../../components/JoyTooltip";
+import RolesList from "./RolesList";
+import { useDispatch } from "react-redux";
+import { createTeam } from "../../redux/slices/teams.slice";
+import { useSelector } from "react-redux";
+import { selectUser } from "../../redux/slices/user.slice";
 
 function NewTeam() {
+  const dispatch = useDispatch();
+  const { user } = useSelector(selectUser);
+
+  //NAME
+  const [teamName, setTeamName] = React.useState("");
+  //DESCRIPTION
   const [markdownDescription, setMarkdownDescription] = React.useState("");
   const [hideMarkdown, setHideMarkdown] = React.useState(false);
+  // TECHNOLOGIES
   const [technologies, setTechnologies] = React.useState([
     "JavaScript",
     "Python",
@@ -48,21 +61,14 @@ function NewTeam() {
   ]);
   const [selectedTechnologies, setSelectedTechnologies] = React.useState([]);
   const [newTechnology, setNewTechnology] = React.useState("");
-
-  //   function submitTechnology(event) {
-  //     event.preventDefault();
-  //     if (technologies.includes(newTechnology)) {
-  //       console.log("does not exist");
-  //       setSelectedTechnologies((val) => [...val, newTechnology]);
-  //     } else {
-  //       setTechnologies((val) => [...val, newTechnology]);
-  //       setSelectedTechnologies((val) => [...val, newTechnology]);
-  //       setNewTechnology("");
-  //     }
-  //   }
+  // ROLES
+  const [roles, setRoles] = React.useState([]);
 
   function submitTechnology(event) {
     event.preventDefault();
+    if (!newTechnology.trim()) {
+      return;
+    }
     //lowercase everything
     const lowerCaseTechnologies = technologies.map((technology) =>
       technology.toLowerCase()
@@ -73,12 +79,12 @@ function NewTeam() {
     );
 
     if (lowerCaseTechnologies.includes(lowerCaseNewTechnology)) {
-      console.log("does not exist");
       const index = lowerCaseTechnologies.indexOf(lowerCaseNewTechnology);
       const selectedTechnology = technologies[index];
       //
       if (!lowerCaseSelectedTechnologies.includes(lowerCaseNewTechnology)) {
         setSelectedTechnologies((val) => [...val, selectedTechnology]);
+        setNewTechnology("");
       }
       //
     } else {
@@ -88,12 +94,22 @@ function NewTeam() {
     }
   }
 
-  useEffect(() => {
-    console.log(selectedTechnologies);
-  });
+  function submitTeam() {
+    const data = {
+      team: {
+        name: teamName,
+        creator_id: user.id,
+        description: markdownDescription,
+      },
+      members: [...roles],
+      languages: selectedTechnologies,
+    };
+    console.log(data);
+    dispatch(createTeam(data));
+  }
 
   return (
-    <Box sx={{ width: "100%", pt: 2 }}>
+    <Box style={{ width: "100%", pt: 2, pb: 2 }}>
       <Stack
         spacing={1}
         sx={{
@@ -107,17 +123,24 @@ function NewTeam() {
           <Typography color="neutral">Team Creation</Typography>
         </Divider>
       </Stack>
-      <FormControl sx={{ mb: 2 }}>
-        <FormLabel>Name</FormLabel>
-        <Input placeholder="Name of the team" />
+      {/* NAME */}
+      <FormControl sx={{ mb: 3 }}>
+        <FormLabel>*Name</FormLabel>
+        <Input
+          required
+          placeholder="Name of the team"
+          value={teamName}
+          onChange={(e) => setTeamName(e.target.value)}
+        />
         <FormHelperText>
           This should ideally include the main programming language or the
           project you'll be working on. For example, 'Python Data Analysis Team'
           or 'Frontend React Project Group'.
         </FormHelperText>
       </FormControl>
+      {/* DESCRIPTION */}
       <FormControl sx={{ mb: 3 }}>
-        <FormLabel>Description</FormLabel>
+        <FormLabel>*Description</FormLabel>
         <Tabs
           variant="outlined"
           sx={{ borderRadius: "sm", overflow: "hidden" }}
@@ -149,6 +172,7 @@ function NewTeam() {
           >
             <FormControl>
               <Textarea
+                required
                 value={markdownDescription}
                 onChange={(e) => setMarkdownDescription(e.target.value)}
                 placeholder="<!-- Describe your team! -->"
@@ -174,75 +198,98 @@ function NewTeam() {
           goals, main activities, and any other relevant information.
         </FormHelperText>
       </FormControl>
-      <FormControl sx={{ mb: 1 }}>
-        <FormLabel>Technologies</FormLabel>
-        <FormHelperText>
-          Choose Languages, Framework and Tools that your team will be using or
-          add your own.
-        </FormHelperText>
-      </FormControl>
-      <Box
-        role="group"
-        aria-labelledby="fav-movie"
-        sx={{ display: "flex", flexWrap: "wrap", gap: 1 }}
-      >
-        <form onSubmit={(e) => submitTechnology(e)}>
-          <Input
-            placeholder="Add your own stack"
-            value={newTechnology}
-            onChange={(e) => setNewTechnology(e.target.value)}
-            startDecorator={<GoCode />}
-            endDecorator={<IconButton type="submit">+</IconButton>}
-          />
-        </form>
-
-        <List
-          orientation="horizontal"
-          wrap
-          sx={{
-            "--List-gap": "8px",
-            "--ListItem-radius": "20px",
-            "--ListItem-minHeight": "32px",
-            "--ListItem-gap": "4px",
-          }}
+      {/* TECHNOLOGIES */}
+      <Box sx={{ mb: 3 }}>
+        <FormControl sx={{ mb: 1 }}>
+          <FormLabel>Technologies</FormLabel>
+          <FormHelperText>
+            Choose Languages, Framework and Tools that your team will be using
+            or add your own.
+          </FormHelperText>
+        </FormControl>
+        <Box
+          role="group"
+          aria-labelledby="fav-movie"
+          sx={{ display: "flex", flexWrap: "wrap", gap: 1 }}
         >
-          {technologies.map((item, index) => (
-            <ListItem key={item}>
-              <Checkbox
-                size="sm"
-                disableIcon
-                overlay
-                label={item}
-                checked={selectedTechnologies.includes(item)}
-                variant={
-                  selectedTechnologies.includes(item) ? "soft" : "outlined"
-                }
-                onChange={(event) => {
-                  if (event.target.checked) {
-                    setSelectedTechnologies((val) => [...val, item]);
-                  } else {
-                    setSelectedTechnologies((val) =>
-                      val.filter((text) => text !== item)
-                    );
+          <form
+            onSubmit={(e) => {
+              e.preventDefault();
+              submitTechnology(e);
+            }}
+          >
+            <Input
+              placeholder="Add your own language or framework"
+              value={newTechnology}
+              onChange={(e) => setNewTechnology(e.target.value)}
+              startDecorator={<GoCode />}
+              endDecorator={
+                <IconButton
+                  type="submit"
+                  color={newTechnology ? "success" : "neutral"}
+                  variant="plain"
+                  onClick={(e) => submitTechnology(e)}
+                >
+                  +
+                </IconButton>
+              }
+            />
+          </form>
+          <List
+            orientation="horizontal"
+            wrap
+            sx={{
+              "--List-gap": "8px",
+              "--ListItem-radius": "20px",
+              "--ListItem-minHeight": "32px",
+              "--ListItem-gap": "4px",
+            }}
+          >
+            {technologies.map((item, index) => (
+              <ListItem key={item}>
+                <Checkbox
+                  size="sm"
+                  disableIcon
+                  overlay
+                  label={item}
+                  checked={selectedTechnologies.includes(item)}
+                  variant={
+                    selectedTechnologies.includes(item) ? "soft" : "outlined"
                   }
-                }}
-                slotProps={{
-                  action: ({ checked }) => ({
-                    sx: checked
-                      ? {
-                          border: "1px solid",
-                          borderColor: "primary.500",
-                        }
-                      : {},
-                  }),
-                }}
-              />
-              {selectedTechnologies.includes(item) ? (
-                <GoCheck style={{ zIndex: 2 }} />
-              ) : null}
-            </ListItem>
-          ))}
-        </List>
+                  onChange={(event) => {
+                    if (event.target.checked) {
+                      setSelectedTechnologies((val) => [...val, item]);
+                    } else {
+                      setSelectedTechnologies((val) =>
+                        val.filter((text) => text !== item)
+                      );
+                    }
+                  }}
+                  slotProps={{
+                    action: ({ checked }) => ({
+                      sx: checked
+                        ? {
+                            border: "1px solid",
+                            borderColor: "primary.500",
+                          }
+                        : {},
+                    }),
+                  }}
+                />
+                {selectedTechnologies.includes(item) ? (
+                  <GoCheck style={{ zIndex: 2 }} />
+                ) : null}
+              </ListItem>
+            ))}
+          </List>
+        </Box>
+      </Box>
+      {/* Roles */}
+      <RolesList roles={roles} setRoles={setRoles} user={user} />
+      <Box sx={{ display: "flex", justifyContent: "end", mt: 2 }}>
+        <Button variant="outlined" onClick={submitTeam}>
+          Create
+        </Button>
       </Box>
     </Box>
   );

@@ -1,15 +1,14 @@
-import dotenv from 'dotenv';
-import findWorkspaceRoot from 'find-yarn-workspace-root';
-import path from 'path';
+import dotenv from "dotenv";
+import findWorkspaceRoot from "find-yarn-workspace-root";
+import path from "path";
 export const startApp = () => {
-  console.log('Application starting...');
+  console.log("Application starting...");
   const workspaceRoot = findWorkspaceRoot();
   if (workspaceRoot) {
-    const envPath = path.resolve(workspaceRoot, '.env');
+    const envPath = path.resolve(workspaceRoot, ".env");
     dotenv.config({ path: envPath });
-    dotenv.config();
-    require('./index');
+    require("./index");
   } else {
-    throw new Error('dotenv file was not found.');
+    throw new Error("dotenv file was not found.");
   }
 };

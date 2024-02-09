@@ -79,7 +79,7 @@ const Team = ({ team, loading, index }) => {
           size="sm"
           sx={{ position: "absolute", top: "0.875rem", right: "0.5rem" }}
         >
-          <PositionedMenu />
+          {/* <PositionedMenu /> */}
         </IconButton>
       </CardContent>
       <Box
