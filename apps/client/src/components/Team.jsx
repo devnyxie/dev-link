@@ -10,6 +10,7 @@ import {
   Chip,
   Box,
   Skeleton,
+  Avatar,
 } from "@mui/joy";
 import PropTypes from "prop-types";
 import PositionedMenu from "./PositionedMenu";
@@ -18,7 +19,7 @@ import { GoCode } from "react-icons/go";
 import { GoBookmark } from "react-icons/go";
 import { PiUsersThree } from "react-icons/pi";
 import { Link } from "react-router-dom";
-import TechnologyIcon from "./TechnologyIcon";
+import markdownToHtml from "./MarkdownToHTML";
 const Team = ({ team, loading, index }) => {
   if (loading) {
     return (
@@ -63,15 +64,32 @@ const Team = ({ team, loading, index }) => {
           color="neutral"
           gutterBottom
         >
-          {/* <Avatar size="sm" sx={{ mr: 1 }} src={team.creator.pfp} /> */}@
-          {team.creator.username}
+          <IconButton sx={{ borderRadius: "50%", aspectRatio: 1 / 1, mr: 0.5 }}>
+            <Avatar
+              size="sm"
+              color="neutral"
+              variant="outlined"
+              src={team.creator.pfp}
+            />
+          </IconButton>
+          @{team.creator.username}
         </Typography>
-        <Typography level="h5" component="div">
+        <Typography level="title-md" component="div">
           {team.name}
         </Typography>
-        <Typography sx={{ mb: 1.5 }} color="neutral">
-          {team.description}
-        </Typography>
+        <Box sx={{ mb: 1.5 }}>
+          <Typography
+            color="neutral"
+            sx={{
+              display: "-webkit-box",
+              WebkitBoxOrient: "vertical",
+              WebkitLineClamp: 3,
+              overflow: "hidden",
+            }}
+          >
+            {team.description}
+          </Typography>
+        </Box>
         <IconButton
           aria-label="bookmark Bahamas Islands"
           variant="plain"
@@ -122,7 +140,6 @@ const Team = ({ team, loading, index }) => {
                     variant="outlined"
                     onClick={() => console.log(lang.name)}
                   >
-                    {TechnologyIcon({ technology: lang.name })}
                     {lang.name}
                   </Chip>
                 </div>

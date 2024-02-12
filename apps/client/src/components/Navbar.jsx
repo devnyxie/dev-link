@@ -117,6 +117,7 @@ const Navbar = () => {
                   </IconButton>
                 </Link>
                 <IconButton
+                  disabled
                   variant="outlined"
                   color="neutral"
                   sx={{ p: "5px", aspectRatio: "1/1" }}

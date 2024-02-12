@@ -33,6 +33,7 @@ import { tabClasses } from "@mui/joy/Tab";
 import { TbSend } from "react-icons/tb";
 import { useSelector } from "react-redux";
 import { selectUser } from "../../redux/slices/user.slice";
+import markdownToHtml from "../../components/MarkdownToHTML";
 
 const TeamView = () => {
   const { user } = useSelector(selectUser);
@@ -128,10 +129,27 @@ const TeamView = () => {
                 {" "}
                 <Stack spacing={1} sx={{ fontSize: "sm", mb: 2, mt: 1 }}>
                   <Divider sx={{ "--Divider-childPosition": `50%` }}>
-                    About
+                    Description
                   </Divider>
                 </Stack>
                 <Typography>{team.description}</Typography>
+              </>
+            ) : (
+              <></>
+            )}
+            {team.README ? (
+              <>
+                <Stack spacing={1} sx={{ fontSize: "sm", mb: 2, mt: 1 }}>
+                  <Divider sx={{ "--Divider-childPosition": `50%` }}>
+                    README
+                  </Divider>
+                </Stack>
+                <div
+                  className="markdown-body"
+                  dangerouslySetInnerHTML={{
+                    __html: markdownToHtml(team.README),
+                  }}
+                ></div>
               </>
             ) : (
               <></>
