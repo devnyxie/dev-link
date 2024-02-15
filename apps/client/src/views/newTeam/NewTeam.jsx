@@ -37,9 +37,11 @@ function NewTeam() {
 
   //NAME
   const [teamName, setTeamName] = React.useState("");
-  //DESCRIPTION
-  const [markdownDescription, setMarkdownDescription] = React.useState("");
+  //README
+  const [README, setREADME] = React.useState("");
   const [hideMarkdown, setHideMarkdown] = React.useState(false);
+  //DESCRIPTION
+  const [description, setDescription] = React.useState("");
   // TECHNOLOGIES
   const [technologies, setTechnologies] = React.useState([
     "JavaScript",
@@ -98,13 +100,18 @@ function NewTeam() {
       team: {
         name: teamName,
         creator_id: user.id,
-        description: markdownDescription,
+        description: description,
+        README: README,
       },
       members: [...roles],
       languages: selectedTechnologies,
     };
     console.log(data);
     dispatch(createTeam(data));
+  }
+
+  function inputLimit(value, limit) {
+    return value.length + "/" + limit;
   }
 
   return (
@@ -124,12 +131,20 @@ function NewTeam() {
       </Stack>
       {/* NAME */}
       <FormControl sx={{ mb: 3 }}>
-        <FormLabel>*Name</FormLabel>
+        <FormLabel
+          sx={{
+            display: "flex",
+            justifyContent: "space-between",
+            width: "100%",
+          }}
+        >
+          <div>Name</div> <div>{inputLimit(description, 80)}</div>
+        </FormLabel>
         <Input
           required
           placeholder="Name of the team"
           value={teamName}
-          onChange={(e) => setTeamName(e.target.value)}
+          onChange={(e) => setTeamName(e.target.value.slice(0, 80))}
         />
         <FormHelperText>
           This should ideally include the main programming language or the
@@ -137,9 +152,31 @@ function NewTeam() {
           or 'Frontend React Project Group'.
         </FormHelperText>
       </FormControl>
-      {/* DESCRIPTION */}
+      <FormControl sx={{ mb: 2 }}>
+        <FormLabel
+          sx={{
+            display: "flex",
+            justifyContent: "space-between",
+            width: "100%",
+          }}
+        >
+          <div>Description</div> <div>{inputLimit(description, 200)}</div>
+        </FormLabel>
+        <Textarea
+          variant="outlined"
+          value={description}
+          onChange={(e) => setDescription(e.target.value.slice(0, 200))}
+          placeholder="Short Description of the team"
+        />
+        <FormHelperText>
+          Write a short description for your team. This could include the
+          purpose of the team, the project you'll be working on, or any other
+          relevant information.
+        </FormHelperText>
+      </FormControl>
+      {/* README */}
       <FormControl sx={{ mb: 3 }}>
-        <FormLabel>*Description</FormLabel>
+        <FormLabel>README</FormLabel>
         <Tabs
           variant="outlined"
           sx={{ borderRadius: "sm", overflow: "hidden" }}
@@ -156,7 +193,7 @@ function NewTeam() {
 
             <JoyTooltip title="Hide Markdown">
               <IconButton
-                variant={hideMarkdown ? "plain" : "solid"}
+                variant={hideMarkdown ? "solid" : "plain"}
                 sx={{ borderRadius: 0 }}
                 onClick={() => setHideMarkdown(!hideMarkdown)}
               >
@@ -171,10 +208,9 @@ function NewTeam() {
           >
             <FormControl>
               <Textarea
-                required
-                value={markdownDescription}
-                onChange={(e) => setMarkdownDescription(e.target.value)}
-                placeholder="<!-- Describe your team! -->"
+                value={README}
+                onChange={(e) => setREADME(e.target.value)}
+                placeholder="<!-- We support markdown! -->"
                 sx={{ borderRadius: "0", border: 0, minHeight: "200px" }}
               />
             </FormControl>
@@ -186,15 +222,15 @@ function NewTeam() {
             <div
               className="markdown-body"
               dangerouslySetInnerHTML={{
-                __html: markdownToHtml(markdownDescription),
+                __html: markdownToHtml(README),
               }}
               style={{ minHeight: "200px", padding: "10px" }}
             ></div>
           </TabPanel>
         </Tabs>
         <FormHelperText>
-          Write a brief description of your team here. Include your team's
-          goals, main activities, and any other relevant information.
+          Write a brief README for your team here. Include your team's goals,
+          main activities, and any other relevant information.
         </FormHelperText>
       </FormControl>
       {/* TECHNOLOGIES */}
