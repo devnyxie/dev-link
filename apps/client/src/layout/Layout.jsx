@@ -6,7 +6,7 @@ import StatusAlert from "../components/SnackbarNotify";
 import Test from "../views/Test";
 import SnackbarNotify from "../components/SnackbarNotify";
 
-const Layout = ({ children }) => {
+const Layout = ({ children, size = "md" }) => {
   return (
     <div
       style={{
@@ -19,7 +19,7 @@ const Layout = ({ children }) => {
     >
       <Navbar />
       <Container
-        maxWidth="md"
+        maxWidth={size}
         style={{
           display: "flex",
           flexDirection: "column",
