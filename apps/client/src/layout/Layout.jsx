@@ -5,6 +5,7 @@ import Footer from "../components/Footer";
 import StatusAlert from "../components/SnackbarNotify";
 import Test from "../views/Test";
 import SnackbarNotify from "../components/SnackbarNotify";
+import { Box } from "@mui/joy";
 
 const Layout = ({ children, size = "md" }) => {
   return (
@@ -30,7 +31,18 @@ const Layout = ({ children, size = "md" }) => {
         }}
         classes={{ root: "fade-in" }}
       >
-        {children} <Footer />
+        <Box
+          sx={{
+            pt: 2,
+            pb: 2,
+            flexGrow: 1,
+            width: "100%",
+            display: "flex",
+          }}
+        >
+          {children}
+        </Box>
+        <Footer />
       </Container>
       <SnackbarNotify />
     </div>

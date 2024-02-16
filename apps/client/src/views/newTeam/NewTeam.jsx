@@ -30,6 +30,7 @@ import { useDispatch } from "react-redux";
 import { createTeam } from "../../redux/slices/teams.slice";
 import { useSelector } from "react-redux";
 import { selectUser } from "../../redux/slices/user.slice";
+import { setSnackbar } from "../../redux/slices/snackbar.slice";
 
 function NewTeam() {
   const dispatch = useDispatch();
@@ -106,6 +107,15 @@ function NewTeam() {
       members: [...roles],
       languages: selectedTechnologies,
     };
+    if (!data.team.name || !data.team.description) {
+      dispatch(
+        setSnackbar({
+          message: "Please fill in all required fields: Name, Description.",
+          color: "danger",
+        })
+      );
+      return;
+    }
     console.log(data);
     dispatch(createTeam(data));
   }

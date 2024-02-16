@@ -53,7 +53,7 @@ export const router = createBrowserRouter([
   {
     path: "/team/:teamId",
     element: (
-      <Layout>
+      <Layout size="lg">
         <TeamView />
       </Layout>
     ),
