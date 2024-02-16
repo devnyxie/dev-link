@@ -11,6 +11,7 @@ interface TeamAttributes {
   creator_id: string;
   name: string;
   description: string;
+  README: string;
 }
 
 interface TeamCreationAttributes extends TeamAttributes {}
@@ -45,6 +46,10 @@ const TeamModel = (sequelize: Sequelize) => {
         type: DataTypes.STRING,
       },
       description: {
+        allowNull: true,
+        type: DataTypes.TEXT,
+      },
+      README: {
         allowNull: true,
         type: DataTypes.TEXT,
       },

@@ -28,6 +28,7 @@ import { Link, useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import Sidebar from "./Sidebar";
 import { GoPlus } from "react-icons/go";
+
 const Navbar = () => {
   const [open, setOpen] = React.useState(false);
   const isLoading = useSelector((state) => state.loading);
@@ -117,6 +118,7 @@ const Navbar = () => {
                   </IconButton>
                 </Link>
                 <IconButton
+                  disabled
                   variant="outlined"
                   color="neutral"
                   sx={{ p: "5px", aspectRatio: "1/1" }}
