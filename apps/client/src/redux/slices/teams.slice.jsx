@@ -13,6 +13,7 @@ export const fetchTeam = createAsyncThunk(
       const response = await axios.get(
         `${process.env.VITE_APP_SERVER_URL}/api/teams?offset=${offset}&limit=${limit}`
       );
+      console.log(response.data);
       return response.data;
     } catch (error) {
       console.log(error);

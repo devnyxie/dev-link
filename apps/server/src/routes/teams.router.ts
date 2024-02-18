@@ -37,7 +37,7 @@ teamsRouter.get("/api/teams", async (req: Request, res: Response) => {
       include: [
         {
           model: Member,
-          attributes: ["id", "role"],
+          attributes: ["id", "role", "createdAt"],
           include: [
             {
               model: User,
@@ -88,7 +88,8 @@ teamsRouter.get("/api/teams/:id", async (req: Request, res: Response) => {
       include: [
         {
           model: Member,
-          attributes: ["id", "role"],
+          attributes: ["id", "role", "createdAt"],
+
           include: [
             {
               model: User,
