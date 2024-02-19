@@ -1,6 +1,7 @@
 import express, { Express, Request, Response } from "express";
 import { User } from "../database/db";
 import bcrypt from "bcrypt";
+import { signRefreshToken, signToken } from "../utils/auth";
 
 const usersRouter = express.Router();
 
@@ -73,17 +74,15 @@ usersRouter.delete("/api/users/:user_id", async (req, res) => {
     });
     if (response === 0) {
       return res.status(404).json({ message: "No user with such ID" });
-    } else if (response === 1) {
+    } else {
       return res
         .status(200)
         .json({ message: "User was successfully deleted." });
-    } else {
-      return res.status(500).json({ message: "An error occured." });
     }
   } catch (error: any) {
     // Handle other errors
     console.error(error);
-    res.status(500).send("Internal Server Error");
+    res.status(500).json({ message: "Internal Server Error" });
   }
 });
 
@@ -104,11 +103,18 @@ usersRouter.post("/api/login", async (req, res) => {
     if (!isPasswordValid) {
       return res.status(401).json({ message: "Invalid password" });
     }
-
     // Remove password from user before response
     user["password"] = "";
-
-    res.status(200).json({ message: "Login was successful", user: user });
+    // User authenticated successfully, create JWTs.
+    const token = signToken({ userId: user.id });
+    const refreshToken = signRefreshToken({ userId: user.id });
+    // Send tokens and data back to the client:
+    res.status(200).json({
+      message: "Login was successful",
+      user: user,
+      token: token,
+      refreshToken: refreshToken,
+    });
   } catch (error: any) {
     console.error(error);
     res.status(500).send("Internal Server Error");

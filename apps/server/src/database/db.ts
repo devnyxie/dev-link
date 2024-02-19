@@ -28,7 +28,9 @@ if (!process.env.DB_URL) {
 }
 
 // init
-const sequelize: Sequelize = new Sequelize(process.env.DB_URL);
+const sequelize: Sequelize = new Sequelize(process.env.DB_URL, {
+  logging: false,
+});
 // test
 syncDatabase(sequelize);
 

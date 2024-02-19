@@ -81,6 +81,9 @@ const RequestsModel = (sequelize: Sequelize) => {
   });
   //
   Request.belongsTo(UserModel(sequelize), { foreignKey: "user_id" });
+  Request.belongsTo(TeamModel(sequelize), { foreignKey: "team_id" });
+  Request.belongsTo(MembersModel(sequelize), { foreignKey: "member_id" });
+
   return Request;
 };
 

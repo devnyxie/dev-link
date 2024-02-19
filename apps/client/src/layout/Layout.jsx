@@ -36,6 +36,8 @@ const Layout = ({ children, size = "md" }) => {
             pt: 2,
             pb: 2,
             flexGrow: 1,
+            flexDirection: "column",
+            alignItems: "center",
             width: "100%",
             display: "flex",
           }}

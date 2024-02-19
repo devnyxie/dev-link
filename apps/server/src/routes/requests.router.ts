@@ -1,13 +1,81 @@
 import express, { Express, Request, Response } from "express";
-import { Member, Request as RequestModel, database } from "../database/db";
+import {
+  Member,
+  Request as RequestModel,
+  Team,
+  User,
+  database,
+} from "../database/db";
 import { DataTypes } from "sequelize";
 const requestsRouter = express.Router();
 
-requestsRouter.post("/api/request", async (req: Request, res: Response) => {
+//get all requests of all teams for a creator
+requestsRouter.get(
+  "/api/requests/creator/:creator_id",
+  async (req: Request, res: Response) => {
+    try {
+      const { creator_id } = req.params;
+
+      const teams = await Team.findAll({
+        where: { creator_id },
+        attributes: ["id"],
+      });
+      console.log(teams.length);
+
+      const teamIds = teams.map((team) => team.id);
+
+      const requests = await RequestModel.findAll({
+        order: [["createdAt", "DESC"]],
+        where: { team_id: teamIds },
+      });
+
+      res.status(200).json(requests);
+    } catch (error) {
+      console.error(error);
+      res.status(500).send("Internal Server Error.");
+    }
+  }
+);
+
+requestsRouter.get(
+  "/api/requests/user/:id",
+  async (req: Request, res: Response) => {
+    try {
+      const { id } = req.params;
+      const requests = await RequestModel.findAll({
+        order: [["createdAt", "DESC"]],
+        include: [
+          {
+            model: Team,
+            attributes: ["id", "name"],
+          },
+          { model: Member, attributes: ["role"] },
+        ],
+        where: { user_id: id },
+      });
+
+      res.status(200).json(requests);
+    } catch (error) {
+      console.error(error);
+      res.status(500).send("Internal Server Error.");
+    }
+  }
+);
+
+requestsRouter.post("/api/requests", async (req: Request, res: Response) => {
   try {
     const requested_request = req.body;
     const new_request = await RequestModel.create(requested_request);
-    res.status(200).json(new_request);
+    const requestWithUser = await RequestModel.findOne({
+      where: { id: new_request.id },
+      include: [User],
+    });
+    if (requestWithUser || new_request) {
+      res.status(200).json({
+        message: "Your request was successfully created",
+        data: requestWithUser || new_request,
+      });
+    }
   } catch (error) {
     // Handle errors
     console.error(error);
@@ -16,7 +84,7 @@ requestsRouter.post("/api/request", async (req: Request, res: Response) => {
 });
 
 requestsRouter.put(
-  "/api/request/:request_id",
+  "/api/requests/:request_id",
   async (req: Request, res: Response) => {
     try {
       const decision: boolean = req.body.accepted;
@@ -72,14 +140,16 @@ requestsRouter.put(
 );
 
 requestsRouter.delete(
-  "/api/request/:request_id",
+  "/api/requests/:request_id",
   async (req: Request, res: Response) => {
     try {
       const { request_id } = req.params;
       const response = await RequestModel.destroy({
         where: { id: request_id },
       });
-      res.status(200).json(response);
+      res
+        .status(200)
+        .json({ data: response, message: "Request was successfully deleted." });
     } catch (error) {
       // Handle errors
       console.error(error);

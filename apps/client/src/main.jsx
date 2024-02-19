@@ -19,10 +19,10 @@ import TeamView from "./views/team/Team.view.jsx";
 import NewTeam from "./views/newTeam/NewTeam.jsx";
 import { useSelector } from "react-redux";
 import { redirectTo } from "./utils/utils.jsx";
+import Requests from "./views/requests/Requests.view.jsx";
 
 function ProtectedRoute({ children }) {
   const user = useSelector((state) => state.user.user); // get user from Redux state
-  console.log("protected route", user);
   if (!user) {
     // if user is not logged in, redirect to login page
     redirectTo("/login");
@@ -64,6 +64,16 @@ export const router = createBrowserRouter([
       <Layout>
         <ProtectedRoute>
           <NewTeam />
+        </ProtectedRoute>
+      </Layout>
+    ),
+  },
+  {
+    path: "/requests",
+    element: (
+      <Layout>
+        <ProtectedRoute>
+          <Requests />
         </ProtectedRoute>
       </Layout>
     ),
