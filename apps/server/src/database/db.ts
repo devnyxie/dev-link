@@ -4,6 +4,7 @@ import TeamModel from "./models/team.model";
 import MembersModel from "./models/members.model";
 import RequestsModel from "./models/requests.model";
 import CodeLangsModel from "./models/codeLangs.model";
+import teamCodeLangs from "./models/teamCodeLangs.model";
 
 async function syncDatabase(database: Sequelize) {
   try {
@@ -28,26 +29,39 @@ if (!process.env.DB_URL) {
 }
 
 // init
-const sequelize: Sequelize = new Sequelize(process.env.DB_URL);
+const sequelize: Sequelize = new Sequelize(process.env.DB_URL, {
+  logging: false,
+});
 // test
 syncDatabase(sequelize);
 
 // export
-export const { database, User, Team, Member, Request, CodeLangs } = {
+export const {
+  database,
+  User,
+  Team,
+  Member,
+  Request,
+  CodeLangs,
+  TeamCodeLangs,
+} = {
   database: sequelize,
   User: UserModel(sequelize),
   Team: TeamModel(sequelize),
   Member: MembersModel(sequelize),
   Request: RequestsModel(sequelize),
   CodeLangs: CodeLangsModel(sequelize),
+  TeamCodeLangs: teamCodeLangs(sequelize),
 };
 
 // --- associtaions ---
 
 //Teams
 Team.belongsToMany(CodeLangs, {
-  through: "TeamCodeLanguages",
+  through: "teamCodeLangs",
   as: "codeLangs",
+  foreignKey: "teamId",
+  otherKey: "codeLangId",
 });
 Team.belongsTo(User, {
   foreignKey: "creator_id",
@@ -58,8 +72,13 @@ Team.hasMany(Request, { foreignKey: "team_id" });
 
 //CodeLangs
 CodeLangs.belongsToMany(Team, {
-  through: "TeamCodeLanguages",
+  through: "teamCodeLangs",
+  foreignKey: "codeLangId",
+  otherKey: "teamId",
 });
+//TeamCodeLangs
+TeamCodeLangs.belongsTo(CodeLangs, { foreignKey: "codeLangId" });
+CodeLangs.hasMany(TeamCodeLangs, { foreignKey: "codeLangId" });
 
 //Users
 User.hasMany(Team, {

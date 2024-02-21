@@ -5,6 +5,7 @@ import { userSlice } from "../slices/user.slice";
 import teamsSlice from "../slices/teams.slice";
 import loadingSlice from "../slices/loading.slice";
 import snackbarSlice from "../slices/snackbar.slice";
+import technologiesSlice from "../slices/technologies.slice";
 
 const persistConfig = {
   key: "root",
@@ -22,6 +23,7 @@ const rootReducer = {
   teams: teamsSlice.reducer,
   loading: loadingSlice,
   snackbar: snackbarSlice,
+  technologies: technologiesSlice,
   // Add more reducers here if needed
 };
 
@@ -30,5 +32,7 @@ const store = configureStore({
 });
 
 export const persistor = persistStore(store);
+
+export const getStore = () => store;
 
 export default store;

@@ -170,12 +170,12 @@ function NewTeam() {
             width: "100%",
           }}
         >
-          <div>Description</div> <div>{inputLimit(description, 200)}</div>
+          <div>Description</div> <div>{inputLimit(description, 300)}</div>
         </FormLabel>
         <Textarea
           variant="outlined"
           value={description}
-          onChange={(e) => setDescription(e.target.value.slice(0, 200))}
+          onChange={(e) => setDescription(e.target.value.slice(0, 300))}
           placeholder="Short Description of the team"
         />
         <FormHelperText>

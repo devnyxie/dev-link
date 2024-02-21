@@ -4,20 +4,20 @@ import UserModel from "./user.model";
 import MembersModel from "./members.model";
 import { Team } from "../db";
 
-interface CodeLangsAttributes {
+interface codeLangsAttributes {
   id: string;
   name: string;
 }
 
-interface CodeLangsCreationAttributes extends CodeLangsAttributes {}
+interface codeLangsCreationAttributes extends codeLangsAttributes {}
 
-export interface CodeLangsInstance
-  extends Model<CodeLangsAttributes, CodeLangsCreationAttributes>,
-    CodeLangsAttributes {}
+export interface codeLangsInstance
+  extends Model<codeLangsAttributes, codeLangsCreationAttributes>,
+    codeLangsAttributes {}
 
 const CodeLangsModel = (sequelize: Sequelize) => {
-  const Language = sequelize.define<CodeLangsInstance>(
-    "CodeLangs",
+  const Language = sequelize.define<codeLangsInstance>(
+    "codeLangs",
     {
       id: {
         allowNull: false,

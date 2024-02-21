@@ -11,6 +11,7 @@ import {
   Box,
   Skeleton,
   Avatar,
+  Link as JoyUILink,
 } from "@mui/joy";
 import PropTypes from "prop-types";
 import PositionedMenu from "./PositionedMenu";
@@ -57,7 +58,7 @@ const Team = ({ team, loading, index }) => {
     );
   }
   return (
-    <Card sx={{ mb: 1 }} key={index}>
+    <Card sx={{ mb: 1, width: "100%" }} key={index}>
       <CardContent style={{ paddingBottom: 0 }}>
         <Typography
           sx={{ fontSize: 14, display: "flex", alignItems: "start" }}
@@ -74,9 +75,14 @@ const Team = ({ team, loading, index }) => {
           </IconButton>
           @{team.creator.username}
         </Typography>
-        <Typography level="title-md" component="div">
-          {team.name}
-        </Typography>
+        <Link to={`/team/${team.id}`}>
+          <JoyUILink>
+            <Typography level="title-md" component="div">
+              {team.name}
+            </Typography>
+          </JoyUILink>
+        </Link>
+
         <Box sx={{ mb: 1.5 }}>
           <Typography
             color="neutral"
@@ -85,6 +91,7 @@ const Team = ({ team, loading, index }) => {
               WebkitBoxOrient: "vertical",
               WebkitLineClamp: 3,
               overflow: "hidden",
+              fontSize: "15px",
             }}
           >
             {team.description}
@@ -106,9 +113,10 @@ const Team = ({ team, loading, index }) => {
           width: "100%",
           flexWrap: "wrap",
           alignItems: "center",
+          gap: 1,
         }}
       >
-        <PiUsersThree size={20} style={{ marginRight: "8px" }} />
+        <PiUsersThree size={20} s />
         <Typography level="title-xs">
           {team.takenRoles.length +
             "/" +
@@ -117,21 +125,18 @@ const Team = ({ team, loading, index }) => {
       </Box>
 
       {team.codeLangs.length > 0 ? (
-        <Box
-          sx={{
-            display: "flex",
-            width: "100%",
-            flexWrap: "wrap",
-            alignItems: "center",
-          }}
-        >
-          <GoCode size="20" style={{ marginRight: "8px" }} />
+        <>
           <Box
-            role="group"
-            aria-labelledby="fav-movie"
-            sx={{ display: "flex", flexWrap: "wrap", gap: 1 }}
+            sx={{
+              display: "flex",
+              flexWrap: "wrap",
+              alignItems: "center",
+              gap: 1,
+              flexGrow: 1,
+            }}
           >
             {" "}
+            <GoCode size="20" />
             {team.codeLangs.map((lang, index) => {
               return (
                 <div key={index}>
@@ -146,43 +151,10 @@ const Team = ({ team, loading, index }) => {
               );
             })}
           </Box>
-        </Box>
+        </>
       ) : (
         <></>
       )}
-
-      <Divider />
-      <Box
-        className=""
-        sx={{
-          display: "flex",
-          alignItems: "center",
-          justifyContent: "space-between",
-        }}
-      >
-        <div></div>
-        <Box sx={{ display: "flex", justifyItems: "center" }}>
-          <IconButton
-            disabled
-            variant="plain"
-            size="sm"
-            color="primary"
-            sx={{ marginRight: "5px" }}
-          >
-            <GoBookmark size={20} />
-          </IconButton>
-          <Link to={`/team/${team.id}`}>
-            <Button
-              variant="plain"
-              size="sm"
-              className=""
-              style={{ width: "max-content" }}
-            >
-              Learn More
-            </Button>
-          </Link>
-        </Box>
-      </Box>
     </Card>
   );
 };

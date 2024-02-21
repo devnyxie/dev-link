@@ -45,7 +45,7 @@ export function Pagination({
         variant="outlined"
         sx={{ borderRadius: "sm", backgroundColor: "transparent" }}
       >
-        <ButtonGroup variant="plain" color="neutral">
+        <ButtonGroup variant="plain" color="neutral" size="sm">
           <Button onClick={goToPreviousPage} disabled={currentPage === 0}>
             Previous
           </Button>

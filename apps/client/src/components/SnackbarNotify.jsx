@@ -46,7 +46,7 @@ function SnackbarNotify() {
       <JoyUISnackbar
         startDecorator={chooseIcon(color)}
         color={color}
-        autoHideDuration={1300}
+        autoHideDuration={1700}
         open={open}
         variant="outlined"
         anchorOrigin={{ vertical: "top", horizontal: "right" }}

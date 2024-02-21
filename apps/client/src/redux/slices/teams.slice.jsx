@@ -1,25 +1,19 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
-import axios from "axios";
-import { finishLoading, startLoading } from "./loading.slice";
-import { useDispatch } from "react-redux";
-import { setSnackbar } from "./snackbar.slice";
 import { redirectTo } from "../../utils/utils";
+import instance from "../../utils/axiosInstance";
 
 export const fetchTeam = createAsyncThunk(
   "teams/fetchTeams",
-  async ({ offset, limit }, { dispatch }) => {
+  async ({ offset, limit }) => {
     try {
-      dispatch(startLoading());
-      const response = await axios.get(
-        `${process.env.VITE_APP_SERVER_URL}/api/teams?offset=${offset}&limit=${limit}`
+      const response = await instance.get(
+        `/api/teams?offset=${offset}&limit=${limit}`
       );
       return response.data;
     } catch (error) {
       console.log(error);
-      dispatch(setSnackbar());
       throw new Error("Failed to fetch teams.");
     } finally {
-      dispatch(finishLoading());
     }
   }
 );
@@ -29,17 +23,17 @@ export const findTeamById = createAsyncThunk(
   async (id, { getState, dispatch }) => {
     let team = undefined;
     try {
-      //
-      dispatch(startLoading());
       const state = getState();
+      console.log("state", state);
       const teams = state.teams.teams;
       const teamRes = teams.find((team) => team.id === id);
       if (teamRes) {
         team = teamRes;
       } else {
-        const response = await axios.get(
-          `${process.env.VITE_APP_SERVER_URL}/api/teams/${id}`
-        );
+        console.log("fetching from server");
+        const response = await instance.get(`/api/teams/${id}`);
+        console.log("response");
+        console.log(response);
         if (response.data.id) {
           team = response.data;
         } else {
@@ -47,51 +41,141 @@ export const findTeamById = createAsyncThunk(
         }
       }
     } catch (error) {
-      dispatch(
-        setSnackbar({
-          message: error.response
-            ? error.response.data.message
-            : "Team was not found",
-          color: "danger",
-        })
-      );
+      console.log("error, redirecting to 404...");
+      redirectTo("/404");
       throw new Error("Failed to fetch team.");
-    } finally {
-      dispatch(finishLoading());
     }
     return team;
   }
 );
 
-export const createTeam = createAsyncThunk(
-  "teams/createTeam",
-  async (data, { dispatch }) => {
-    try {
-      dispatch(startLoading());
-      const response = await axios.post(
-        `${process.env.VITE_APP_SERVER_URL}/api/teams`,
-        data
-      );
-      dispatch(
-        setSnackbar({
-          message: response.data.message,
-          color: "success",
-        })
-      );
+export const createTeam = createAsyncThunk("teams/createTeam", async (data) => {
+  try {
+    const response = await instance.post(`/api/teams`, data);
+    if (response.status === 200) {
       redirectTo("/team/" + response.data.team.id);
       return response.data;
-    } catch (error) {
-      dispatch(
-        setSnackbar({
-          message: error.response
-            ? error.response.data.message
-            : "Failed to create team",
-          color: "danger",
-        })
-      );
+    } else {
       throw new Error("Failed to create team.");
+    }
+  } catch (error) {
+    console.log(error.response);
+    throw new Error("Failed to create team.");
+  }
+});
+
+//get all user's teams from "/api/teams/user/:userId"
+export const fetchTeamsByUserId = createAsyncThunk(
+  "teams/fetchTeamsByUserId",
+  async (userId) => {
+    try {
+      const response = await instance.get(`/api/teams/user/${userId}`);
+      return response.data;
+    } catch (error) {
+      console.log(error);
+      throw new Error("Failed to fetch teams.");
+    }
+  }
+);
+
+//create request
+export const createRequest = createAsyncThunk(
+  "teams/createRequest",
+  async (request) => {
+    let res = undefined;
+    try {
+      const response = await instance.post(`/api/requests`, request);
+      if (response.status === 200) {
+        res = response.data;
+      } else {
+        throw new Error("Failed to send request.");
+      }
+    } catch (error) {
+      console.log(error.response);
+      throw new Error("Failed to send request.");
     } finally {
-      dispatch(finishLoading());
+      return res;
+    }
+  }
+);
+
+//get all requests of a  user from "/api/requests/user/:id"
+export const fetchRequestsByUserId = createAsyncThunk(
+  "teams/fetchRequestsByUserId",
+  async (userId) => {
+    try {
+      const response = await instance.get(`/api/requests/user/${userId}`);
+      return response.data;
+    } catch (error) {
+      console.log(error);
+      throw new Error("Failed to fetch requests.");
+    }
+  }
+);
+
+//get all requests for teams of a creator
+//fetch requests from "/api/requests/creator/:creator_id"
+export const fetchRequestsByCreatorId = createAsyncThunk(
+  "teams/fetchRequestsByCreatorId",
+  async (_, { getState }) => {
+    //get creatorId from getState().user.id
+    const state = getState();
+    console.log("state", state);
+    const user = state.user.user;
+    try {
+      const response = await instance.get(`/api/requests/creator/${user.id}`);
+      return response.data;
+    } catch (error) {
+      console.log(error);
+      throw new Error("Failed to fetch requests.");
+    }
+  }
+);
+
+//accept or decline id by making a request to "/api/requests/:request_id" with a payload "accepted=true" or "accepted=false".
+export const acceptOrDeclineRequest = createAsyncThunk(
+  "teams/acceptOrDeclineRequest",
+  async ({ id, accepted }) => {
+    try {
+      const response = await instance.put(`/api/requests/${id}`, {
+        accepted: accepted,
+      });
+      if (response.status === 200) {
+        return response.data;
+      }
+    } catch (error) {
+      console.log(error);
+      throw new Error("Failed to accept/decline request.");
+    }
+  }
+);
+
+//delete request by request id
+export const deleteRequest = createAsyncThunk(
+  "teams/deleteRequest",
+  async (requestId) => {
+    try {
+      const response = await instance.delete(`/api/requests/${requestId}`);
+      if (response.status === 200) {
+        return response.data;
+      }
+    } catch (error) {
+      console.log(error);
+      throw new Error("Failed to delete request.");
+    }
+  }
+);
+
+//search for teams (/api/teams/search/:name)
+export const searchTeams = createAsyncThunk(
+  "teams/searchTeams",
+  async (name) => {
+    try {
+      const response = await instance.get(`/api/teams/search/${name}`);
+      return response.data;
+    } catch (error) {
+      console.log(error);
+      throw new Error("Failed to search teams.");
     }
   }
 );
@@ -104,7 +188,28 @@ const teamsSlice = createSlice({
     loading: false,
     error: null,
   },
-  reducers: {},
+  reducers: {
+    updateOneTeamById: (state, action) => {
+      console.log("updateOneTeamById");
+
+      const team = action.payload;
+      const index = state.teams.findIndex((t) => t.id === team.id);
+      if (index !== -1) {
+        console.log("if");
+        // state.teams = state.teams.map((teamOld, i) =>
+        //   i === index ? team : teamOld
+        // );
+        state.teams = state.teams.map((teamOld, i) =>
+          i === index ? { ...team } : { ...teamOld }
+        );
+      } else {
+        console.log("else");
+        state.teams = [...state.teams, team];
+      }
+      state.count = state.teams.length;
+      console.log("state.teams", state.teams);
+    },
+  },
   extraReducers: (builder) => {
     builder
       .addCase(fetchTeam.pending, (state) => {
@@ -123,4 +228,5 @@ const teamsSlice = createSlice({
   },
 });
 
+export const { updateOneTeamById } = teamsSlice.actions;
 export default teamsSlice;

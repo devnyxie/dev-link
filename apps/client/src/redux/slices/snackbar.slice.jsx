@@ -27,6 +27,7 @@ export const snackbarSlice = createSlice({
 
     clearSnackbar: (state) => {
       state.open = false;
+      state.color = "neutral";
     },
   },
 });
