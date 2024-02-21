@@ -11,8 +11,9 @@ function TrendingTechnologies({ heading }) {
   useEffect(() => {
     // fetch data
     dispatch(getTrendingTechnologies()).then((res) => {
-      console.log(res);
-      setTrendingTechnologies(res.payload);
+      if (res.payload) {
+        setTrendingTechnologies(res.payload);
+      }
     });
   }, []);
   if (trendingTechnologies.length === 0) return null;
@@ -25,7 +26,7 @@ function TrendingTechnologies({ heading }) {
         </Typography>
         <FiTrendingUp size={20} />
       </Box>
-      <Box sx={{ width: "100%", display: "flex", flexWrap: "wrap" }}>
+      <Box sx={{ width: "100%", display: "flex", flexWrap: "wrap", gap: 0.75 }}>
         {trendingTechnologies.map((tech, index) => (
           //   <Badge
           //     variant="outlined"
@@ -38,7 +39,7 @@ function TrendingTechnologies({ heading }) {
             color="primary"
             variant="outlined"
             key={index}
-            sx={{ mr: 1.5, mb: 1.5, px: 1, display: "flex", gap: 1 }}
+            sx={{ px: 1, display: "flex" }}
             onClick={() => console.log(tech)}
           >
             <Box

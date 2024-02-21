@@ -90,12 +90,13 @@ const AppliedRequest = ({ request, deleteRequestFunc }) => {
 
 function YourRequests() {
   const user = useSelector((state) => state.user.user);
-  const [requests, setRequests] = useState(undefined);
+  const [requests, setRequests] = useState([]);
   const dispatch = useDispatch();
   useEffect(() => {
     dispatch(fetchRequestsByUserId(user.id)).then((res) => {
-      console.log(res);
-      setRequests(res.payload);
+      if (res.payload) {
+        setRequests(res.payload);
+      }
     });
   }, []);
 
@@ -107,7 +108,7 @@ function YourRequests() {
       }
     });
   }
-  if (requests) {
+  if (requests.length > 0) {
     if (requests.length === 0) {
       return (
         <Box sx={{ textAlign: "center", mt: 2 }}>
