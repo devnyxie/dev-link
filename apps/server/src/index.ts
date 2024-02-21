@@ -7,7 +7,7 @@ import membersRouter from "./routes/members.router";
 import requestsRouter from "./routes/requests.router";
 import authRouter from "./routes/auth.router";
 import cors from "cors";
-
+import codeLangsRouter from "./routes/codeLangs.router";
 // App Setup
 const app: Express = express();
 
@@ -43,3 +43,5 @@ app.use("/", membersRouter);
 app.use("/", requestsRouter);
 //   - Auth Router
 app.use("/", authRouter);
+//   - CodeLangs Router
+app.use("/", codeLangsRouter);

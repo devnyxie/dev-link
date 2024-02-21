@@ -27,6 +27,20 @@ requestsRouter.get(
       const requests = await RequestModel.findAll({
         order: [["createdAt", "DESC"]],
         where: { team_id: teamIds },
+        include: [
+          {
+            model: User,
+            attributes: ["id", "username", "pfp"],
+          },
+          {
+            model: Member,
+            attributes: ["id", "role"],
+          },
+          {
+            model: Team,
+            attributes: ["id", "name"],
+          },
+        ],
       });
 
       res.status(200).json(requests);
@@ -87,7 +101,9 @@ requestsRouter.put(
   "/api/requests/:request_id",
   async (req: Request, res: Response) => {
     try {
-      const decision: boolean = req.body.accepted;
+      const accepted: string = req.body.accepted;
+      console.log("User was accepted?", accepted);
+      console.log(req.body);
       const { request_id } = req.params;
       //get the request itself
       const request = await RequestModel.findByPk(request_id);
@@ -112,24 +128,28 @@ requestsRouter.put(
           const affectedCount_request = await RequestModel.destroy({
             where: { id: request_id },
           });
-          if (decision == true) {
-            member_res = await adjustMember();
+
+          if (accepted === "false") {
+            return affectedCount_request;
           }
-          if (affectedCount_request !== 0 && member_res !== 0) {
-            return;
+          const affectedCount_member = await adjustMember();
+          console.log("affectedCount_member", affectedCount_member);
+          if (affectedCount_member) {
+            return affectedCount_member;
           } else {
             throw new Error("");
           }
         });
         //
-
-        res
-          .status(200)
-          .json(
-            `User request was successfully ${
-              decision ? "accepted." : "declined."
-            }`
-          );
+        if (result) {
+          res.status(200).json({
+            message: `User was successfully ${
+              accepted === "true" ? "accepted" : "rejected"
+            }.`,
+          });
+        } else {
+          res.status(500).send({ message: "Internal Server Error." });
+        }
       }
     } catch (error) {
       // Handle errors

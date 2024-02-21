@@ -3,7 +3,7 @@ import bcrypt from "bcrypt";
 import MembersModel from "./members.model";
 import UserModel from "./user.model";
 import RequestsModel from "./requests.model";
-import CodeLangsModel, { CodeLangsInstance } from "./codeLangs.model";
+import CodeLangsModel, { codeLangsInstance } from "./codeLangs.model";
 import { BelongsToManyAddAssociationsMixin } from "sequelize/types";
 
 interface TeamAttributes {
@@ -20,8 +20,8 @@ interface TeamInstance
   extends Model<TeamAttributes, TeamCreationAttributes>,
     TeamAttributes {
   addCodeLangs: BelongsToManyAddAssociationsMixin<
-    CodeLangsInstance,
-    CodeLangsInstance["id"]
+    codeLangsInstance,
+    codeLangsInstance["id"]
   >;
 }
 

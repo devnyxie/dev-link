@@ -2,6 +2,7 @@ import express, { Express, Request, Response } from "express";
 import { User } from "../database/db";
 import bcrypt from "bcrypt";
 import { signRefreshToken, signToken } from "../utils/auth";
+import { Op } from "sequelize";
 
 const usersRouter = express.Router();
 
@@ -120,5 +121,32 @@ usersRouter.post("/api/login", async (req, res) => {
     res.status(500).send("Internal Server Error");
   }
 });
+
+//search for teams by name (case insensitive, partial match, pagination)
+usersRouter.get(
+  "/api/users/search/:name",
+  async (req: Request, res: Response) => {
+    try {
+      const name = req.params.name;
+      const limit = req.query.limit ? Number(req.query.limit) : 10;
+      const offset = req.query.offset ? Number(req.query.offset) : 0;
+      const users = await User.findAll({
+        order: [["createdAt", "DESC"]],
+        where: {
+          username: {
+            [Op.iLike]: `%${name}%`,
+          },
+        },
+        limit: limit,
+        offset: offset,
+      });
+      res.status(200).json(users);
+    } catch (error) {
+      // Handle errors
+      console.error(error);
+      res.status(500).send("Internal Server Error");
+    }
+  }
+);
 
 export default usersRouter;

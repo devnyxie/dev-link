@@ -10,7 +10,7 @@ import {
   RouterProvider,
   useNavigate,
 } from "react-router-dom";
-import Feed from "./views/home/Feed.jsx";
+import Home from "./views/home/Home.jsx";
 import ErrorPage from "./views/error/ErrorPage.jsx";
 import Layout from "./layout/Layout.jsx";
 import LoginPage from "./views/login/LoginPage.jsx";
@@ -19,7 +19,9 @@ import TeamView from "./views/team/Team.view.jsx";
 import NewTeam from "./views/newTeam/NewTeam.jsx";
 import { useSelector } from "react-redux";
 import { redirectTo } from "./utils/utils.jsx";
-import Requests from "./views/requests/Requests.view.jsx";
+import YourTeams from "./views/yourTeams/Teams.view.jsx";
+import YourRequests from "./views/yourRequests/Requests.view.jsx";
+import Notifications from "./views/notifications/Notifications.view.jsx";
 
 function ProtectedRoute({ children }) {
   const user = useSelector((state) => state.user.user); // get user from Redux state
@@ -31,14 +33,12 @@ function ProtectedRoute({ children }) {
   return children;
 }
 
-const theme = extendTheme({});
-
 export const router = createBrowserRouter([
   {
     path: "/",
     element: (
-      <Layout>
-        <Feed />
+      <Layout size="lg">
+        <Home />
       </Layout>
     ),
   },
@@ -73,7 +73,17 @@ export const router = createBrowserRouter([
     element: (
       <Layout>
         <ProtectedRoute>
-          <Requests />
+          <YourRequests />
+        </ProtectedRoute>
+      </Layout>
+    ),
+  },
+  {
+    path: "/teams",
+    element: (
+      <Layout>
+        <ProtectedRoute>
+          <YourTeams />
         </ProtectedRoute>
       </Layout>
     ),
@@ -91,7 +101,7 @@ export const router = createBrowserRouter([
 ReactDOM.createRoot(document.getElementById("root")).render(
   <React.StrictMode>
     <Provider store={store}>
-      <CssVarsProvider theme={theme}>
+      <CssVarsProvider>
         <CssBaseline />
         <RouterProvider router={router} history={history} />
       </CssVarsProvider>

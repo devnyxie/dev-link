@@ -15,7 +15,7 @@ import {
   Typography,
   useTheme,
 } from "@mui/joy";
-import React from "react";
+import React, { useEffect } from "react";
 import { GoBell } from "react-icons/go";
 import { useMediaQuery } from "react-responsive";
 import ThemeToggler from "./ThemeToggler";
@@ -28,9 +28,14 @@ import { Link, useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import Sidebar from "./Sidebar";
 import { GoPlus } from "react-icons/go";
-
+import SearchModal from "./SearchModal";
+import Notifications from "../views/notifications/Notifications.view";
 const Navbar = () => {
   const [open, setOpen] = React.useState(false);
+  const [searchModalOpen, setSearchModalOpen] = React.useState(false);
+  const [notificationsModalOpen, setNotificationsModalOpen] =
+    React.useState(false);
+
   const isLoading = useSelector((state) => state.loading);
   const { user } = useSelector(selectUser);
   const isMobile = useMediaQuery({ query: "(max-width: 768px)" });
@@ -43,11 +48,19 @@ const Navbar = () => {
     console.log("switching ", inOpen);
   };
 
-  // function toggleDrawer(inOpen) {
-  //   console.log("switching ", inOpen);
-  //   setOpen(inOpen);
-  // }
-  //
+  useEffect(() => {
+    const handleKeyDown = (event) => {
+      if (event.ctrlKey && event.key === "k") {
+        event.preventDefault();
+        setSearchModalOpen(true);
+      }
+    };
+    window.addEventListener("keydown", handleKeyDown);
+    return () => {
+      window.removeEventListener("keydown", handleKeyDown);
+    };
+  }, []);
+
   return (
     <>
       <Box
@@ -83,24 +96,33 @@ const Navbar = () => {
               alignItems: "center",
             }}
           >
-            {isMobile ? (
-              <> </>
-            ) : (
-              <>
-                {" "}
-                <Input
-                  startDecorator={<CiSearch size={20} />}
-                  variant="outlined"
-                  color="neutral"
-                  placeholder="Search"
-                  sx={{ backgroundColor: "transparent" }}
-                />
-                {/* <Divider
-                  orientation="vertical"
-                  sx={{ mx: 1, mt: "5px", mb: "5px" }}
-                /> */}
-              </>
-            )}
+            <Button
+              variant="outlined"
+              color="neutral"
+              // startDecorator={}
+              sx={{ display: "flex", alignItems: "center", gap: "10px" }}
+              onClick={() => setSearchModalOpen(true)}
+            >
+              <CiSearch size={20} />
+              {isMobile ? (
+                <> </>
+              ) : (
+                <>
+                  <Typography color="neutral" level="title-sm">
+                    Search
+                  </Typography>
+                  <Sheet
+                    variant="outlined"
+                    sx={{ borderRadius: "sm", px: 0.5 }}
+                  >
+                    <Typography color="neutral" level="title-sm">
+                      Ctrl+K
+                    </Typography>
+                  </Sheet>
+                </>
+              )}
+            </Button>
+            <SearchModal open={searchModalOpen} setOpen={setSearchModalOpen} />
             <ThemeToggler />
             <Divider
               orientation="vertical"
@@ -117,14 +139,19 @@ const Navbar = () => {
                     <GoPlus size={20} />
                   </IconButton>
                 </Link>
+
                 <IconButton
-                  disabled
+                  onClick={() => setNotificationsModalOpen(true)}
                   variant="outlined"
                   color="neutral"
                   sx={{ p: "5px", aspectRatio: "1/1" }}
                 >
                   <GoBell size={20} />
                 </IconButton>
+                <Notifications
+                  open={notificationsModalOpen}
+                  setOpen={setNotificationsModalOpen}
+                />
                 <IconButton
                   style={{ borderRadius: "50%", aspectRatio: 1 / 1 }}
                   onClick={() => setOpen(!open)}

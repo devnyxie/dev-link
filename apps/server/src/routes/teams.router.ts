@@ -252,9 +252,6 @@ teamsRouter.get("/api/teams/user/:id", async (req: Request, res: Response) => {
     const id = req.params.id;
     const limit = req.query.limit ? Number(req.query.limit) : undefined;
     const offset = req.query.offset ? Number(req.query.offset) : undefined;
-
-    //
-    //
     const teamIds = await Member.findAll({
       order: [["createdAt", "DESC"]],
       where: {
@@ -307,9 +304,6 @@ teamsRouter.get("/api/teams/user/:id", async (req: Request, res: Response) => {
         },
       ],
     });
-    //
-    //
-
     const teamsWithRoles = setupRoles(usersTeams);
     res.status(200).json(teamsWithRoles);
   } catch (error) {
@@ -318,5 +312,67 @@ teamsRouter.get("/api/teams/user/:id", async (req: Request, res: Response) => {
     res.status(500).send("Internal Server Error");
   }
 });
+
+//search for teams by name (case insensitive, partial match, pagination)
+teamsRouter.get(
+  "/api/teams/search/:name",
+  async (req: Request, res: Response) => {
+    try {
+      const name = req.params.name;
+      const limit = req.query.limit ? Number(req.query.limit) : undefined;
+      const offset = req.query.offset ? Number(req.query.offset) : undefined;
+      const teams = await Team.findAll({
+        order: [["createdAt", "DESC"]],
+        where: {
+          name: {
+            [Op.iLike]: `%${name}%`,
+          },
+        },
+        limit: limit,
+        offset: offset,
+        include: [
+          {
+            model: Member,
+            attributes: ["id", "role", "createdAt"],
+            include: [
+              {
+                model: User,
+                attributes: ["id", "username", "pfp"],
+              },
+              {
+                model: RequestModel,
+                attributes: ["id", "accepted", "createdAt", "updatedAt"],
+                include: [
+                  {
+                    model: User,
+                    attributes: ["id", "username", "pfp"],
+                  },
+                ],
+              },
+            ],
+          },
+          {
+            model: User,
+            as: "creator",
+            attributes: ["username", "pfp"],
+          },
+          {
+            model: CodeLangs,
+            // as: "teamLanguages",1
+            attributes: ["name"],
+            through: { attributes: [] },
+            as: "codeLangs", // Change column name to "programming_languages"
+          },
+        ],
+      });
+      const teamsWithRoles = setupRoles(teams);
+      res.status(200).json(teamsWithRoles);
+    } catch (error) {
+      // Handle errors
+      console.error(error);
+      res.status(500).send("Internal Server Error");
+    }
+  }
+);
 
 export default teamsRouter;

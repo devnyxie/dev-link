@@ -64,6 +64,21 @@ export const createTeam = createAsyncThunk("teams/createTeam", async (data) => {
   }
 });
 
+//get all user's teams from "/api/teams/user/:userId"
+export const fetchTeamsByUserId = createAsyncThunk(
+  "teams/fetchTeamsByUserId",
+  async (userId) => {
+    try {
+      const response = await instance.get(`/api/teams/user/${userId}`);
+      return response.data;
+    } catch (error) {
+      console.log(error);
+      throw new Error("Failed to fetch teams.");
+    }
+  }
+);
+
+//create request
 export const createRequest = createAsyncThunk(
   "teams/createRequest",
   async (request) => {
@@ -97,6 +112,44 @@ export const fetchRequestsByUserId = createAsyncThunk(
     }
   }
 );
+
+//get all requests for teams of a creator
+//fetch requests from "/api/requests/creator/:creator_id"
+export const fetchRequestsByCreatorId = createAsyncThunk(
+  "teams/fetchRequestsByCreatorId",
+  async (_, { getState }) => {
+    //get creatorId from getState().user.id
+    const state = getState();
+    console.log("state", state);
+    const user = state.user.user;
+    try {
+      const response = await instance.get(`/api/requests/creator/${user.id}`);
+      return response.data;
+    } catch (error) {
+      console.log(error);
+      throw new Error("Failed to fetch requests.");
+    }
+  }
+);
+
+//accept or decline id by making a request to "/api/requests/:request_id" with a payload "accepted=true" or "accepted=false".
+export const acceptOrDeclineRequest = createAsyncThunk(
+  "teams/acceptOrDeclineRequest",
+  async ({ id, accepted }) => {
+    try {
+      const response = await instance.put(`/api/requests/${id}`, {
+        accepted: accepted,
+      });
+      if (response.status === 200) {
+        return response.data;
+      }
+    } catch (error) {
+      console.log(error);
+      throw new Error("Failed to accept/decline request.");
+    }
+  }
+);
+
 //delete request by request id
 export const deleteRequest = createAsyncThunk(
   "teams/deleteRequest",
@@ -109,6 +162,20 @@ export const deleteRequest = createAsyncThunk(
     } catch (error) {
       console.log(error);
       throw new Error("Failed to delete request.");
+    }
+  }
+);
+
+//search for teams (/api/teams/search/:name)
+export const searchTeams = createAsyncThunk(
+  "teams/searchTeams",
+  async (name) => {
+    try {
+      const response = await instance.get(`/api/teams/search/${name}`);
+      return response.data;
+    } catch (error) {
+      console.log(error);
+      throw new Error("Failed to search teams.");
     }
   }
 );

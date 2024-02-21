@@ -88,9 +88,9 @@ const AppliedRequest = ({ request, deleteRequestFunc }) => {
   );
 };
 
-function Requests() {
+function YourRequests() {
   const user = useSelector((state) => state.user.user);
-  const [requests, setRequests] = useState([]);
+  const [requests, setRequests] = useState(undefined);
   const dispatch = useDispatch();
   useEffect(() => {
     dispatch(fetchRequestsByUserId(user.id)).then((res) => {
@@ -107,17 +107,21 @@ function Requests() {
       }
     });
   }
-
-  return (
-    <div
-      style={{
-        width: "100%",
-        display: "flex",
-      }}
-    >
-      {requests.length === 0 ? (
-        <>No requests</>
-      ) : (
+  if (requests) {
+    if (requests.length === 0) {
+      return (
+        <Box sx={{ textAlign: "center", mt: 2 }}>
+          <Typography level="title-lg">No requests</Typography>
+        </Box>
+      );
+    }
+    return (
+      <div
+        style={{
+          width: "100%",
+          display: "flex",
+        }}
+      >
         <Grid container spacing={1} sx={{ width: "100%" }}>
           {requests.map((request) => {
             return (
@@ -129,9 +133,9 @@ function Requests() {
             );
           })}
         </Grid>
-      )}
-    </div>
-  );
+      </div>
+    );
+  }
 }
 
-export default Requests;
+export default YourRequests;
