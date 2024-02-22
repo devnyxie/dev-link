@@ -21,6 +21,7 @@ import { GoBookmark } from "react-icons/go";
 import { PiUsersThree } from "react-icons/pi";
 import { Link } from "react-router-dom";
 import markdownToHtml from "./MarkdownToHTML";
+import TechChip from "./TechChip";
 const Team = ({ team, loading, index }) => {
   if (loading) {
     return (
@@ -60,30 +61,29 @@ const Team = ({ team, loading, index }) => {
   return (
     <Card sx={{ mb: 1, width: "100%" }} key={index}>
       <CardContent style={{ paddingBottom: 0 }}>
-        <Typography
-          sx={{ fontSize: 14, display: "flex", alignItems: "start" }}
-          color="neutral"
-          gutterBottom
-        >
+        <Box sx={{ display: "flex", alignItems: "start" }}>
           <IconButton sx={{ borderRadius: "50%", aspectRatio: 1 / 1, mr: 0.5 }}>
             <Avatar
-              size="sm"
+              // size="md"
               color="neutral"
               variant="outlined"
               src={team.creator.pfp}
+              sx={{ width: "36px", height: "36px" }}
             />
           </IconButton>
-          @{team.creator.username}
-        </Typography>
-        <Link to={`/team/${team.id}`}>
-          <JoyUILink>
-            <Typography level="title-md" component="div">
-              {team.name}
+          <Box sx={{ display: "flex", flexDirection: "column" }}>
+            <Typography level="body-sm" color="neutral">
+              @{team.creator.username}
             </Typography>
-          </JoyUILink>
-        </Link>
+            <Link to={`/team/${team.id}`}>
+              <JoyUILink>
+                <Typography level="title-md">{team.name}</Typography>
+              </JoyUILink>
+            </Link>
+          </Box>
+        </Box>
 
-        <Box sx={{ mb: 1.5 }}>
+        <Box sx={{}}>
           <Typography
             color="neutral"
             sx={{
@@ -116,12 +116,20 @@ const Team = ({ team, loading, index }) => {
           gap: 1,
         }}
       >
-        <PiUsersThree size={20} s />
-        <Typography level="title-xs">
-          {team.takenRoles.length +
-            "/" +
-            (team.openRoles.length + team.takenRoles.length)}
+        <Typography
+          color="neutral"
+          sx={{ display: "flex", alignItems: "center" }}
+        >
+          <PiUsersThree size={20} />
         </Typography>
+
+        <Chip color="neutral" variant="plain">
+          <Typography level="title-xs">
+            {team.takenRoles.length +
+              "/" +
+              (team.openRoles.length + team.takenRoles.length)}
+          </Typography>
+        </Chip>
       </Box>
 
       {team.codeLangs.length > 0 ? (
@@ -136,17 +144,19 @@ const Team = ({ team, loading, index }) => {
             }}
           >
             {" "}
-            <GoCode size="20" />
+            <Typography
+              color="neutral"
+              sx={{ display: "flex", alignItems: "center" }}
+            >
+              <GoCode size="20" />
+            </Typography>
             {team.codeLangs.map((lang, index) => {
               return (
                 <div key={index}>
-                  <Chip
-                    color="primary"
-                    variant="outlined"
-                    onClick={() => console.log(lang.name)}
-                  >
-                    {lang.name}
-                  </Chip>
+                  <TechChip
+                    techName={lang.name}
+                    onClick={(e) => console.log(e)}
+                  />
                 </div>
               );
             })}
