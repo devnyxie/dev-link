@@ -42,6 +42,7 @@ import OpenRoles from "./OpenRoles";
 import Members from "./Members";
 import { PiUsersThree } from "react-icons/pi";
 import { timeFormatter } from "../../utils/utils";
+import TechChip from "../../components/TechChip";
 
 const DetailsBlock = ({ team, sx }) => {
   return (
@@ -113,13 +114,10 @@ const DetailsBlock = ({ team, sx }) => {
                 {team.codeLangs.map((lang, index) => {
                   return (
                     <div key={index}>
-                      <Chip
-                        color="primary"
-                        variant="outlined"
-                        onClick={() => console.log(lang.name)}
-                      >
-                        {lang.name}
-                      </Chip>
+                      <TechChip
+                        techName={lang.name}
+                        onClick={(e) => console.log(e)}
+                      />
                     </div>
                   );
                 })}

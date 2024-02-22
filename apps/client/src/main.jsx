@@ -98,10 +98,71 @@ export const router = createBrowserRouter([
   },
 ]);
 
+const theme = extendTheme({
+  colorSchemes: {
+    light: {
+      palette: {
+        primary: {
+          50: "#eef2ff",
+          100: "#e0e7ff",
+          200: "#c7d2fe",
+          300: "#a5b4fc",
+          400: "#818cf8",
+          500: "#6366f1",
+          600: "#4f46e5",
+          700: "#4338ca",
+          800: "#3730a3",
+          900: "#312e81",
+          950: "#1e1b4b",
+          softBg: "var(--joy-palette-primary-50)",
+          // outlinedBorder: "var(--joy-palette-primary-500)",
+          // outlinedColor: "var(--joy-palette-primary-600)",
+          // outlinedActiveBg: "var(--joy-palette-primary-700)",
+          // outlinedActiveColor: "var(--joy-palette-primary-50)",
+          // plainActiveColor: "var(--joy-palette-primary-50)",
+          // outlinedHoverBg: "var(--joy-palette-primary-200)",
+          // softBg: "var(--joy-palette-primary-200)",
+          // softHoverBg: "var(--joy-palette-primary-300)",
+          // softActiveBg: "var(--joy-palette-primary-300)",
+          // softActiveColor: "var(--joy-palette-primary-50)",
+        },
+      },
+    },
+    dark: {
+      palette: {
+        primary: {
+          //indigo - GREAT
+          50: "#eef2ff",
+          100: "#e0e7ff",
+          200: "#c7d2fe",
+          300: "#a5b4fc",
+          400: "#818cf8",
+          500: "#6366f1",
+          600: "#4f46e5",
+          700: "#4338ca",
+          800: "#3730a3",
+          900: "#312e81",
+          950: "#1e1b4b",
+          // --- Outlined
+          //
+          // --- Soft
+          //
+          softBg: "var(--joy-palette-primary-950)",
+          //
+          // --- Plain
+          //
+          // --- Solid
+          //
+        },
+      },
+    },
+  },
+});
+
 ReactDOM.createRoot(document.getElementById("root")).render(
   <React.StrictMode>
     <Provider store={store}>
-      <CssVarsProvider>
+      <CssVarsProvider theme={theme}>
         <CssBaseline />
         <RouterProvider router={router} history={history} />
       </CssVarsProvider>

@@ -9,18 +9,22 @@ import {
 } from "@mui/joy";
 import React, { useEffect } from "react";
 import { useMediaQuery } from "react-responsive";
+import { useLocation } from "react-router-dom";
 
 function ModalWrapper({ open, setOpen, onClose, children }) {
+  const location = useLocation();
   const [layout, setLayout] = React.useState(null);
   const isMobile = useMediaQuery({ query: "(max-width: 768px)" });
   const isTablet = useMediaQuery({
     query: "(min-width: 768px) and (max-width: 1400px)",
   });
-
   useEffect(() => {
     if (isMobile) setLayout("fullscreen");
     if (isTablet) setLayout(null);
   }, [isMobile, isTablet]);
+  useEffect(() => {
+    setOpen(false);
+  }, [location]);
   return (
     <>
       <Modal

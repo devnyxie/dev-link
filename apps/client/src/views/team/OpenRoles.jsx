@@ -65,14 +65,11 @@ function OpenRoles({ team, setTeam, user, eligibleToJoin }) {
                       >
                         {role.role}
                       </Typography>
-                      <Chip
-                        variant="outlined"
-                        color="primary"
-                        size="sm"
-                        sx={{ pointerEvents: "none", mt: 1 }}
-                      >
-                        {role.requests.length} Requests
-                      </Chip>
+                      <Typography color="neutral" fontSize={14}>
+                        {role.requests.length} Request
+                        {(role.requests.length > 1 && "s") ||
+                          (role.requests.length == 0 && "s")}
+                      </Typography>
                     </CardContent>
                     <CardActions
                       sx={{
