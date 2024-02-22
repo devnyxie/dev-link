@@ -30,8 +30,7 @@ function Notifications({ open, setOpen }) {
   const [index, setIndex] = useState(0);
   useEffect(() => {
     dispatch(fetchRequestsByCreatorId()).then((res) => {
-      console.log(res);
-      setRequests(res.payload);
+      if (res.payload) setRequests(res.payload);
     });
   }, []);
   function handleRequestManagement(e) {
