@@ -5,13 +5,8 @@ import store from "./redux/store/store.jsx";
 import "./css/index.css";
 import "./css/githubMarkdown.css";
 import { CssBaseline, CssVarsProvider, extendTheme } from "@mui/joy";
-import {
-  createBrowserRouter,
-  RouterProvider,
-  useNavigate,
-} from "react-router-dom";
+import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import Home from "./views/home/Home.jsx";
-import ErrorPage from "./views/error/ErrorPage.jsx";
 import Layout from "./layout/Layout.jsx";
 import LoginPage from "./views/login/LoginPage.jsx";
 import NoSuchRoute from "./views/404/404.jsx";
@@ -21,7 +16,9 @@ import { useSelector } from "react-redux";
 import { redirectTo } from "./utils/utils.jsx";
 import YourTeams from "./views/yourTeams/Teams.view.jsx";
 import YourRequests from "./views/yourRequests/Requests.view.jsx";
-import Notifications from "./views/notifications/Notifications.view.jsx";
+import TeamSettings from "./views/teamSettings/TeamSettings.jsx";
+import SearchModal from "./views/search/SearchModal.jsx";
+import Search from "./views/search/Search.view.jsx";
 
 function ProtectedRoute({ children }) {
   const user = useSelector((state) => state.user.user); // get user from Redux state
@@ -59,6 +56,26 @@ export const router = createBrowserRouter([
     ),
   },
   {
+    path: "/team/:teamId/settings/general",
+    element: (
+      <Layout size="lg">
+        <ProtectedRoute>
+          <TeamSettings />
+        </ProtectedRoute>
+      </Layout>
+    ),
+  },
+  {
+    path: "/team/:teamId/settings/private-details",
+    element: (
+      <Layout size="lg">
+        <ProtectedRoute>
+          <TeamSettings />
+        </ProtectedRoute>
+      </Layout>
+    ),
+  },
+  {
     path: "/team/create",
     element: (
       <Layout>
@@ -88,6 +105,15 @@ export const router = createBrowserRouter([
       </Layout>
     ),
   },
+  //add modal route, which don't change initial content
+  {
+    path: "/search",
+    element: (
+      <Layout>
+        <Search />
+      </Layout>
+    ),
+  },
   {
     path: "*",
     element: (
@@ -103,6 +129,7 @@ const theme = extendTheme({
     light: {
       palette: {
         primary: {
+          //indigo
           50: "#eef2ff",
           100: "#e0e7ff",
           200: "#c7d2fe",
@@ -115,23 +142,13 @@ const theme = extendTheme({
           900: "#312e81",
           950: "#1e1b4b",
           softBg: "var(--joy-palette-primary-50)",
-          // outlinedBorder: "var(--joy-palette-primary-500)",
-          // outlinedColor: "var(--joy-palette-primary-600)",
-          // outlinedActiveBg: "var(--joy-palette-primary-700)",
-          // outlinedActiveColor: "var(--joy-palette-primary-50)",
-          // plainActiveColor: "var(--joy-palette-primary-50)",
-          // outlinedHoverBg: "var(--joy-palette-primary-200)",
-          // softBg: "var(--joy-palette-primary-200)",
-          // softHoverBg: "var(--joy-palette-primary-300)",
-          // softActiveBg: "var(--joy-palette-primary-300)",
-          // softActiveColor: "var(--joy-palette-primary-50)",
         },
       },
     },
     dark: {
       palette: {
         primary: {
-          //indigo - GREAT
+          //indigo
           50: "#eef2ff",
           100: "#e0e7ff",
           200: "#c7d2fe",
@@ -143,16 +160,7 @@ const theme = extendTheme({
           800: "#3730a3",
           900: "#312e81",
           950: "#1e1b4b",
-          // --- Outlined
-          //
-          // --- Soft
-          //
           softBg: "var(--joy-palette-primary-950)",
-          //
-          // --- Plain
-          //
-          // --- Solid
-          //
         },
       },
     },

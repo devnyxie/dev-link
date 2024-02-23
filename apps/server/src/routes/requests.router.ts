@@ -11,7 +11,7 @@ const requestsRouter = express.Router();
 
 //get all requests of all teams for a creator
 requestsRouter.get(
-  "/api/requests/creator/:creator_id",
+  "/requests/creator/:creator_id",
   async (req: Request, res: Response) => {
     try {
       const { creator_id } = req.params;
@@ -52,7 +52,7 @@ requestsRouter.get(
 );
 
 requestsRouter.get(
-  "/api/requests/user/:id",
+  "/requests/user/:id",
   async (req: Request, res: Response) => {
     try {
       const { id } = req.params;
@@ -76,7 +76,7 @@ requestsRouter.get(
   }
 );
 
-requestsRouter.post("/api/requests", async (req: Request, res: Response) => {
+requestsRouter.post("/requests", async (req: Request, res: Response) => {
   try {
     const requested_request = req.body;
     const new_request = await RequestModel.create(requested_request);
@@ -98,7 +98,7 @@ requestsRouter.post("/api/requests", async (req: Request, res: Response) => {
 });
 
 requestsRouter.put(
-  "/api/requests/:request_id",
+  "/requests/:request_id",
   async (req: Request, res: Response) => {
     try {
       const accepted: string = req.body.accepted;
@@ -160,7 +160,7 @@ requestsRouter.put(
 );
 
 requestsRouter.delete(
-  "/api/requests/:request_id",
+  "/requests/:request_id",
   async (req: Request, res: Response) => {
     try {
       const { request_id } = req.params;

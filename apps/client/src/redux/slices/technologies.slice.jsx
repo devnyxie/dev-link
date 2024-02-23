@@ -9,11 +9,6 @@ const initialState = {
   error: null,
 };
 
-//get request to "/api/teamCodeLangs/top10"
-// export const getTrendingTechnologies = () => async (dispatch) => {
-
-// };
-
 export const getTrendingTechnologies = createAsyncThunk(
   "teams/getTrendingTechnologies",
   async (_, { getState, dispatch }) => {
@@ -24,7 +19,6 @@ export const getTrendingTechnologies = createAsyncThunk(
         return state.technologies.trendingTechnologies;
       }
       const response = await instance.get("/api/trendingTechnologies");
-      console.log(response);
       dispatch(setTechnologies(response.data));
       return response.data;
     } catch (error) {

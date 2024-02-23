@@ -57,7 +57,6 @@ function ModalWrapper({ open, setOpen, onClose, children }) {
             outline: "none",
           }}
         >
-          {" "}
           <ModalDialog
             layout={layout}
             className="fade-in"
@@ -107,6 +106,7 @@ function ModalWrapper({ open, setOpen, onClose, children }) {
                   height: "100%",
                   flexDirection: "column",
                   display: "flex",
+                  position: "relative",
                 }}
               >
                 {children}

@@ -30,7 +30,7 @@ import {
 import { useEffect, useState } from "react";
 import { GoCode, GoBookmark, GoBook } from "react-icons/go";
 import { useDispatch } from "react-redux";
-import { useParams } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import { findTeamById } from "../../redux/slices/teams.slice";
 import React from "react";
 import { tabClasses } from "@mui/joy/Tab";
@@ -43,6 +43,7 @@ import Members from "./Members";
 import { PiUsersThree } from "react-icons/pi";
 import { timeFormatter } from "../../utils/utils";
 import TechChip from "../../components/TechChip";
+import { IoSettings, IoSettingsOutline } from "react-icons/io5";
 
 const DetailsBlock = ({ team, sx }) => {
   return (
@@ -194,6 +195,26 @@ const TeamView = () => {
           <Typography level="h4" sx={{ ml: 1 }}>
             {team.name}
           </Typography>
+        </Box>
+        <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
+          <IconButton size="sm" disabled>
+            <GoBookmark size={20} />
+          </IconButton>
+          {user && user.id === team.creator_id ? (
+            <Link to={`/team/${team.id}/settings/general`}>
+              <Button
+                size="sm"
+                variant="plain"
+                color="neutral"
+                startDecorator={<IoSettingsOutline size={20} />}
+                sx={{}}
+              >
+                Settings
+              </Button>
+            </Link>
+          ) : (
+            <></>
+          )}
         </Box>
       </Box>
       <Divider sx={{ mt: 1, mb: 1 }} />

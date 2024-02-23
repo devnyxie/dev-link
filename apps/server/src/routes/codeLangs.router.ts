@@ -8,7 +8,7 @@ import { Op } from "sequelize";
 const codeLangsRouter = express.Router();
 
 //get endpoint to get all TeamCodeLangs
-codeLangsRouter.get("/api/teamCodeLangs", async (req, res) => {
+codeLangsRouter.get("/teamCodeLangs", async (req, res) => {
   try {
     const codeLangs = await TeamCodeLangs.findAll({
       limit: 10,
@@ -24,7 +24,7 @@ codeLangsRouter.get("/api/teamCodeLangs", async (req, res) => {
   }
 });
 
-codeLangsRouter.get("/api/trendingTechnologies", async (req, res) => {
+codeLangsRouter.get("/trendingTechnologies", async (req, res) => {
   try {
     /**
      * teamCodeLangs is a join table between teams and codeLangs. This endpoint retrieves the top 10 code languages along with their count of occurrences.

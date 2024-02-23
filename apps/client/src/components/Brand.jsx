@@ -12,11 +12,7 @@ import { Link } from "react-router-dom";
 import Logo from "./Logo";
 
 function SvgComponent({ textColor }) {
-  return (
-    <>
-      <Logo />
-    </>
-  );
+  return <Logo />;
 }
 
 function LogoTerminal() {
@@ -47,6 +43,7 @@ function LogoTerminal() {
           ml: 1,
           fontWeight: "400",
           userSelect: "none",
+          display: { xs: "none", sm: "block" },
         }}
       >
         Dev-Link

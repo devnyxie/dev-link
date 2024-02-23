@@ -1,5 +1,6 @@
 import { Chip, Typography, chipClasses } from "@mui/joy";
 import React, { useEffect, useState } from "react";
+import { Link } from "react-router-dom";
 
 function transformName(name) {
   const lowercasedName = name.toLowerCase();
@@ -14,9 +15,13 @@ function transformName(name) {
 }
 
 async function importTechIcon(techName) {
-  return {
-    icon: (await import(`../assets/technologies/${techName}.svg`)).default,
-  };
+  try {
+    return {
+      icon: (await import(`../assets/technologies/${techName}.svg`)).default,
+    };
+  } catch (error) {
+    return;
+  }
 }
 
 function TechChip({ techName, count, onClick }) {
@@ -24,38 +29,42 @@ function TechChip({ techName, count, onClick }) {
   const techNameLowercased = transformName(techName);
   useEffect(() => {
     importTechIcon(techNameLowercased).then((importedIcon) => {
-      setIcon(importedIcon.icon);
+      if (importedIcon) {
+        setIcon(importedIcon.icon);
+      }
     });
   }, [techNameLowercased]);
 
   //
   return (
-    <Chip
-      startDecorator={
-        icon ? (
-          <img src={icon} style={{ height: "15px", width: "auto" }} />
-        ) : null
-      }
-      color="primary"
-      variant="soft"
-      sx={{
-        gap: 1,
+    <Link to={`/search?tech=${techNameLowercased}`}>
+      <Chip
+        startDecorator={
+          icon ? (
+            <img src={icon} style={{ height: "15px", width: "auto" }} />
+          ) : null
+        }
+        color="primary"
+        variant="soft"
+        sx={{
+          gap: 1,
 
-        [`&& .MuiChip-label`]: {
-          display: "flex",
-          alignItems: "center",
-          gap: 0.5,
-        },
-      }}
-      onClick={(e) => (onClick ? onClick(e) : null)}
-    >
-      {techName}
-      {count ? (
-        <Typography fontSize={12} color="neutral">
-          {count}
-        </Typography>
-      ) : null}
-    </Chip>
+          [`&& .MuiChip-label`]: {
+            display: "flex",
+            alignItems: "center",
+            gap: 0.5,
+          },
+        }}
+        onClick={(e) => (onClick ? onClick(e) : null)}
+      >
+        {techName}
+        {count ? (
+          <Typography fontSize={12} color="neutral">
+            {count}
+          </Typography>
+        ) : null}
+      </Chip>
+    </Link>
   );
 }
 

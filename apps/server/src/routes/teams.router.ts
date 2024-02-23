@@ -9,25 +9,11 @@ import {
 import { CodeLangs } from "../database/db";
 import { Op } from "sequelize";
 import { jwtMiddleware } from "../utils/auth";
-
+import { setupRoles } from "../utils";
 const teamsRouter = express.Router();
 
-function setupRoles(teams: any) {
-  const teamsWithRoles = teams.map((team: any) => {
-    const { members, ...teamWithoutMembers } = team.toJSON();
-    const openRoles = members.filter((member: any) => !member.user);
-    const takenRoles = members.filter((member: any) => member.user);
-    return {
-      ...teamWithoutMembers,
-      openRoles: openRoles,
-      takenRoles: takenRoles,
-    };
-  });
-  return teamsWithRoles;
-}
-
 //get
-teamsRouter.get("/api/teams", async (req: Request, res: Response) => {
+teamsRouter.get("/teams", async (req: Request, res: Response) => {
   try {
     const limit = req.query.limit ? Number(req.query.limit) : undefined;
     const offset = req.query.offset ? Number(req.query.offset) : undefined;
@@ -82,7 +68,7 @@ teamsRouter.get("/api/teams", async (req: Request, res: Response) => {
 });
 
 //get one
-teamsRouter.get("/api/teams/:id", async (req: Request, res: Response) => {
+teamsRouter.get("/teams/:id", async (req: Request, res: Response) => {
   try {
     const id = req.params.id;
     const team = await Team.findByPk(id, {
@@ -132,7 +118,7 @@ teamsRouter.get("/api/teams/:id", async (req: Request, res: Response) => {
 
 //post
 teamsRouter.post(
-  "/api/teams",
+  "/teams",
   jwtMiddleware,
   async (req: Request, res: Response) => {
     try {
@@ -247,7 +233,7 @@ teamsRouter.post(
 );
 
 //get all teams where creator_id = :id and :id is in members of the team
-teamsRouter.get("/api/teams/user/:id", async (req: Request, res: Response) => {
+teamsRouter.get("/teams/user/:id", async (req: Request, res: Response) => {
   try {
     const id = req.params.id;
     const limit = req.query.limit ? Number(req.query.limit) : undefined;
@@ -312,67 +298,5 @@ teamsRouter.get("/api/teams/user/:id", async (req: Request, res: Response) => {
     res.status(500).send("Internal Server Error");
   }
 });
-
-//search for teams by name (case insensitive, partial match, pagination)
-teamsRouter.get(
-  "/api/teams/search/:name",
-  async (req: Request, res: Response) => {
-    try {
-      const name = req.params.name;
-      const limit = req.query.limit ? Number(req.query.limit) : undefined;
-      const offset = req.query.offset ? Number(req.query.offset) : undefined;
-      const teams = await Team.findAll({
-        order: [["createdAt", "DESC"]],
-        where: {
-          name: {
-            [Op.iLike]: `%${name}%`,
-          },
-        },
-        limit: limit,
-        offset: offset,
-        include: [
-          {
-            model: Member,
-            attributes: ["id", "role", "createdAt"],
-            include: [
-              {
-                model: User,
-                attributes: ["id", "username", "pfp"],
-              },
-              {
-                model: RequestModel,
-                attributes: ["id", "accepted", "createdAt", "updatedAt"],
-                include: [
-                  {
-                    model: User,
-                    attributes: ["id", "username", "pfp"],
-                  },
-                ],
-              },
-            ],
-          },
-          {
-            model: User,
-            as: "creator",
-            attributes: ["username", "pfp"],
-          },
-          {
-            model: CodeLangs,
-            // as: "teamLanguages",1
-            attributes: ["name"],
-            through: { attributes: [] },
-            as: "codeLangs", // Change column name to "programming_languages"
-          },
-        ],
-      });
-      const teamsWithRoles = setupRoles(teams);
-      res.status(200).json(teamsWithRoles);
-    } catch (error) {
-      // Handle errors
-      console.error(error);
-      res.status(500).send("Internal Server Error");
-    }
-  }
-);
 
 export default teamsRouter;

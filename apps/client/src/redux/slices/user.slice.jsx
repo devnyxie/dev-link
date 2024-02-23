@@ -38,20 +38,6 @@ export const logoutUser = createAsyncThunk(
   }
 );
 
-//search for users
-export const searchUsers = createAsyncThunk(
-  "teams/searchTeams",
-  async (name) => {
-    try {
-      const response = await instance.get(`/api/users/search/${name}`);
-      return response.data;
-    } catch (error) {
-      console.log(error);
-      throw new Error("Failed to search users.");
-    }
-  }
-);
-
 export const userSlice = createSlice({
   name: "user",
   initialState: {

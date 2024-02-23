@@ -6,6 +6,7 @@ import teamsSlice from "../slices/teams.slice";
 import loadingSlice from "../slices/loading.slice";
 import snackbarSlice from "../slices/snackbar.slice";
 import technologiesSlice from "../slices/technologies.slice";
+import searchSlice from "../slices/search.slice";
 
 const persistConfig = {
   key: "root",
@@ -15,15 +16,16 @@ const persistConfig = {
 const userPersistConfig = {
   key: "user",
   storage,
-  blacklist: ["error"], // 'error' will not be persisted
+  blacklist: ["error"],
 };
 
 const rootReducer = {
   user: persistReducer(userPersistConfig, userSlice.reducer),
-  teams: teamsSlice.reducer,
+  teams: teamsSlice,
   loading: loadingSlice,
   snackbar: snackbarSlice,
   technologies: technologiesSlice,
+  search: searchSlice,
   // Add more reducers here if needed
 };
 

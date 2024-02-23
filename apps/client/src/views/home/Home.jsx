@@ -84,13 +84,6 @@ function Feed({
           )}
         </Box>
       )}
-
-      {/* <Pagination
-        itemsPerPage={itemsPerPage}
-        currentPage={currentPage}
-        setCurrentPage={setCurrentPage}
-        count={count}
-      /> */}
     </Box>
   );
 }
