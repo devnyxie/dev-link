@@ -195,7 +195,9 @@ searchRouter.get(
   "/teams/search/technology/:codeLangName",
   async (req: Request, res: Response) => {
     const { codeLangName } = req.params;
-
+    const langNameEscaped = codeLangName
+      .replace(/\+/g, "\\+")
+      .replace(/#/g, "\\#");
     try {
       const teams = await Team.findAll({
         order: [["createdAt", "DESC"]],
@@ -232,7 +234,7 @@ searchRouter.get(
             as: "codeLangs",
             where: {
               name: {
-                [Op.iLike]: `${codeLangName}`,
+                [Op.iLike]: `${langNameEscaped}`,
               },
             },
           },

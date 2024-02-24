@@ -59,7 +59,7 @@ function Feed({
       {loading ? (
         <>
           {" "}
-          {Array(3)
+          {Array(itemsPerPage)
             .fill()
             .map((_, i) => (
               <div key={i}>

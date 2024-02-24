@@ -47,7 +47,7 @@ function ModalWrapper({ open, setOpen, onClose, children }) {
         <Sheet
           variant="outlined"
           sx={{
-            maxHeight: layout ? "100%" : 600,
+            maxHeight: layout ? "100%" : 400,
             minHeight: layout ? "100%" : 400,
             height: isMobile ? "100%" : "100%",
             width: layout ? "100%" : 600,

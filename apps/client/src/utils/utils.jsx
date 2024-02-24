@@ -31,3 +31,7 @@ export const timeFormatter = (dateString) => {
     year: "numeric",
   });
 };
+
+export const capitalize = (str) => {
+  return str.charAt(0).toUpperCase() + str.slice(1);
+};

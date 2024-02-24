@@ -22,19 +22,6 @@ html {
   font-family: "Red Hat Mono", monospace !important;
 }
 
-/*animations*/
-/* @keyframes error-neutral-border {
-  0% {
-    border: 1px solid var(--joy-palette-danger-700, #7d1212);
-  }
-  100% {
-  }
-}
-
-.error-neutral-border-animation {
-  animation: error-neutral-border 2s forwards;
-} */
-
 @keyframes inAnimation {
   0% {
     opacity: 0;

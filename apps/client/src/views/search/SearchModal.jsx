@@ -18,6 +18,9 @@ import {
   Typography,
   tabClasses,
   Link as JoyUILink,
+  FormControl,
+  FormHelperText,
+  FormLabel,
 } from "@mui/joy";
 import React, { useEffect } from "react";
 import { CiSearch } from "react-icons/ci";
@@ -42,6 +45,7 @@ function DebounceInput(props) {
     debounceTimeout,
     handleDefault,
     startDecorator,
+    placeholder,
     ...rest
   } = props;
 
@@ -58,11 +62,18 @@ function DebounceInput(props) {
   };
 
   return (
-    <Input
-      startDecorator={<CiSearch size={20} />}
-      {...rest}
-      onChange={handleChange}
-    />
+    <FormControl {...rest}>
+      <FormLabel>Quick Search</FormLabel>
+      <Input
+        startDecorator={<CiSearch size={20} />}
+        onChange={handleChange}
+        placeholder={placeholder}
+      />
+      <FormHelperText>
+        Quick tip: Hitting the "Enter" key will take you to the full search
+        page.
+      </FormHelperText>
+    </FormControl>
   );
 }
 
@@ -118,7 +129,6 @@ function SearchModal({ open, setOpen }) {
       <ModalWrapper open={open} setOpen={setOpen} onClose={onClose}>
         <form onSubmit={(e) => handleSubmit(e)}>
           <DebounceInput
-            sx={{ mb: 2 }}
             variant="soft"
             color="neutral"
             placeholder="What are you searching for?"

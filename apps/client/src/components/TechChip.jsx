@@ -24,7 +24,14 @@ async function importTechIcon(techName) {
   }
 }
 
-function TechChip({ techName, count, onClick }) {
+function TechChip({
+  techName,
+  count,
+  onClick,
+  variant = "soft",
+  link = true,
+  endDecorator,
+}) {
   const [icon, setIcon] = useState(null);
   const techNameLowercased = transformName(techName);
   useEffect(() => {
@@ -34,38 +41,45 @@ function TechChip({ techName, count, onClick }) {
       }
     });
   }, [techNameLowercased]);
-
   //
-  return (
-    <Link to={`/search?tech=${techNameLowercased}`}>
-      <Chip
-        startDecorator={
-          icon ? (
-            <img src={icon} style={{ height: "15px", width: "auto" }} />
-          ) : null
-        }
-        color="primary"
-        variant="soft"
-        sx={{
-          gap: 1,
+  const TechChipContent = (
+    <Chip
+      variant={variant}
+      startDecorator={
+        icon ? (
+          <img src={icon} style={{ height: "15px", width: "auto" }} />
+        ) : null
+      }
+      endDecorator={endDecorator}
+      color="primary"
+      sx={{
+        gap: 1,
 
-          [`&& .MuiChip-label`]: {
-            display: "flex",
-            alignItems: "center",
-            gap: 0.5,
-          },
-        }}
-        onClick={(e) => (onClick ? onClick(e) : null)}
-      >
-        {techName}
-        {count ? (
-          <Typography fontSize={12} color="neutral">
-            {count}
-          </Typography>
-        ) : null}
-      </Chip>
-    </Link>
+        [`&& .MuiChip-label`]: {
+          display: "flex",
+          alignItems: "center",
+          gap: 0.5,
+        },
+      }}
+      onClick={(e) => (onClick ? onClick(e) : null)}
+    >
+      {techName}
+      {count ? (
+        <Typography fontSize={12} color="neutral">
+          {count}
+        </Typography>
+      ) : null}
+    </Chip>
   );
+  if (link) {
+    return (
+      <Link to={`/search?tech=${encodeURIComponent(techName)}`}>
+        {TechChipContent}
+      </Link>
+    );
+  } else {
+    return TechChipContent;
+  }
 }
 
 export default TechChip;
