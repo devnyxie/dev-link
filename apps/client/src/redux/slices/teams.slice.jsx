@@ -39,7 +39,7 @@ export const findTeamById = createAsyncThunk(
       }
     } catch (error) {
       console.log("error, redirecting to 404...");
-      redirectTo("/404");
+      // redirectTo("/404");
       throw new Error("Failed to fetch team.");
     } finally {
       dispatch(teamsSlice.actions.addOneTeam(team));

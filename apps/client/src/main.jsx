@@ -20,13 +20,25 @@ import TeamSettings from "./views/teamSettings/TeamSettings.jsx";
 import SearchModal from "./views/search/SearchModal.jsx";
 import Search from "./views/search/Search.view.jsx";
 
+import { useEffect, useState } from "react";
+
 function ProtectedRoute({ children }) {
-  const user = useSelector((state) => state.user.user); // get user from Redux state
-  if (!user) {
-    // if user is not logged in, redirect to login page
-    redirectTo("/login");
-    return null;
+  const [loading, setLoading] = useState(true);
+  const user = useSelector((state) => state.user.user);
+
+  useEffect(() => {
+    if (user === null) {
+      redirectTo("/login");
+    } else {
+      setLoading(false);
+    }
+  }, [user]);
+
+  if (loading) {
+    // Render a loading indicator or fallback UI while user data is being fetched
+    return <></>;
   }
+
   return children;
 }
 
@@ -64,6 +76,18 @@ export const router = createBrowserRouter([
         </ProtectedRoute>
       </Layout>
     ),
+    children: [
+      {
+        path: "editRole/:roleId", // Updated nested route path
+        element: (
+          <Layout size="lg">
+            <ProtectedRoute>
+              <TeamSettings />
+            </ProtectedRoute>
+          </Layout>
+        ),
+      },
+    ],
   },
   {
     path: "/team/:teamId/settings/private-details",
@@ -105,12 +129,19 @@ export const router = createBrowserRouter([
       </Layout>
     ),
   },
-  //add modal route, which don't change initial content
   {
     path: "/search",
     element: (
       <Layout>
         <Search />
+      </Layout>
+    ),
+  },
+  {
+    path: "modal",
+    element: (
+      <Layout>
+        <SearchModal />
       </Layout>
     ),
   },
@@ -164,6 +195,18 @@ const theme = extendTheme({
           softBg: "var(--joy-palette-primary-950)",
           plainActiveBg: "var(--joy-palette-primary-900)",
           plainHoverBg: "var(--joy-palette-primary-950)",
+        },
+      },
+    },
+  },
+  components: {
+    MuiTableRow: {
+      styleOverrides: {
+        root: {
+          "&:hover": {
+            backgroundColor: (theme) =>
+              theme.colorMode === "dark" ? "primary.950" : "primary.50",
+          },
         },
       },
     },

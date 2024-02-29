@@ -7,6 +7,7 @@ import {
   Chip,
   Grid,
   IconButton,
+  ListItem,
   Typography,
 } from "@mui/joy";
 import React from "react";
@@ -16,7 +17,7 @@ import { useDispatch } from "react-redux";
 import { createRequest } from "../../redux/slices/teams.slice";
 import { useSelector } from "react-redux";
 
-function OpenRoles({ team, setTeam, user, eligibleToJoin }) {
+function OpenRoles({ team, setTeam, user, eligibleToJoin, timeSince }) {
   const teams = useSelector((state) => state.teams.teams);
   console.log(teams);
   const dispatch = useDispatch();
@@ -54,50 +55,36 @@ function OpenRoles({ team, setTeam, user, eligibleToJoin }) {
           <Grid container spacing={1} sx={{ flexGrow: 1 }}>
             {team.openRoles.map((role) => {
               return (
-                <Grid key={role.id} xs={12} sm={6} md={6}>
-                  <Card variant="outlined" orientation="vertical">
-                    <CardContent sx={{ display: "flex" }}>
-                      <Typography
-                        level="title-sm"
-                        id="card-description"
-                        noWrap={true}
-                        sx={{ width: "220px" }}
-                      >
-                        {role.role}
-                      </Typography>
-                      <Typography color="neutral" fontSize={14}>
-                        {role.requests.length} Request
-                        {(role.requests.length > 1 && "s") ||
-                          (role.requests.length == 0 && "s")}
-                      </Typography>
-                    </CardContent>
-                    <CardActions
+                <Grid xs={12}>
+                  <ListItem key={role.id}>
+                    <Box
                       sx={{
                         display: "flex",
-                        justifyContent: "end",
+                        justifyContent: "space-between",
+                        alignItems: "center",
+                        width: "100%",
                       }}
                     >
-                      <IconButton
-                        disabled={!eligibleToJoin}
-                        size="sm"
-                        variant="outlined"
-                        color="primary"
-                      >
-                        <GoBookmark size={20} />
-                      </IconButton>
+                      <Box>
+                        <Typography level="title-xs">{role.role}</Typography>
+                        <Typography level="body-sm">
+                          {role.requests.length} Request
+                          {(role.requests.length > 1 && "s") ||
+                            (role.requests.length == 0 && "s")}
+                        </Typography>
+                      </Box>
 
                       <Button
                         disabled={!eligibleToJoin}
                         size="sm"
-                        endDecorator={<TbSend />}
-                        variant="outlined"
                         color="primary"
                         onClick={() => applyForRole(role.id)}
+                        endDecorator={<TbSend />}
                       >
                         Apply
                       </Button>
-                    </CardActions>
-                  </Card>
+                    </Box>
+                  </ListItem>
                 </Grid>
               );
             })}

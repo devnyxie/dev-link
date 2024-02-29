@@ -195,9 +195,8 @@ searchRouter.get(
   "/teams/search/technology/:codeLangName",
   async (req: Request, res: Response) => {
     const { codeLangName } = req.params;
-    const langNameEscaped = codeLangName
-      .replace(/\+/g, "\\+")
-      .replace(/#/g, "\\#");
+    //decode codeLangName to avoid sql injection
+    const langNameEscaped = decodeURIComponent(codeLangName);
     try {
       const teams = await Team.findAll({
         order: [["createdAt", "DESC"]],

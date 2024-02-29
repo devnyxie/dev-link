@@ -6,8 +6,10 @@ import {
   ListItemButton,
   ListItemDecorator,
   Typography,
+  Link as JoyLink,
 } from "@mui/joy";
 import React from "react";
+import { Link } from "react-router-dom";
 
 function Members({ team, timeSince }) {
   return (
@@ -27,28 +29,28 @@ function Members({ team, timeSince }) {
               console.log(role);
               return (
                 <ListItem key={role.user.id}>
-                  <ListItemButton sx={{ borderRadius: "sm" }}>
-                    <ListItemDecorator sx={{ mr: 0.2 }}>
-                      <Avatar size="md" src={role.user.pfp} />
-                    </ListItemDecorator>
-                    <Box
-                      sx={{
-                        display: "flex",
-                        justifyContent: "space-between",
-                        alignItems: "center",
-                        width: "100%",
-                      }}
-                    >
-                      <Typography>
-                        @{role.user.username} <Typography>as</Typography>{" "}
-                        <Typography level="title-md">{role.role}</Typography>
-                      </Typography>
-
-                      <Typography sx={{ fontSize: 13 }}>
-                        Member since {timeSince(role.createdAt)}
-                      </Typography>
+                  <ListItemDecorator sx={{ mr: 0.2 }}>
+                    <Avatar size="md" src={role.user.pfp} />
+                  </ListItemDecorator>
+                  <Box
+                    sx={{
+                      display: "flex",
+                      justifyContent: "space-between",
+                      alignItems: "center",
+                      width: "100%",
+                    }}
+                  >
+                    <Box>
+                      <Link to={`/profile/${role.user.username}`}>
+                        <JoyLink>{role.user.username}</JoyLink>
+                      </Link>
+                      <Typography level="body-sm">as {role.role}</Typography>
                     </Box>
-                  </ListItemButton>
+
+                    <Typography sx={{ fontSize: 13 }}>
+                      Member since {timeSince(role.createdAt)}
+                    </Typography>
+                  </Box>
                 </ListItem>
               );
             })}

@@ -26,6 +26,8 @@ import {
   AccordionSummary,
   AccordionDetails,
   AccordionGroup,
+  Link as JoyUILink,
+  Table,
 } from "@mui/joy";
 import { useEffect, useState } from "react";
 import { GoCode, GoBookmark, GoBook } from "react-icons/go";
@@ -44,6 +46,8 @@ import { PiUsersThree } from "react-icons/pi";
 import { timeFormatter } from "../../utils/utils";
 import TechChip from "../../components/TechChip";
 import { IoSettings, IoSettingsOutline } from "react-icons/io5";
+import { random } from "lodash";
+import MembersManagement from "../../components/TeamManagement";
 
 const DetailsBlock = ({ team, sx }) => {
   return (
@@ -143,6 +147,31 @@ const TeamView = () => {
   const [index, setIndex] = useState(0);
   const [membersAccordion, setMembersAccordion] = useState(true);
   const [openRolesAccordion, setOpenRolesAccordion] = useState(true);
+
+  const roles = [
+    "Frontend Engineer",
+    "DevOps",
+    "Designer",
+    "Tester",
+    "Backend Engineer",
+    "Project Manager",
+    "Data Analyst",
+    "Data Scientist",
+    "UX/UI Designer",
+    "Mobile Developer",
+  ];
+
+  const takenRoles = Array.from({ length: 5 }, (_, index) => ({
+    user_id: `uuid-${index}`,
+    role: roles[index % roles.length],
+    user: { username: `devnyxie` },
+  }));
+
+  const openRoles = Array.from({ length: 5 }, (_, index) => ({
+    user_id: null,
+    role: roles[random(0, roles.length - 1)],
+    user: null,
+  }));
 
   useEffect(() => {
     dispatch(findTeamById(teamId))
@@ -252,8 +281,6 @@ const TeamView = () => {
                       color: "primary.plainColor",
                       "&::after": {
                         height: 2,
-                        // borderTopLeftRadius: 3,
-                        // borderTopRightRadius: 3,
                         bgcolor: "primary.500",
                       },
                     },
@@ -264,36 +291,7 @@ const TeamView = () => {
               </TabList>
               <Box>
                 <TabPanel value={0}>
-                  {/* Members */}
-                  <AccordionGroup sx={{ borderRadius: 0 }}>
-                    <Accordion
-                      expanded={membersAccordion}
-                      onChange={(event, expanded) => {
-                        setMembersAccordion(expanded ? expanded : false);
-                      }}
-                    >
-                      <AccordionSummary>Members</AccordionSummary>
-                      <AccordionDetails>
-                        <Members team={team} timeSince={timeFormatter} />
-                      </AccordionDetails>
-                    </Accordion>
-                    <Accordion
-                      expanded={openRolesAccordion}
-                      onChange={(event, expanded) => {
-                        setOpenRolesAccordion(expanded ? expanded : false);
-                      }}
-                    >
-                      <AccordionSummary>Open Roles</AccordionSummary>
-                      <AccordionDetails>
-                        <OpenRoles
-                          user={user}
-                          team={team}
-                          setTeam={setTeam}
-                          eligibleToJoin={eligibleToJoin}
-                        />
-                      </AccordionDetails>
-                    </Accordion>
-                  </AccordionGroup>
+                  <MembersManagement team={team} user={user} wrap={false} />
                 </TabPanel>
               </Box>
             </Tabs>

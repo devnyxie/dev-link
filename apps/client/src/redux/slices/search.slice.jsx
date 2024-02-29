@@ -23,6 +23,7 @@ export const searchTeams = createAsyncThunk(
 export const searchTeamsByTechnology = createAsyncThunk(
   "search/searchTeamsByTechnology",
   async (name, { dispatch }) => {
+    name = encodeURIComponent(name);
     try {
       const response = await instance.get(
         `/api/teams/search/technology/${name}`

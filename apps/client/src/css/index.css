@@ -14,10 +14,6 @@
   -moz-osx-font-smoothing: grayscale;
 }
 
-html {
-  scroll-behavior: smooth;
-}
-
 .monospace {
   font-family: "Red Hat Mono", monospace !important;
 }
@@ -46,7 +42,13 @@ html {
   animation: inAnimation 0.2s ease-in-out forwards;
 }
 
-* {
-  transition: color 0.2s, background-color 0.2s, border-color 0.2s, opacity 0.2s,
-    width 0.2s;
+.crown-icon {
+  transition: 0.2s;
+  background-color: transparent !important;
+}
+
+.crown-icon:hover {
+  transform: scale(1.1);
+  transition: 0.2s;
+  color: goldenrod !important;
 }

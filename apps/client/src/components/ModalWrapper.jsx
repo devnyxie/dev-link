@@ -19,8 +19,11 @@ function ModalWrapper({ open, setOpen, onClose, children }) {
     query: "(min-width: 768px) and (max-width: 1400px)",
   });
   useEffect(() => {
-    if (isMobile) setLayout("fullscreen");
-    if (isTablet) setLayout(null);
+    if (isMobile) {
+      setLayout("fullscreen");
+      return;
+    }
+    setLayout(null);
   }, [isMobile, isTablet]);
   useEffect(() => {
     setOpen(false);
