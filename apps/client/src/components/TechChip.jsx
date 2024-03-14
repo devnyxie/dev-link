@@ -1,5 +1,6 @@
 import { Chip, Typography, chipClasses } from "@mui/joy";
 import React, { useEffect, useState } from "react";
+import { Link } from "react-router-dom";
 
 function transformName(name) {
   const lowercasedName = name.toLowerCase();
@@ -14,30 +15,43 @@ function transformName(name) {
 }
 
 async function importTechIcon(techName) {
-  return {
-    icon: (await import(`../assets/technologies/${techName}.svg`)).default,
-  };
+  try {
+    return {
+      icon: (await import(`../assets/technologies/${techName}.svg`)).default,
+    };
+  } catch (error) {
+    return;
+  }
 }
 
-function TechChip({ techName, count, onClick }) {
+function TechChip({
+  techName,
+  count,
+  onClick,
+  variant = "soft",
+  link = true,
+  endDecorator,
+}) {
   const [icon, setIcon] = useState(null);
   const techNameLowercased = transformName(techName);
   useEffect(() => {
     importTechIcon(techNameLowercased).then((importedIcon) => {
-      setIcon(importedIcon.icon);
+      if (importedIcon) {
+        setIcon(importedIcon.icon);
+      }
     });
   }, [techNameLowercased]);
-
   //
-  return (
+  const TechChipContent = (
     <Chip
+      variant={variant}
       startDecorator={
         icon ? (
           <img src={icon} style={{ height: "15px", width: "auto" }} />
         ) : null
       }
+      endDecorator={endDecorator}
       color="primary"
-      variant="soft"
       sx={{
         gap: 1,
 
@@ -57,6 +71,15 @@ function TechChip({ techName, count, onClick }) {
       ) : null}
     </Chip>
   );
+  if (link) {
+    return (
+      <Link to={`/search?tech=${encodeURIComponent(techName)}`}>
+        {TechChipContent}
+      </Link>
+    );
+  } else {
+    return TechChipContent;
+  }
 }
 
 export default TechChip;

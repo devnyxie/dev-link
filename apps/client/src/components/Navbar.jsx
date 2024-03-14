@@ -28,7 +28,7 @@ import { Link, useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import Sidebar from "./Sidebar";
 import { GoPlus } from "react-icons/go";
-import SearchModal from "./SearchModal";
+import SearchModal from "../views/search/SearchModal";
 import Notifications from "../views/notifications/Notifications.view";
 const Navbar = () => {
   const [open, setOpen] = React.useState(false);

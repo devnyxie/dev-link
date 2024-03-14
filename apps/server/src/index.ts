@@ -1,5 +1,4 @@
 import express, { Express, Request, Response } from "express";
-import dotenv from "dotenv";
 import bodyParser from "body-parser";
 import teamsRouter from "./routes/teams.router";
 import usersRouter from "./routes/users.router";
@@ -8,19 +7,17 @@ import requestsRouter from "./routes/requests.router";
 import authRouter from "./routes/auth.router";
 import cors from "cors";
 import codeLangsRouter from "./routes/codeLangs.router";
+import searchRouter from "./routes/search.router";
+
 // App Setup
 const app: Express = express();
 
-// Middleware
+// Middlewares
 app.use(
   cors({
-    origin: [
-      process.env.CLIENT_URL_DEV || "",
-      process.env.CLIENT_URL_PROD || "",
-    ],
+    origin: [process.env.CLIENT_URL || ""],
   })
 );
-
 app.use(bodyParser.json());
 
 // Port
@@ -28,20 +25,26 @@ const port = process.env.PORT || 8080;
 
 // App Start
 app.listen(port, async () => {
-  console.log(`[server]: Server is running at http://localhost:${port} ⚡`);
-  // await handleGracefulShutdown(app, database);
+  console.log(`
+  [server]: Server is running at http://localhost:${port} ⚡
+  \nPlease connect via ${process.env.CLIENT_URL || ""} to access the API.\n`);
 });
 
 // Routers
 //   - Teams Router
-app.use("/", teamsRouter);
+app.use("/api", teamsRouter);
 //   - Users Router
-app.use("/", usersRouter);
+app.use("/api", usersRouter);
 //   - Members Router
-app.use("/", membersRouter);
+app.use("/api", membersRouter);
 //   - Requests Router
-app.use("/", requestsRouter);
+app.use("/api", requestsRouter);
 //   - Auth Router
-app.use("/", authRouter);
+app.use("/api", authRouter);
 //   - CodeLangs Router
-app.use("/", codeLangsRouter);
+app.use("/api", codeLangsRouter);
+//   - Search Router (for searching Teams, Users, Technologies etc by query)
+app.use("/api", searchRouter);
+
+// Graceful Shutdown
+// to-be-implemented

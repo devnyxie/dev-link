@@ -21,8 +21,8 @@ import { GoTrash } from "react-icons/go";
 const AppliedRequest = ({ request, deleteRequestFunc }) => {
   return (
     <>
-      <Grid item xs={12} sm={6} md={4}>
-        <Card sx={{ height: "100%" }}>
+      <Grid item xs={12}>
+        <Card>
           <div>
             <Typography
               level="title-lg"

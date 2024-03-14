@@ -59,7 +59,7 @@ function Feed({
       {loading ? (
         <>
           {" "}
-          {Array(3)
+          {Array(itemsPerPage)
             .fill()
             .map((_, i) => (
               <div key={i}>
@@ -84,13 +84,6 @@ function Feed({
           )}
         </Box>
       )}
-
-      {/* <Pagination
-        itemsPerPage={itemsPerPage}
-        currentPage={currentPage}
-        setCurrentPage={setCurrentPage}
-        count={count}
-      /> */}
     </Box>
   );
 }

@@ -3,7 +3,7 @@ import { verifyRefreshToken, signToken } from "../utils/auth";
 
 const router = express.Router();
 
-router.post("/api/refresh-token", (req, res) => {
+router.post("/refresh-token", (req, res) => {
   const refreshToken = req.body.refreshToken;
 
   if (!refreshToken) {

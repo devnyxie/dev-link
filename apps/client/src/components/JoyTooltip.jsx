@@ -3,9 +3,9 @@ import Box from "@mui/joy/Box";
 import { Tooltip } from "@mui/joy";
 import Button from "@mui/joy/Button";
 
-function JoyTooltip({ title, children }) {
+function JoyTooltip({ title, children, direction = "bottom" }) {
   return (
-    <Tooltip arrow title={title} variant="outlined">
+    <Tooltip title={title} variant="soft" color="primary" placement={direction}>
       {children}
     </Tooltip>
   );

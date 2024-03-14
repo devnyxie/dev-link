@@ -15,7 +15,7 @@ const Layout = ({ children, size = "md" }) => {
         flexDirection: "column",
         height: "100%",
         minHeight: "100vh",
-        alignItems: "center", // Add alignItems: center
+        alignItems: "center",
       }}
     >
       <Navbar />
@@ -27,9 +27,8 @@ const Layout = ({ children, size = "md" }) => {
           justifyContent: "space-between",
           flexGrow: 1,
           alignItems: "center",
-          animation: "inAnimation 0.2s ease-in-out forwards",
         }}
-        classes={{ root: "fade-in" }}
+        className="fade-in"
       >
         <Box
           sx={{

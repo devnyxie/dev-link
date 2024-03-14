@@ -19,8 +19,11 @@ function ModalWrapper({ open, setOpen, onClose, children }) {
     query: "(min-width: 768px) and (max-width: 1400px)",
   });
   useEffect(() => {
-    if (isMobile) setLayout("fullscreen");
-    if (isTablet) setLayout(null);
+    if (isMobile) {
+      setLayout("fullscreen");
+      return;
+    }
+    setLayout(null);
   }, [isMobile, isTablet]);
   useEffect(() => {
     setOpen(false);
@@ -47,7 +50,7 @@ function ModalWrapper({ open, setOpen, onClose, children }) {
         <Sheet
           variant="outlined"
           sx={{
-            maxHeight: layout ? "100%" : 600,
+            maxHeight: layout ? "100%" : 400,
             minHeight: layout ? "100%" : 400,
             height: isMobile ? "100%" : "100%",
             width: layout ? "100%" : 600,
@@ -57,7 +60,6 @@ function ModalWrapper({ open, setOpen, onClose, children }) {
             outline: "none",
           }}
         >
-          {" "}
           <ModalDialog
             layout={layout}
             className="fade-in"
@@ -107,6 +109,7 @@ function ModalWrapper({ open, setOpen, onClose, children }) {
                   height: "100%",
                   flexDirection: "column",
                   display: "flex",
+                  position: "relative",
                 }}
               >
                 {children}

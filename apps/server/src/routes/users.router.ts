@@ -7,7 +7,7 @@ import { Op } from "sequelize";
 const usersRouter = express.Router();
 
 // Get all users
-usersRouter.get("/api/users", async (req: Request, res: Response) => {
+usersRouter.get("/users", async (req: Request, res: Response) => {
   try {
     const users = await User.findAll();
     res.status(200).json(users);
@@ -18,7 +18,7 @@ usersRouter.get("/api/users", async (req: Request, res: Response) => {
 });
 
 // Create user
-usersRouter.post("/api/users", async (req, res) => {
+usersRouter.post("/users", async (req, res) => {
   try {
     const requestedUser = req.body;
     const newUser = await User.create(requestedUser);
@@ -38,7 +38,7 @@ usersRouter.post("/api/users", async (req, res) => {
 });
 
 // Update user
-usersRouter.put("/api/users/:user_id", async (req, res) => {
+usersRouter.put("/users/:user_id", async (req, res) => {
   try {
     const { user_id } = req.params;
     const updated_data = req.body;
@@ -65,7 +65,7 @@ usersRouter.put("/api/users/:user_id", async (req, res) => {
 });
 
 // Delete user
-usersRouter.delete("/api/users/:user_id", async (req, res) => {
+usersRouter.delete("/users/:user_id", async (req, res) => {
   try {
     const { user_id } = req.params;
     const response = await User.destroy({
@@ -88,7 +88,7 @@ usersRouter.delete("/api/users/:user_id", async (req, res) => {
 });
 
 // Login user
-usersRouter.post("/api/login", async (req, res) => {
+usersRouter.post("/login", async (req, res) => {
   try {
     const { username, password } = req.body;
     if (!username || !password) {
@@ -121,32 +121,5 @@ usersRouter.post("/api/login", async (req, res) => {
     res.status(500).send("Internal Server Error");
   }
 });
-
-//search for teams by name (case insensitive, partial match, pagination)
-usersRouter.get(
-  "/api/users/search/:name",
-  async (req: Request, res: Response) => {
-    try {
-      const name = req.params.name;
-      const limit = req.query.limit ? Number(req.query.limit) : 10;
-      const offset = req.query.offset ? Number(req.query.offset) : 0;
-      const users = await User.findAll({
-        order: [["createdAt", "DESC"]],
-        where: {
-          username: {
-            [Op.iLike]: `%${name}%`,
-          },
-        },
-        limit: limit,
-        offset: offset,
-      });
-      res.status(200).json(users);
-    } catch (error) {
-      // Handle errors
-      console.error(error);
-      res.status(500).send("Internal Server Error");
-    }
-  }
-);
 
 export default usersRouter;

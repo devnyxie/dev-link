@@ -11,7 +11,6 @@ import { useSelector, useDispatch } from "react-redux";
 import { clearSnackbar } from "../redux/slices/snackbar.slice.jsx";
 import { GoCheckCircle } from "react-icons/go";
 import { GoUnverified } from "react-icons/go";
-import { GoXCircle } from "react-icons/go";
 import { GoStop } from "react-icons/go";
 import { keyframes } from "@emotion/react";
 import { IoIosClose } from "react-icons/io";
@@ -23,7 +22,7 @@ function chooseIcon(color) {
     case "warning":
       return <GoUnverified size={20} />;
     case "danger":
-      return <GoXCircle size={20} />;
+      return <GoStop size={20} />;
     default:
       return <></>;
   }

@@ -35,7 +35,6 @@ import { setSnackbar } from "../../redux/slices/snackbar.slice";
 function NewTeam() {
   const dispatch = useDispatch();
   const { user } = useSelector(selectUser);
-
   //NAME
   const [teamName, setTeamName] = React.useState("");
   //README

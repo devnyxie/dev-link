@@ -11,15 +11,8 @@ import React, { version } from "react";
 import { Link } from "react-router-dom";
 import Logo from "./Logo";
 
-function SvgComponent({ textColor }) {
-  return (
-    <>
-      <Logo />
-    </>
-  );
-}
-
 function LogoTerminal() {
+  const { mode } = useColorScheme();
   const theme = useTheme();
   const textColor = theme.palette.text.primary;
   return (
@@ -36,7 +29,7 @@ function LogoTerminal() {
             aspectRatio: 1 / 1,
           }}
         >
-          <SvgComponent textColor={textColor} />
+          <Logo />
         </IconButton>
       </Link>
       <Typography
@@ -47,6 +40,7 @@ function LogoTerminal() {
           ml: 1,
           fontWeight: "400",
           userSelect: "none",
+          display: { xs: "none", sm: "block" },
         }}
       >
         Dev-Link

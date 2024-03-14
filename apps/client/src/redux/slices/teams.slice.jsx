@@ -19,20 +19,17 @@ export const fetchTeam = createAsyncThunk(
 );
 
 export const findTeamById = createAsyncThunk(
-  "teams/findByIdStatus",
+  "teams/findById",
   async (id, { getState, dispatch }) => {
     let team = undefined;
     try {
       const state = getState();
-      console.log("state", state);
       const teams = state.teams.teams;
       const teamRes = teams.find((team) => team.id === id);
       if (teamRes) {
         team = teamRes;
       } else {
-        console.log("fetching from server");
         const response = await instance.get(`/api/teams/${id}`);
-        console.log("response");
         console.log(response);
         if (response.data.id) {
           team = response.data;
@@ -42,10 +39,12 @@ export const findTeamById = createAsyncThunk(
       }
     } catch (error) {
       console.log("error, redirecting to 404...");
-      redirectTo("/404");
+      // redirectTo("/404");
       throw new Error("Failed to fetch team.");
+    } finally {
+      dispatch(teamsSlice.actions.addOneTeam(team));
+      return team;
     }
-    return team;
   }
 );
 
@@ -118,9 +117,7 @@ export const fetchRequestsByUserId = createAsyncThunk(
 export const fetchRequestsByCreatorId = createAsyncThunk(
   "teams/fetchRequestsByCreatorId",
   async (_, { getState }) => {
-    //get creatorId from getState().user.id
     const state = getState();
-    console.log("state", state);
     const user = state.user.user;
     try {
       const response = await instance.get(`/api/requests/creator/${user.id}`);
@@ -166,20 +163,6 @@ export const deleteRequest = createAsyncThunk(
   }
 );
 
-//search for teams (/api/teams/search/:name)
-export const searchTeams = createAsyncThunk(
-  "teams/searchTeams",
-  async (name) => {
-    try {
-      const response = await instance.get(`/api/teams/search/${name}`);
-      return response.data;
-    } catch (error) {
-      console.log(error);
-      throw new Error("Failed to search teams.");
-    }
-  }
-);
-
 const teamsSlice = createSlice({
   name: "teams",
   initialState: {
@@ -190,24 +173,26 @@ const teamsSlice = createSlice({
   },
   reducers: {
     updateOneTeamById: (state, action) => {
-      console.log("updateOneTeamById");
-
       const team = action.payload;
       const index = state.teams.findIndex((t) => t.id === team.id);
       if (index !== -1) {
-        console.log("if");
-        // state.teams = state.teams.map((teamOld, i) =>
-        //   i === index ? team : teamOld
-        // );
         state.teams = state.teams.map((teamOld, i) =>
           i === index ? { ...team } : { ...teamOld }
         );
       } else {
-        console.log("else");
         state.teams = [...state.teams, team];
       }
       state.count = state.teams.length;
-      console.log("state.teams", state.teams);
+    },
+    addOneTeam: (state, action) => {
+      const team = action.payload;
+      const index = state.teams.findIndex((t) => t.id === team.id);
+      if (index === -1) {
+        state.teams = [...state.teams, team];
+        state.count = state.teams.length;
+      } else {
+        return;
+      }
     },
   },
   extraReducers: (builder) => {
@@ -228,5 +213,5 @@ const teamsSlice = createSlice({
   },
 });
 
-export const { updateOneTeamById } = teamsSlice.actions;
-export default teamsSlice;
+export const { updateOneTeamById, addOneTeam } = teamsSlice.actions;
+export default teamsSlice.reducer;
