@@ -44,6 +44,7 @@ function groupByRole(data) {
 }
 
 function MemberListItem({ team, member, isAdmin }) {
+  console.log("member", member);
   const [newRole, setNewRole] = useState(member.role);
 
   return (
@@ -319,9 +320,13 @@ function OpenRoles({ team, setTeam, isAdmin, eligibleToJoin, user }) {
               </List>
             </ListItem>
           ))}
-          <ListItem endAction={<GoPlus size={20} />}>
-            <ListItemButton variant="plain">Add role</ListItemButton>
-          </ListItem>
+          {isAdmin ? (
+            <ListItem endAction={<GoPlus size={20} />}>
+              <ListItemButton variant="plain">Add role</ListItemButton>
+            </ListItem>
+          ) : (
+            <></>
+          )}
         </List>
       </AccordionDetails>
     </Accordion>
@@ -331,13 +336,15 @@ function OpenRoles({ team, setTeam, isAdmin, eligibleToJoin, user }) {
 function MembersManagement({ team, user, wrap = true }) {
   const [localTeam, setLocalTeam] = useState(team);
   const [eligibleToJoin, setEligibleToJoin] = useState(false);
+
   if (localTeam === undefined) {
     return;
   } else if (user === undefined && user?.id === localTeam.creator_id) {
     return;
   }
 
-  const isAdmin = user.id === localTeam.creator_id;
+  const isAdmin = user?.id === localTeam.creator_id;
+  console.log(isAdmin);
 
   useEffect(() => {
     if (localTeam && user) {
