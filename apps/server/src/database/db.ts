@@ -31,6 +31,9 @@ if (!process.env.DB_URL) {
 // init
 const sequelize: Sequelize = new Sequelize(process.env.DB_URL, {
   logging: false,
+  dialectOptions: {
+    statement_timeout: 10000, // Timeout in milliseconds (10 seconds in this case)
+  },
 });
 // test
 syncDatabase(sequelize);
