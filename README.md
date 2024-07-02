@@ -10,7 +10,7 @@ This project is a web application designed to help programmers find teams for co
 # Development 
 The project is actively maintained, with new features being added and bugs being fixed regularly. Contributions are welcome! 
 
-[Preview](https://dev-link.up.railway.app/)
+[Preview](https://dev-link-client.vercel.app)
 
 # Contributing 🌱
 We welcome contributions! Please see the issues section for upcoming features and bug fixes, or clone the repository itself and suggest new features!
