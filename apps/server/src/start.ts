@@ -16,16 +16,15 @@ const startApp = () => {
     return;
   }
 
-  // If .env file is not found in the current directory, try to find it in the workspace root
-  const workspaceRoot = findWorkspaceRoot(currentDir);
-
-  if (workspaceRoot) {
-    const envPath = path.resolve(workspaceRoot, ".env");
+  const rootEnvFilePath = path.resolve(currentDir, "../../");
+  if (fs.existsSync(rootEnvFilePath)) {
+    const envPath = path.resolve(rootEnvFilePath, ".env");
     dotenv.config({ path: envPath });
     require("./index");
   } else {
     throw new Error("dotenv file was not found.");
   }
+  
 };
 
 startApp();
